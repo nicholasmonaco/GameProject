@@ -11,7 +11,17 @@ namespace GameProject.Code.Core {
             value.Y = y;
         }
 
+        public static void Set(this Vector3 value, float x, float y, float z) {
+            value.X = x;
+            value.Y = y;
+            value.Z = z;
+        }
+
         public static Point ToPoint(this Vector2 value) {
+            return new Point((int)value.X, (int)value.Y);
+        }
+
+        public static Point ToPoint2D(this Vector3 value) {
             return new Point((int)value.X, (int)value.Y);
         }
 

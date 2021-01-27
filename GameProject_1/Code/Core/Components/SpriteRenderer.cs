@@ -19,7 +19,7 @@ namespace GameProject.Code.Core.Components {
         public override void Draw(SpriteBatch sb) {
             // We'll probably switch this with the quad rendering thing
             Point SpriteSize = new Point(Sprite.Width, Sprite.Height);
-            Rectangle drawRect = GameManager.MainCamera.GetScreenPosRect(new Rectangle(transform.Position.ToPoint() + SpriteSize.Div(2), 
+            Rectangle drawRect = GameManager.MainCamera.GetScreenPosRect(new Rectangle(transform.Position.ToPoint2D() + SpriteSize.Div(2), 
                                                                                        SpriteSize), 
                                                                          transform.Scale);
 

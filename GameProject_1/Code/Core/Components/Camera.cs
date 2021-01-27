@@ -8,7 +8,7 @@ namespace GameProject.Code.Core.Components {
         public Point AspectRatio = new Point(16, 9);
         public float Size = 5;
 
-        public Rectangle FOV { get { return new Rectangle(transform.Position.ToPoint(), AspectRatio.Mult(Size * 12)); } }
+        public Rectangle FOV { get { return new Rectangle(transform.Position.ToPoint2D(), AspectRatio.Mult(Size * 12)); } }
 
 
 
@@ -21,9 +21,9 @@ namespace GameProject.Code.Core.Components {
             return FOV.Contains(position.ToPoint());
         }
 
-        public Rectangle GetScreenPosRect(Rectangle worldRect, Vector2 scale) {
-            return new Rectangle(worldRect.Location - transform.Position.ToPoint(), 
-                                 worldRect.Size * (scale / Size).ToPoint());
+        public Rectangle GetScreenPosRect(Rectangle worldRect, Vector3 scale) {
+            return new Rectangle(worldRect.Location - transform.Position.ToPoint2D(), 
+                                 worldRect.Size * (scale / Size).ToPoint2D());
         }
     }
 }
