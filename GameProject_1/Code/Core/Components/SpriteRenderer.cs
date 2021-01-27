@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GameProject.Code.Core;
 
 namespace GameProject.Code.Core.Components {
     public class SpriteRenderer : Renderer {
@@ -16,9 +17,14 @@ namespace GameProject.Code.Core.Components {
 
 
         public override void Draw(SpriteBatch sb) {
-            // base.Draw(sb); // We'll probably switch to this with the quad rendering thing
+            // We'll probably switch this with the quad rendering thing
+            Point SpriteSize = new Point(Sprite.Width, Sprite.Height);
+            Rectangle drawRect = GameManager.MainCamera.GetScreenPosRect(new Rectangle(transform.Position.ToPoint() + SpriteSize.Div(2), 
+                                                                                       SpriteSize), 
+                                                                         transform.Scale);
 
-            sb.Draw(Sprite, new Rectangle(transform.Position.ToPoint(), transform.Scale.ToPoint()), Color.White); // This will have to be changed to work with world position vs screen position
+            sb.Draw(Sprite, drawRect, Color.White);
+            Debug.Log($"pos: ({drawRect.X}, {drawRect.Y}) | size: ({drawRect.Width}, {drawRect.Height})");
         }
 
     }

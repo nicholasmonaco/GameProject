@@ -1,40 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
+using GameProject.Code.Prefabs;
 
 namespace GameProject.Code.Scenes {
     public class MenuScene : Scene {
         public override void Awake() {
-            throw new NotImplementedException();
+
         }
 
         public override void Start() {
-            throw new NotImplementedException();
+
         }
 
-        public override void LoadContent() {
-            throw new NotImplementedException();
+        public override void LoadContent(ContentManager content) {
+
         }
 
         public override void UnloadContent() {
-            throw new NotImplementedException();
+
         }
 
         public override void Update() {
-            throw new NotImplementedException();
+
         }
 
         public override void FixedUpdate() {
-            throw new NotImplementedException();
+
         }
 
         public override void LateUpdate() {
-            throw new NotImplementedException();
+
         }
 
-        public override void Draw() {
-            throw new NotImplementedException();
+        public override void Draw(SpriteBatch sb) {
+
         }
     }
 }

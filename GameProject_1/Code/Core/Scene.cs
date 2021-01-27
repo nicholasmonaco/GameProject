@@ -7,24 +7,43 @@ using Microsoft.Xna.Framework.Content;
 namespace GameProject.Code.Core {
     public abstract class Scene {
 
+        public List<GameObject> GameObjects;
+
         private List<Coroutine> _coroutines;
 
 
+
         public Scene() {
+            GameObjects = new List<GameObject>();
             _coroutines = new List<Coroutine>();
         }
 
-        public abstract void LoadContent(ContentManager content);
+        public virtual void LoadContent(ContentManager content) { }
 
-        public abstract void UnloadContent();
+        public virtual void UnloadContent() { }
 
-        public abstract void Awake();
+        public virtual void Awake() {
+            // Handle GameObjects
+            foreach (GameObject g in GameObjects) {
+                g.Awake();
+            }
+        }
 
-        public abstract void Start();
+        public virtual void Start() {
+            // Handle GameObjects
+            foreach (GameObject g in GameObjects) {
+                g.Start();
+            }
+        }
 
         public virtual void Update() {
+            // Handle GameObjects
+            foreach (GameObject g in GameObjects) {
+                g.Update();
+            }
+
             // Handle coroutines
-            foreach(Coroutine routine in _coroutines) {
+            foreach (Coroutine routine in _coroutines) {
                 // Update the coroutine
                 routine.Update();
                 // If the coroutine is finished, remove it from the list.
@@ -32,9 +51,19 @@ namespace GameProject.Code.Core {
             }
         }
 
-        public abstract void FixedUpdate();
+        public virtual void FixedUpdate() {
+            // Handle GameObjects
+            foreach (GameObject g in GameObjects) {
+                g.FixedUpdate();
+            }
+        }
 
         public virtual void LateUpdate() {
+            // Handle GameObjects
+            foreach (GameObject g in GameObjects) {
+                g.LateUpdate();
+            }
+
             // Handle coroutines
             foreach (Coroutine routine in _coroutines) {
                 // Update the coroutine
@@ -44,7 +73,12 @@ namespace GameProject.Code.Core {
             }
         }
 
-        public abstract void Draw(SpriteBatch sb);
+        public virtual void Draw(SpriteBatch sb) {
+            // Handle GameObjects
+            foreach (GameObject g in GameObjects) {
+                g.Draw(sb);
+            }
+        }
 
 
 

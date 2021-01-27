@@ -71,6 +71,15 @@ namespace GameProject.Code.Core {
             Position = Vector2.Zero;
             YRotation = 0;
             Scale = Vector2.One;
+
+            // In this case, we can assume that the Transform will have no parents by default.
+
+            // This matrix will represent where the Transform will be in world space. 
+            // By default, it will be facing forward on all 3 axes. (I think)
+            Matrix transformMatrix = new Matrix(new Vector4(1, 0, 0, 0),
+                                                new Vector4(0, 1, 0, 0),
+                                                new Vector4(0, 0, 1, 0),
+                                                new Vector4(0, 0, 0, 1));
         }
 
         public Transform(GameObject attach, Transform parent) : base(attach) {
@@ -97,12 +106,32 @@ namespace GameProject.Code.Core {
 
         // Transforms from local space to world space
         public Vector2 TransformPoint(Vector2 point) {
-            return Vector2.Zero;
+            
+
+
+
+            Transform t = this;
+            Vector2 pos = point;
+            while (t.Parent != null){
+                pos *= t._localScale;
+                pos += t._localPosition;
+                t = t.Parent;
+            }
+            
+            return pos;
         }
 
         // Transforms from world space to local space
         public Vector2 InverseTransformPoint(Vector2 point) {
-            return Vector2.Zero;
+            Transform t = this;
+            Vector2 pos = point;
+            while (t.Parent != null) {
+                pos /= t._localScale;
+                pos -= t._localPosition; // I think this one might not work
+                t = t.Parent;
+            }
+
+            return pos;
         }
 
         // Transforms from local rotation to world rotation

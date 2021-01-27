@@ -15,7 +15,7 @@ namespace GameProject {
         //public static readonly int TargetFPS = 60; // This is already true due to the default Monogame settings
 
         private float _fixedUpdateMeasurer = 0;
-        private const int _initialSceneID = 0;
+        private const int _initialSceneID = 1;
 
         public Scene[] SceneList;
 
@@ -25,21 +25,13 @@ namespace GameProject {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
-            SceneList = new Scene[2]; // Main Menu scene and Game scene
-            SceneList[0] = new MenuScene();
-            SceneList[1] = new GameScene();
-
-            GameManager.SetMainGame(this);
-
-            GameManager.SwitchScene(_initialSceneID);
-
-            Input.Start();
         }
 
         protected override void Initialize() {
             // TODO: Add your initialization logic here
+            GameManager.SetMainGame(this);
 
+            Input.Start();
             // End user initialization
 
             base.Initialize();
@@ -49,8 +41,18 @@ namespace GameProject {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-
+            Resources.LoadContent(Content);
             // End user content loading
+
+            AfterLoad();
+        }
+
+        private void AfterLoad() {
+            SceneList = new Scene[2]; // Main Menu scene and Game scene
+            SceneList[0] = new MenuScene();
+            SceneList[1] = new GameScene();
+
+            GameManager.SwitchScene(_initialSceneID);
         }
 
         protected override void Update(GameTime gameTime) {

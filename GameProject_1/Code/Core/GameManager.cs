@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
     public static class GameManager {
@@ -8,9 +10,13 @@ namespace GameProject.Code.Core {
         private static MainGame _mainGame;
         private static int _curSceneID;
 
+        public static Camera MainCamera;
+
+
 
         public static Scene CurrentScene => _mainGame.SceneList[_curSceneID];
 
+        public static Point Resolution { get { return _mainGame.GraphicsDevice.Viewport.Bounds.Size; } }
 
 
 

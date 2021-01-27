@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameProject.Code.Core {
     public class GameObject {
@@ -30,10 +31,51 @@ namespace GameProject.Code.Core {
             Layer = layer;
         }
 
-
         public Coroutine StartCoroutine(IEnumerator routine) {
             return GameManager.CurrentScene.StartCoroutine(routine);
         }
+
+
+        // Standard scene methods
+
+        public void Awake() {
+            foreach (Component c in _components) {
+                c.Awake();
+            }
+        }
+
+        public void Start() {
+            foreach (Component c in _components) {
+                c.Start();
+            }
+        }
+
+        public void Update() {
+            foreach (Component c in _components) {
+                c.Update();
+            }
+        }
+
+        public void LateUpdate() {
+            foreach (Component c in _components) {
+                c.LateUpdate();
+            }
+        }
+
+        public void FixedUpdate() {
+            foreach (Component c in _components) {
+                c.FixedUpdate();
+            }
+        }
+
+        public void Draw(SpriteBatch sb) {
+            foreach(Component c in _components) {
+                c.Draw(sb);
+            }
+        }
+        
+        // End standard scene methods
+
         
     }
 }

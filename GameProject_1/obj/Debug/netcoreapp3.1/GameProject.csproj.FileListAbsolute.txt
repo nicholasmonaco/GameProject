@@ -34,3 +34,5 @@ C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\obj\Debug\netcoreapp3.1\GameProject.dll
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\obj\Debug\netcoreapp3.1\GameProject.pdb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\obj\Debug\netcoreapp3.1\GameProject.genruntimeconfig.cache
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Ball.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Ball.xnb

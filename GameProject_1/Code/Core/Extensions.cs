@@ -15,5 +15,22 @@ namespace GameProject.Code.Core {
             return new Point((int)value.X, (int)value.Y);
         }
 
+        public static Point Div(this Point value, float div) {
+            return new Point((int)(value.X / div), (int)(value.Y / div));
+        }
+
+        public static Point Mult(this Point value, float mult) {
+            return new Point((int)(value.X * mult), (int)(value.Y * mult));
+        }
+
+        public static T Last<T>(this List<T> list) {
+            return list[list.Count - 1];
+        }
+
+        public static T AddReturn<T>(this List<T> list, T element) {
+            list.Add(element);
+            return element;
+        }
+
     }
 }
