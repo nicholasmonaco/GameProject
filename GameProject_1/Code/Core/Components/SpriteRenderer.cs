@@ -17,14 +17,17 @@ namespace GameProject.Code.Core.Components {
 
 
         public override void Draw(SpriteBatch sb) {
-            // We'll probably switch this with the quad rendering thing
-            Point SpriteSize = new Point(Sprite.Width, Sprite.Height);
-            Rectangle drawRect = GameManager.MainCamera.GetScreenPosRect(new Rectangle(transform.Position.ToPoint2D() + SpriteSize.Div(2), 
-                                                                                       SpriteSize), 
-                                                                         transform.Scale);
+            // We'll probably change how this works with the quad rendering thing
+            // At that point, honestly just make a new class for this that does that and for Transforms that uses quaternions
 
-            sb.Draw(Sprite, drawRect, Color.White);
-            Debug.Log($"pos: ({drawRect.X}, {drawRect.Y}) | size: ({drawRect.Width}, {drawRect.Height})");
+            // While this doesnt fully implement quaternions, it is technically possible, it would just take a toooon of math. Just do it later with quads.
+            sb.Draw(Sprite, transform.Position.ToVector2(), null, Color.White, transform.Rotation, new Vector2(Sprite.Width/2f, Sprite.Height/2f), transform.Scale.ToVector2().FlipY(), SpriteEffects.None, 0);
+        }
+
+        public override void Update() {
+            //transform.Position += new Vector3(0, 0.05f, 0);
+            //transform.Scale += new Vector3(0, 0.005f, 0);
+            transform.Rotation += 1;
         }
 
     }

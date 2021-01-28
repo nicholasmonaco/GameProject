@@ -42,5 +42,51 @@ namespace GameProject.Code.Core {
             return element;
         }
 
+        //public static NMatrix ToNMatrix(this Matrix matrix, int size) {
+        //    if (size < 1 || size > 4) throw new ArgumentException("Invalid size for NMatrix.");
+
+        //    NMatrix result = new NMatrix(size);
+        //    for(int row = 0;row < size; row++) {
+        //        for (int column = 0; column < size; column++) {
+        //            
+        //        }
+        //    }
+        //}
+
+
+        public static Quaternion Rotation(this Matrix matrix) {
+            Quaternion rot;
+            //if(!matrix.Decompose(out _, out rot, out _)) throw new ArgumentException("Cannot decompose matrix to fetch rotation.");
+            matrix.Decompose(out _, out rot, out _);
+
+            return rot;
+        }
+
+        public static Vector3 Scale(this Matrix matrix) {
+            Vector3 scale;
+            //if (!matrix.Decompose(out scale, out _, out _)) throw new ArgumentException("Cannot decompose matrix to fetch scale.");
+            //matrix.Decompose(out scale, out _, out _);
+
+            float xs = (Math.Sign(matrix.M11 * matrix.M12 * matrix.M13 * matrix.M14) < 0) ? -1 : 1;
+            float ys = (Math.Sign(matrix.M21 * matrix.M22 * matrix.M23 * matrix.M24) < 0) ? -1 : 1;
+            float zs = (Math.Sign(matrix.M31 * matrix.M32 * matrix.M33 * matrix.M34) < 0) ? -1 : 1;
+
+            scale.X = xs * (float)Math.Sqrt(matrix.M11 * matrix.M11 + matrix.M12 * matrix.M12 + matrix.M13 * matrix.M13);
+            scale.Y = ys * (float)Math.Sqrt(matrix.M21 * matrix.M21 + matrix.M22 * matrix.M22 + matrix.M23 * matrix.M23);
+            scale.Z = zs * (float)Math.Sqrt(matrix.M31 * matrix.M31 + matrix.M32 * matrix.M32 + matrix.M33 * matrix.M33);
+
+            //Debug.Log($"Scale B: ({scale.X}, {scale.Y}, {scale.Z})");
+
+            return scale;
+        }
+
+        public static Vector2 ToVector2(this Vector3 v) {
+            return new Vector2(v.X, v.Y);
+        }
+
+        public static Vector2 FlipY(this Vector2 v) {
+            return new Vector2(v.X, -v.Y);
+        }
+
     }
 }

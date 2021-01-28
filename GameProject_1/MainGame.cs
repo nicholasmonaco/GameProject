@@ -30,6 +30,7 @@ namespace GameProject {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             GameManager.SetMainGame(this);
+            Window.Title = "Game Project";
 
             Input.Start();
             // End user initialization
@@ -80,10 +81,15 @@ namespace GameProject {
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+        protected override void Draw(GameTime gameTime) {            
+            GraphicsDevice.Clear(Color.Black);
 
-            _spriteBatch.Begin();
+            // I think these transformations could somehow be implemented to when the variable viewmatrix is set, but as of now it doesn't work.
+            Matrix viewMatrix = GameManager.MainCamera.ViewMatrix * 
+                                Matrix.CreateScale(1, -1, 1) * 
+                                Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0); 
+
+            _spriteBatch.Begin(transformMatrix: viewMatrix);
             // TODO: Add your drawing code here
             GameManager.CurrentScene.Draw(_spriteBatch);
             // End user drawing
