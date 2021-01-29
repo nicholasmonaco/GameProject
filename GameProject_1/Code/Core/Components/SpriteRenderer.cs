@@ -27,7 +27,7 @@ namespace GameProject.Code.Core.Components {
         public override void Update() {
             //transform.Position += new Vector3(0, 0.05f, 0);
             //transform.Scale += new Vector3(0, 0.005f, 0);
-            transform.Rotation += 1;
+            //transform.Rotation += 0.01f;
         }
 
     }

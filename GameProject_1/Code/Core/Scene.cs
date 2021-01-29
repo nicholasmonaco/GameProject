@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
     public abstract class Scene {
 
         public List<GameObject> GameObjects;
+        public List<Collider2D> Collider2Ds;
 
         private List<Coroutine> _coroutines;
 
@@ -15,6 +17,7 @@ namespace GameProject.Code.Core {
 
         public Scene() {
             GameObjects = new List<GameObject>();
+            Collider2Ds = new List<Collider2D>();
             _coroutines = new List<Coroutine>();
         }
 
@@ -104,6 +107,11 @@ namespace GameProject.Code.Core {
             return coroutine;
         }
 
+        //public void RemoveGameObject(GameObject obj) {
+        //    GameObjects.Remove(obj);
+        //}
+
+
 
         public static void LoadScene(Scene scene, ContentManager content) {
             scene.LoadContent(content);
@@ -114,5 +122,7 @@ namespace GameProject.Code.Core {
         public static void UnloadScene(Scene scene) {
             scene.UnloadContent();
         }
+
+        
     }
 }

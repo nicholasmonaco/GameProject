@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
     public class GameObject {
         public List<Component> _components;
         public Transform transform;
+        public Rigidbody2D rigidbody2D = null;
 
         public string Name = "GameObject";
         public string Tag = null;
@@ -25,7 +27,7 @@ namespace GameProject.Code.Core {
             Name = name;
         }
 
-        public GameObject(string name, string tag = null, int layer = 0) {
+        public GameObject(string name, string tag = null, int layer = 0) : this() {
             Name = name;
             Tag = tag;
             Layer = layer;
@@ -35,13 +37,29 @@ namespace GameProject.Code.Core {
             return GameManager.CurrentScene.StartCoroutine(routine);
         }
 
+        public T GetComponent<T>() {
+            foreach(Component c in _components) {
+                if (c is T rightType) return rightType;
+            }
+            return default;
+        }
+
 
         // Standard scene methods
 
         public void Awake() {
             foreach (Component c in _components) {
+                c.PreAwake();
+                if (rigidbody2D == null && c is Rigidbody2D rb) rigidbody2D = c as Rigidbody2D;
+            }
+
+            rigidbody2D?.ResetPosition();
+
+            foreach (Component c in _components) {
                 c.Awake();
             }
+
+            Debug.Log("GameObject awaked.");
         }
 
         public void Start() {
@@ -76,6 +94,11 @@ namespace GameProject.Code.Core {
         
         // End standard scene methods
 
+
+        public void Destroy() {
+            GameManager.CurrentScene.GameObjects.Remove(this);
+            // As far as I know, this is the best way to do this. The gameobjects only exist in the list in the scene, so this should be fine.
+        }
         
     }
 }

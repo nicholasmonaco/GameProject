@@ -17,8 +17,6 @@ namespace GameProject.Code.Core {
                          Matrix.CreateTranslation(GameManager.ViewOffset);
         }
 
-        public Action WorldMatrixChangeAction = () => { };
-
 
         //public Vector3 LocalPosition { 
         //    get { return _worldMatrix.Translation; } 
@@ -55,6 +53,8 @@ namespace GameProject.Code.Core {
             set {
                 _worldPosition = value;
                 ViewChangeAction();
+                RecalculateWorldMatrix();
+                gameObject.rigidbody2D?.ResetPosition();
             }
         }
 
@@ -69,6 +69,7 @@ namespace GameProject.Code.Core {
                 _worldRotationRad = value * MathEx.Deg2Rad;
                 _worldRotation = value;
                 ViewChangeAction();
+                RecalculateWorldMatrix();
             }
         }
 
@@ -81,6 +82,7 @@ namespace GameProject.Code.Core {
                 //_worldMatrix = Matrix.CreateScale(value) * _worldMatrix;
 
                 _worldScale = value;
+                RecalculateWorldMatrix();
             }
         }
 
@@ -133,6 +135,8 @@ namespace GameProject.Code.Core {
             WorldMatrix = Matrix.CreateScale(_worldScale) * 
                           Matrix.CreateRotationZ(_worldRotationRad) * 
                           Matrix.CreateTranslation(_worldPosition);
+
+            WorldMatrixUpdateAction();
         }
         
         public Matrix RecalculateWorldMatrix_Renderer() {
@@ -163,6 +167,8 @@ namespace GameProject.Code.Core {
 
         public Vector3 RenderOffsets = Vector3.Zero;
 
+        public Action WorldMatrixUpdateAction = () => { };
+
 
         // End variables
 
@@ -183,7 +189,8 @@ namespace GameProject.Code.Core {
             Rotation = 0;
             Scale = Vector3.One;
 
-            WorldMatrixChangeAction = RecalculateWorldMatrix;
+            //WorldMatrixUpdateAction = RecalculateWorldMatrix;
+            RecalculateWorldMatrix();
         }
 
         public Transform(GameObject attach, Transform parent) : base(attach) {
@@ -196,7 +203,8 @@ namespace GameProject.Code.Core {
             Rotation = 0;
             Scale = Vector3.One;
 
-            WorldMatrixChangeAction = RecalculateWorldMatrix;
+            //WorldMatrixUpdateAction = RecalculateWorldMatrix;
+            RecalculateWorldMatrix();
         }
 
         public Transform(GameObject attach, Vector3 position, float rotation, Vector3 scale) : this(attach) {

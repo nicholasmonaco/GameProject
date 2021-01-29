@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Content;
 namespace GameProject.Code.Core {
     public static class Resources {
         public static Texture2D Sprite_TestSprite;
+        public static Texture2D Sprite_TestArrowSprite;
+        public static Texture2D Sprite_TestSquare;
 
 
 
@@ -21,6 +23,8 @@ namespace GameProject.Code.Core {
 
         private static void LoadTextures(ContentManager content) {
             Sprite_TestSprite = content.Load<Texture2D>("Textures/Misc/Ball");
+            Sprite_TestArrowSprite = content.Load<Texture2D>("Textures/Misc/Arrow");
+            Sprite_TestSquare = content.Load<Texture2D>("Textures/Misc/Square_01");
 
             Debug.Log("Textures loaded.");
         }
