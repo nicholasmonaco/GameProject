@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
@@ -37,11 +38,37 @@ namespace GameProject.Code.Core {
             return GameManager.CurrentScene.StartCoroutine(routine);
         }
 
+
+        public void AddComponent<T>() {
+            _components.Add(Activator.CreateInstance(typeof(T), this) as Component);
+        }
+
         public T GetComponent<T>() {
             foreach(Component c in _components) {
                 if (c is T rightType) return rightType;
             }
             return default;
+        }
+
+        public bool TryGetComponent<T>(out T comp) {
+            foreach (Component c in _components) {
+                if (c is T rightType) { 
+                    comp = rightType;
+                    return true;
+                }
+            }
+            comp = default;
+            return false;
+        }
+
+        public bool RemoveComponent<T>() {
+            foreach (Component c in _components) {
+                if (c is T _) {
+                    c.Destroy();
+                    return true;
+                }
+            }
+            return false;
         }
 
 
@@ -58,8 +85,6 @@ namespace GameProject.Code.Core {
             foreach (Component c in _components) {
                 c.Awake();
             }
-
-            Debug.Log("GameObject awaked.");
         }
 
         public void Start() {

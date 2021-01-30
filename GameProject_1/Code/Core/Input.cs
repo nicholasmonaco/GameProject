@@ -77,13 +77,13 @@ namespace GameProject.Code.Core {
             //---
 
             // Setting variables
-            _movementDirection.Set(_keyboardState.IsKeyDown(Movement_Left) ? -1 : (_keyboardState.IsKeyDown(Movement_Right) ? 1 : 0),
-                                   _keyboardState.IsKeyDown(Movement_Down) ? -1 : (_keyboardState.IsKeyDown(Movement_Up) ? 1 : 0));
+            _movementDirection = new Vector2(_keyboardState.IsKeyDown(Movement_Left) ? -1 : (_keyboardState.IsKeyDown(Movement_Right) ? 1 : 0),
+                                             _keyboardState.IsKeyDown(Movement_Down) ? -1 : (_keyboardState.IsKeyDown(Movement_Up) ? 1 : 0));
 
-            _aimDirection.Set(_keyboardState.IsKeyDown(Aim_Left) ? -1 : (_keyboardState.IsKeyDown(Aim_Right) ? 1 : 0),
-                              _keyboardState.IsKeyDown(Aim_Down) ? -1 : (_keyboardState.IsKeyDown(Aim_Up) ? 1 : 0));
+            _aimDirection = new Vector2(_keyboardState.IsKeyDown(Aim_Left) ? -1 : (_keyboardState.IsKeyDown(Aim_Right) ? 1 : 0),
+                                        _keyboardState.IsKeyDown(Aim_Down) ? -1 : (_keyboardState.IsKeyDown(Aim_Up) ? 1 : 0));
 
-            _mousePosition.Set(_mouseState.X, _mouseState.Y);
+            _mousePosition = new Vector2(_mouseState.X, _mouseState.Y);
             // End setting variables
 
             //---

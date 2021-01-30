@@ -14,7 +14,7 @@ namespace GameProject.Code.Prefabs {
             sr.Sprite = Resources.Sprite_TestSquare;
 
             Rigidbody2D rb = _components.AddReturn(new Rigidbody2D(this)) as Rigidbody2D;
-            rb.Velocity = new Vector2(15, 0);
+            
 
             _components.Add(new RectCollider2D(this, 64, 64));
         }

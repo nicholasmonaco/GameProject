@@ -15,15 +15,18 @@ namespace GameProject.Code.Core {
 
 
 
-        public Scene() {
-            GameObjects = new List<GameObject>();
-            Collider2Ds = new List<Collider2D>();
-            _coroutines = new List<Coroutine>();
-        }
+        public Scene() { }
 
         public virtual void LoadContent(ContentManager content) { }
 
         public virtual void UnloadContent() { }
+
+
+        public virtual void Init() {
+            GameObjects = new List<GameObject>();
+            Collider2Ds = new List<Collider2D>();
+            _coroutines = new List<Coroutine>();
+        }
 
         public virtual void Awake() {
             // Handle GameObjects
@@ -88,7 +91,21 @@ namespace GameProject.Code.Core {
 
         public void PhysicsUpdate() {
             // Do internal physics updates here
+            Action _triggerActions = () => { };
+            Action _collisionActions = () => { };
 
+            foreach (GameObject go in GameObjects) {
+                //search for rigidbody in children
+                if(go.rigidbody2D != null) {
+                    go.rigidbody2D._PhysicsUpdate();
+                    // Now, queue up trigger and collision events
+                    _triggerActions += go.rigidbody2D.CallTriggerEvents;
+                    _collisionActions += go.rigidbody2D.CallCollisionEvents;
+                }
+            }
+
+            _triggerActions();
+            _collisionActions();
             // End internal physics updates
 
             // Handle coroutines
@@ -114,6 +131,7 @@ namespace GameProject.Code.Core {
 
 
         public static void LoadScene(Scene scene, ContentManager content) {
+            scene.Init();
             scene.LoadContent(content);
             scene.Awake();
             scene.Start();

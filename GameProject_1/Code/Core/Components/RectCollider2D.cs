@@ -11,6 +11,9 @@ namespace GameProject.Code.Core.Components {
                                                 new Vector2(Width/2 + xOffset, -Height/2 + yOffset),       // Bottom Right
                                                 new Vector2(-Width/2 + xOffset, -Height/2 + yOffset),      // Bottom Left 
                                                 new Vector2(-Width/2 + xOffset, Height/2 + yOffset) });    // Top Left
+
+            Bounds.Center = Bounds.GetRectCenter();
+            Bounds.OrigCenter = Bounds.Center;
         }
 
         public RectCollider2D(GameObject attached, float Width, float Height) : this(attached, Width, Height, 0, 0) { }

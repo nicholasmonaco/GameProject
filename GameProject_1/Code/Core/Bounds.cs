@@ -14,7 +14,11 @@ namespace GameProject.Code.Core {
         private Vector2[] _origPoints;
         private Vector2[] _points;
 
-        public Vector2 Center => new Vector2(); //TODO
+        private Vector2[] _edges;
+
+        public delegate Vector2 Vector2Return();
+        public Vector2 OrigCenter = Vector2.Zero;
+        public Vector2 Center = Vector2.Zero;
 
         public Bounds() { }
 
@@ -23,6 +27,19 @@ namespace GameProject.Code.Core {
             _points = new Vector2[shapePoints.Length];
             Array.Copy(shapePoints, _points, shapePoints.Length);
             Array.Copy(shapePoints, _origPoints, shapePoints.Length);
+
+            _edges = new Vector2[shapePoints.Length - 1]; // As the shape will connect, the last point and first point are the same
+            ComputeEdges();
+        }
+
+
+        private void ComputeEdges() {
+            //direction that points from dir a to b
+            //vec dir = b.position - a.position
+
+            for(int i = 0; i < _edges.Length; i++) {
+                _edges[i] = _points[i + 1] - _points[i];
+            }
         }
 
         public bool IsOverlapping(Bounds other) {
@@ -91,31 +108,31 @@ namespace GameProject.Code.Core {
             for(int i = 0; i < _points.Length; i++) {
                 _points[i] = Vector3.Transform(_origPoints[i].ToVector3(), worldMatrix).ToVector2();
             }
-            //Debug.Log($"Point 0: ({_points[0].X}, {_points[0].Y})");
 
-            //Well im pretty sure this is all working, so something is wrong with the collision detection (maybe). fixes coming soon.
+            Center = Vector3.Transform(OrigCenter.ToVector3(), worldMatrix).ToVector2();
+            ComputeEdges();
         }
 
 
         // New Collision Algorithm - Seperating Axis Theorem
 
         public static CollisionResult2D DetectCollision(Bounds colliderA, Bounds colliderB, Vector2 velocityA, Vector2 velocityB) {
-            Vector2 velocity = velocityA - velocityB; // Relative velocity
+            Vector2 velocity = (velocityA - velocityB) * Time.fixedDeltaTime; // Relative velocity
             CollisionResult2D result = new CollisionResult2D();
             result.Intersecting = true;
             result.WillIntersect = true;
 
-            int edgeCountA = colliderA._points.Length;
-            int edgeCountB = colliderB._points.Length;
+            int edgeCountA = colliderA._edges.Length;
+            int edgeCountB = colliderB._edges.Length;
             float minIntervalDistance = float.PositiveInfinity;
             Vector2 translationAxis = Vector2.Zero;
             Vector2 edge;
 
             for (int edgeIndex = 0; edgeIndex < edgeCountA + edgeCountB; edgeIndex++) {
                 if(edgeIndex < edgeCountA) {
-                    edge = colliderA._points[edgeIndex];
+                    edge = colliderA._edges[edgeIndex];
                 } else {
-                    edge = colliderB._points[edgeIndex];
+                    edge = colliderB._edges[edgeIndex - edgeCountA];
                 }
 
                 // Step 1: Find if the colliders are currently intersecting
@@ -176,8 +193,10 @@ namespace GameProject.Code.Core {
                 dot = Vector2.Dot(bounds._points[i], axis);
                 if(dot < min) {
                     min = dot;
-                } else if(dot > max) {
-                    max = dot;
+                } else {
+                    if(dot > max) {
+                        max = dot;
+                    }
                 }
             }
         }
@@ -188,6 +207,11 @@ namespace GameProject.Code.Core {
             } else {
                 return minA - maxB;
             }
+        }
+
+
+        public Vector2 GetRectCenter() {
+            return new Vector2(_points[0].X + (_points[1].X-_points[0].X) / 2, _points[2].Y + (_points[1].Y - _points[2].Y) / 2);
         }
     }
 }

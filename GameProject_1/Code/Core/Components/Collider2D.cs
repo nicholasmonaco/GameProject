@@ -9,13 +9,23 @@ namespace GameProject.Code.Core.Components {
         public Rigidbody2D AttachedRigidbody = null;
         public Bounds Bounds;
 
+        public Dictionary<Collider2D, bool> Entered;
+
 
         public Collider2D(GameObject attached) : base(attached) {
             GameManager.CurrentScene.Collider2Ds.Add(this);
         }
 
+        public override void Destroy() {
+            base.Destroy();
+            GameManager.CurrentScene.Collider2Ds.Remove(this);
+            AttachedRigidbody.Subcolliders.Remove(this);
+        }
+
         public override void PreAwake() {
             base.PreAwake();
+
+            Entered = new Dictionary<Collider2D, bool>(GameManager.CurrentScene.Collider2Ds.Count);
 
             FindAttachedRigidbody();
 
@@ -29,6 +39,7 @@ namespace GameProject.Code.Core.Components {
                 foreach (Component c in gameObject._components) {
                     if (c is Rigidbody2D rb) {
                         AttachedRigidbody = rb;
+                        AttachedRigidbody.Subcolliders.Add(this);
                         return;
                     }
                 }

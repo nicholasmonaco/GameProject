@@ -21,7 +21,7 @@ namespace GameProject.Code.Core.Components {
             // At that point, honestly just make a new class for this that does that and for Transforms that uses quaternions
 
             // While this doesnt fully implement quaternions, it is technically possible, it would just take a toooon of math. Just do it later with quads.
-            sb.Draw(Sprite, transform.Position.ToVector2(), null, Color.White, transform.Rotation, new Vector2(Sprite.Width/2f, Sprite.Height/2f), transform.Scale.ToVector2().FlipY(), SpriteEffects.None, 0);
+            sb.Draw(Sprite, transform.Position.ToVector2(), null, Tint, transform.Rotation, new Vector2(Sprite.Width/2f, Sprite.Height/2f), transform.Scale.ToVector2().FlipY(), SpriteEffects.None, 0);
         }
 
         public override void Update() {

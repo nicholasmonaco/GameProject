@@ -68,7 +68,12 @@ namespace GameProject.Code.Core {
             return gameObject.StartCoroutine(routine);
         }
 
-        public void Destroy() {
+
+        public T GetComponent<T>() {
+            return gameObject.GetComponent<T>();
+        }
+
+        public virtual void Destroy() {
             gameObject._components.Remove(this);
         }
 
