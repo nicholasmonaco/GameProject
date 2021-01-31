@@ -1,4 +1,6 @@
-﻿using System;
+﻿// MenuScene.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Content;
@@ -7,6 +9,10 @@ using GameProject.Code.Core;
 using GameProject.Code.Prefabs;
 
 namespace GameProject.Code.Scenes {
+    
+    /// <summary>
+    /// The scene of the main menu.
+    /// </summary>
     public class MenuScene : Scene {
         public override void Awake() {
 

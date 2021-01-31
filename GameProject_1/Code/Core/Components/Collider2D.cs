@@ -1,8 +1,15 @@
-﻿using System;
+﻿// Collider2D.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GameProject.Code.Core.Components {
+    
+    /// <summary>
+    /// The class governing the generic 2-dimensional collider.
+    /// Colliders inheriting from this type are (currently) able to be any polygonal shape.
+    /// </summary>
     public class Collider2D : Component {
 
         public bool IsTrigger = false;

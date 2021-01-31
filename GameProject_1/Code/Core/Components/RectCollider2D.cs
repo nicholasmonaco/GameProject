@@ -1,9 +1,15 @@
-﻿using System;
+﻿// RectCollider2D.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Core.Components {
+    
+    /// <summary>
+    /// A 2-dimensional collider that is always rectangular in shape
+    /// </summary>
     public class RectCollider2D : Collider2D {
         public RectCollider2D(GameObject attached, float Width, float Height, float xOffset, float yOffset) : base(attached) {
             Bounds = new Bounds(new Vector2[] { new Vector2(-Width/2 + xOffset, Height/2 + yOffset),       // Top Left

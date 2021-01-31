@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Component.cs - Nick Monaco
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -6,6 +8,10 @@ using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// The base for all GameObject components.
+    /// </summary>
     public class Component {
         public GameObject gameObject;
         public Transform transform;

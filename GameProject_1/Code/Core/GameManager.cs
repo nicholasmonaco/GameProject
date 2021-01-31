@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿// GameManager.cs - Nick Monaco
+
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,6 +8,10 @@ using GameProject.Code.Core.Components;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// Holds values and methods commonly needed across the game.
+    /// </summary>
     public static class GameManager {
 
         private static MainGame _mainGame;

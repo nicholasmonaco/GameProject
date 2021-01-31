@@ -1,9 +1,17 @@
-﻿using System;
+﻿// Camera.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Core.Components {
+
+    /// <summary>
+    /// The class governing the Camera component.
+    /// Currently, only one camera should be active in the scene at any given time, but this
+    /// could be worked around with some clever scripting.
+    /// </summary>
     public class Camera : Component {
         public float Size = 5;
         public Matrix ProjectionMatrix { get; private set; }

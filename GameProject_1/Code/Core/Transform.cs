@@ -1,10 +1,17 @@
-﻿using System;
+﻿// Transform.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// How position, scale, and rotation are stored and handled.
+    /// Closely intwined with GameObjects and can be controlled by a rigidbody.
+    /// </summary>
     public class Transform : Component {
 
         public Action ViewChangeAction = () => { };

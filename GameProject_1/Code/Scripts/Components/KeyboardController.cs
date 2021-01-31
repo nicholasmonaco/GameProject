@@ -1,4 +1,6 @@
-﻿using System;
+﻿// KeyboardController.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -7,6 +9,11 @@ using GameProject.Code.Core.Components;
 using System.Collections;
 
 namespace GameProject.Code.Scripts.Components {
+    
+    /// <summary>
+    /// A test component that allows a rigidbody to be controlled with keyboard input.
+    /// Also used to test coroutines.
+    /// </summary>
     public class KeyboardController : Component {
         public KeyboardController(GameObject attached) : base(attached) { }
 

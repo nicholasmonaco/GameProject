@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Prefab_TestPrefab.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using GameProject.Code.Core;
@@ -6,6 +8,10 @@ using GameProject.Code.Core.Components;
 using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Prefabs {
+    
+    /// <summary>
+    /// A test prefab.
+    /// </summary>
     public class Prefab_TestPrefab : GameObject {
         public Prefab_TestPrefab() : base() {
             Name = "Test Prefab";

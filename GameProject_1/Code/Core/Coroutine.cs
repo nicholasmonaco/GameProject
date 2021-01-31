@@ -1,6 +1,12 @@
-﻿using System.Collections;
+﻿// Coroutine.cs - Nick Monaco
+
+using System.Collections;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// Governs the inner workings of coroutines.
+    /// </summary>
     public class Coroutine : BaseCoroutine {
         private IEnumerator _routineCode;
 

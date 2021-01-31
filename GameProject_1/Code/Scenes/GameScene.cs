@@ -1,4 +1,6 @@
-﻿using System;
+﻿// GameScene.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Content;
@@ -10,6 +12,10 @@ using Microsoft.Xna.Framework;
 using GameProject.Code.Scripts.Components;
 
 namespace GameProject.Code.Scenes {
+    
+    /// <summary>
+    /// The scene where the main game occurs.
+    /// </summary>
     public class GameScene : Scene {
 
         //public GameScene() : base() {

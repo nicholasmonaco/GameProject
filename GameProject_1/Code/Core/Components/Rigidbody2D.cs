@@ -1,9 +1,15 @@
-﻿using System;
+﻿// Rigidbody2D.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Core.Components {
+    
+    /// <summary>
+    /// Allows all physics (other than collision) to occur within the game world.
+    /// </summary>
     public class Rigidbody2D : Component {
 
         public List<Collider2D> Subcolliders;

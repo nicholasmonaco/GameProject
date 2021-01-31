@@ -1,4 +1,10 @@
-﻿namespace GameProject.Code.Core {
+﻿// BaseCoroutine.cs - Nick Monaco
+
+namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// The base class of all types of coroutines and yield instructions used within coroutines.
+    /// </summary>
     public abstract class BaseCoroutine {
 
         public virtual bool Finished { get; set; } = false; // Due to how this is used in Coroutine.cs, it has to be a property.

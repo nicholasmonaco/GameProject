@@ -7,6 +7,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// Handles all input detection, providing event actions for when certain buttons are pressed or released.
+    /// </summary>
     public static class Input {
 
         private static Action _emptyAction = () => { };

@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Scene.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,6 +8,10 @@ using Microsoft.Xna.Framework.Content;
 using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// A container for everything that is present in the game.
+    /// </summary>
     public abstract class Scene {
 
         public List<GameObject> GameObjects;

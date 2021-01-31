@@ -1,10 +1,17 @@
-﻿using System;
+﻿// Renderer.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameProject.Code.Core.Components {
+    
+    /// <summary>
+    /// Governs all renderable components.
+    /// No other type of component should be drawing anything if it isn't a subclass of Renderer.
+    /// </summary>
     public class Renderer : Component {
         public Renderer(GameObject attached) : base(attached) {
             

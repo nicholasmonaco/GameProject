@@ -1,9 +1,15 @@
-﻿using System;
+﻿// Extensions.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// Contains extension methods used throughout other classes.
+    /// </summary>
     public static class Extensions {
 
         public static void Set(this Vector2 value, float x, float y) {

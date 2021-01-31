@@ -1,4 +1,4 @@
-﻿// Quaternion.cs - Nick Monaco
+﻿// QuaternionTest.cs - Nick Monaco
 // Math and logic of quaternions from:
 // https://www.cprogramming.com/tutorial/3d/quaternions.html
 // https://www.3dgep.com/understanding-quaternions/
@@ -13,6 +13,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// A test class used to test and understand the inner workings of quaternions.
+    /// </summary>
     public class QuaternionTest {
 
         public static QuaternionTest Identity => new QuaternionTest(1, 0, 0, 0);

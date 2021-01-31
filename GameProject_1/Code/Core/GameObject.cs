@@ -1,4 +1,6 @@
-﻿using System;
+﻿// GameObject.cs - Nick Monaco
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +10,10 @@ using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// The base of all GameObjects, which is how everything in a scene is structured.
+    /// </summary>
     public class GameObject {
         public List<Component> _components;
         public Transform transform;

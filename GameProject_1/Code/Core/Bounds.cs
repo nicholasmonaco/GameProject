@@ -1,5 +1,5 @@
 ﻿// Bounds.cs - Nick Monaco
-// Intersection logic from:
+// Intersection logic (currently unused) from:
 // https://rbrundritt.wordpress.com/2008/10/20/approximate-points-of-intersection-of-two-line-segments/
 // Polygon collidion detection logic from:
 // https://www.codeproject.com/Articles/15573/2D-Polygon-Collision-Detection
@@ -10,6 +10,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// Data structure representing the boundaries of a polygonal shape.
+    /// </summary>
     public class Bounds {
         private Vector2[] _origPoints;
         private Vector2[] _points;

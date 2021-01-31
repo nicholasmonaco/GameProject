@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SpriteRenderer.cs - Nick Monaco
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -6,6 +8,10 @@ using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
 
 namespace GameProject.Code.Core.Components {
+    
+    /// <summary>
+    /// Component allowing a sprite to be drawn into the scene.
+    /// </summary>
     public class SpriteRenderer : Renderer {
 
         public Texture2D Sprite;

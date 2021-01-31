@@ -1,6 +1,10 @@
 ﻿// Time.cs - Nick Monaco
 
 namespace GameProject.Code.Core {
+    
+    /// <summary>
+    /// Variables related to time.
+    /// </summary>
     public static class Time {
         public static float time;
         public static float deltaTime;
