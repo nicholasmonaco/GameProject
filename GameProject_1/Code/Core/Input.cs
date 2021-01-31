@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Input;
 namespace GameProject.Code.Core {
     public static class Input {
 
+        private static Action _emptyAction = () => { };
+
         // State variables
         private static KeyboardState _keyboardState;
         private static KeyboardState _lastKeyboardState;
@@ -169,24 +171,24 @@ namespace GameProject.Code.Core {
 
         // Event handler methods
 
-        public static void OnShoot_Down() { }
-        public static void OnShoot_Released() { }
-        public static void OnInteract_Down() { }
-        public static void OnInteract_Released() { }
-        public static void OnSpecial_Down() { }
-        public static void OnSpecial_Released() { }
-        public static void OnShift_Down() { }
-        public static void OnShift_Released() { }
+        public static Action OnShoot_Down = _emptyAction;
+        public static Action OnShoot_Released = _emptyAction;
+        public static Action OnInteract_Down = _emptyAction;
+        public static Action OnInteract_Released = _emptyAction;
+        public static Action OnSpecial_Down = _emptyAction;
+        public static Action OnSpecial_Released = _emptyAction;
+        public static Action OnShift_Down = _emptyAction;
+        public static Action OnShift_Released = _emptyAction;
 
-        public static void OnEscape_Down() { }
-        public static void OnEscape_Released() { }
-        public static void OnTab_Down() { }
-        public static void OnTab_Released() { }
+        public static Action OnEscape_Down = _emptyAction;
+        public static Action OnEscape_Released = _emptyAction;
+        public static Action OnTab_Down = _emptyAction;
+        public static Action OnTab_Released = _emptyAction;
 
-        public static void OnMouseLeft_Down() { }
-        public static void OnMouseLeft_Released() { }
-        public static void OnMouseRight_Down() { }
-        public static void OnMouseRight_Released() { }
+        public static Action OnMouseLeft_Down = _emptyAction;
+        public static Action OnMouseLeft_Released = _emptyAction;
+        public static Action OnMouseRight_Down = _emptyAction;
+        public static Action OnMouseRight_Released = _emptyAction;
 
         // End event handler methods
     }

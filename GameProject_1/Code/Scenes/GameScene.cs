@@ -22,14 +22,15 @@ namespace GameProject.Code.Scenes {
             // This is essentially where there should be a list of default GameObjects in the scene.
             GameObjects.Add(new Prefab_MainCamera());
 
-            GameObject test = GameObjects.AddReturn(new Prefab_TestPrefab());
-            test.transform.Position = new Vector3(0, 25, 0);
-            test.GetComponent<Rigidbody2D>().Velocity = new Vector2(20, 0);
-            test.GetComponent<SpriteRenderer>().Tint = Color.Yellow;
+
+            //GameObject test = GameObjects.AddReturn(new Prefab_TestPrefab());
+            //test.transform.Position = new Vector3(0, 25, 0);
+            //test.GetComponent<Rigidbody2D>().Velocity = new Vector2(20, 0);
+            //test.GetComponent<SpriteRenderer>().Tint = Color.Yellow;
 
             GameObject test2 = GameObjects.AddReturn(new Prefab_TestPrefab());
-            test2.transform.Position = new Vector3(150, 25, 0);
-            test2.GetComponent<Rigidbody2D>().Velocity *= -1;
+            test2.transform.Position = new Vector3(0, 0, 0);
+            //test2.GetComponent<Rigidbody2D>().Velocity *= -1;
             //test2.transform.Scale *= 1.5f;
             //test2.RemoveComponent<Rigidbody2D>();
             test2.AddComponent<KeyboardController>();

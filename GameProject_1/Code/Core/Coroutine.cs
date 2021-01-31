@@ -8,8 +8,6 @@ namespace GameProject.Code.Core {
             _routineCode = routine;
         }
 
-        public override bool Finished { get { return !_routineCode.MoveNext(); } }
-
         public override void Update() {
             // So here we can essentially read what we "yield return" one-by-one.
             // Therefore: If it's null or the coroutine is finished, we just move on.
@@ -17,12 +15,13 @@ namespace GameProject.Code.Core {
             // If waiting for a set amount of time, wait until that time is over.
 
             BaseCoroutine curRoutine = _routineCode.Current as BaseCoroutine;
-            if (curRoutine.Finished) StepThrough();
+
+            if (curRoutine == null || curRoutine.Finished) {
+                StepThrough();
+                return;
+            }
 
             switch (_routineCode.Current) {
-                case null:
-                    StepThrough();
-                    return;
                 case WaitForSeconds _: // Variables are unneeded here, Visual Studio reccommended these underscore discard variable things.
                 case Coroutine _:
                     curRoutine.Update();
@@ -57,10 +56,12 @@ namespace GameProject.Code.Core {
             if (_routineCode.MoveNext()) {
                 // This "as" usage effectively just lets a null check be sufficient instead of dealing with error catching.
                 BaseCoroutine steppedCoroutine = _routineCode.Current as BaseCoroutine;
-                
-                if(steppedCoroutine != null) {
+
+                if (steppedCoroutine != null) {
                     steppedCoroutine.Run();
                 }
+            } else {
+                Finished = true;
             }
         }
     }

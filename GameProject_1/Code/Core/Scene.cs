@@ -12,6 +12,7 @@ namespace GameProject.Code.Core {
         public List<Collider2D> Collider2Ds;
 
         private List<Coroutine> _coroutines;
+        private Action _coroutineQueue = () => { };
 
 
 
@@ -49,12 +50,19 @@ namespace GameProject.Code.Core {
             }
 
             // Handle coroutines
+            _coroutineQueue();
+            _coroutineQueue = () => { };
+
+            Action removeQueue = () => { };
+
             foreach (Coroutine routine in _coroutines) {
                 // Update the coroutine
                 routine.Update();
                 // If the coroutine is finished, remove it from the list.
-                if (routine.Finished) _coroutines.Remove(routine);
+                if (routine.Finished) removeQueue += () => { _coroutines.Remove(routine); };
             }
+
+            removeQueue();
         }
 
         public virtual void FixedUpdate() {
@@ -71,12 +79,16 @@ namespace GameProject.Code.Core {
             }
 
             // Handle coroutines
+            Action removeQueue = () => { };
+
             foreach (Coroutine routine in _coroutines) {
                 // Update the coroutine
                 routine.LateUpdate();
                 // If the coroutine is finished, remove it from the list.
-                if (routine.Finished) _coroutines.Remove(routine);
+                if (routine.Finished) removeQueue += () => { _coroutines.Remove(routine); };
             }
+
+            removeQueue();
         }
 
         public virtual void Draw(SpriteBatch sb) {
@@ -109,18 +121,26 @@ namespace GameProject.Code.Core {
             // End internal physics updates
 
             // Handle coroutines
+            Action removeQueue = () => { };
+
             foreach (Coroutine routine in _coroutines) {
                 // Update the coroutine
                 routine.FixedUpdate();
                 // If the coroutine is finished, remove it from the list.
-                if (routine.Finished) _coroutines.Remove(routine);
+                if (routine.Finished) removeQueue += () => { _coroutines.Remove(routine); };
             }
+
+            removeQueue();
         }
 
         public Coroutine StartCoroutine(IEnumerator routine) {
             Coroutine coroutine = new Coroutine(routine);
-            _coroutines.Add(coroutine);
-            coroutine.StepThrough();
+
+            _coroutineQueue += () => { _coroutines.Add(coroutine); };
+
+            // This StepThrough makes it so the first section of code in the coroutine (before the first yield) happens immediately
+            coroutine.StepThrough(); 
+
             return coroutine;
         }
 

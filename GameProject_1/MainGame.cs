@@ -57,6 +57,9 @@ namespace GameProject {
         }
 
         protected override void Update(GameTime gameTime) {
+            Time.time = (float)gameTime.TotalGameTime.Seconds;
+            Time.deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 

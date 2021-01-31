@@ -7,5 +7,7 @@ namespace GameProject.Code.Core.Components {
         public CircleCollider2D(GameObject attached) : base(attached) {
 
         }
+
+        // TODO
     }
 }

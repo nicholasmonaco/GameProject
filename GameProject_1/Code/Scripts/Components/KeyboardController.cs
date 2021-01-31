@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using System.Collections;
 
 namespace GameProject.Code.Scripts.Components {
     public class KeyboardController : Component {
@@ -16,6 +17,10 @@ namespace GameProject.Code.Scripts.Components {
 
         public override void Awake() {
             _rb = GetComponent<Rigidbody2D>();
+            
+            Input.OnShoot_Down += () => {
+                StartCoroutine(CoroutineTest_01());
+            };
         }
 
         public override void Update() {
@@ -23,7 +28,19 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         public override void FixedUpdate() {
-            _rb.Velocity = _input * 75;
+            //_rb.Velocity = _input * 75;
+        }
+
+
+        private IEnumerator CoroutineTest_01() {
+            //move up for 3 seconds, move right 2 seconds, move down+left for 2 seconds
+            _rb.Velocity = new Vector2(0, 20);
+            yield return new WaitForSeconds(3);
+            _rb.Velocity = new Vector2(20, 0);
+            yield return new WaitForSeconds(2);
+            _rb.Velocity = new Vector2(-20, -20);
+            yield return new WaitForSeconds(3);
+            _rb.Velocity = Vector2.Zero;
         }
     }
 }
