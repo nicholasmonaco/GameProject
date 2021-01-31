@@ -25,9 +25,9 @@ namespace GameProject.Code.Scripts.Components {
         public override void Awake() {
             _rb = GetComponent<Rigidbody2D>();
             
-            Input.OnShoot_Down += () => {
-                StartCoroutine(CoroutineTest_01());
-            };
+            //Input.OnShoot_Down += () => {
+            //    StartCoroutine(CoroutineTest_01());
+            //};
         }
 
         public override void Update() {
@@ -35,7 +35,7 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         public override void FixedUpdate() {
-            //_rb.Velocity = _input * 75;
+            _rb.Velocity = _input * 75;
         }
 
 

@@ -29,17 +29,28 @@ namespace GameProject.Code.Scenes {
             GameObjects.Add(new Prefab_MainCamera());
 
 
-            //GameObject test = GameObjects.AddReturn(new Prefab_TestPrefab());
-            //test.transform.Position = new Vector3(0, 25, 0);
-            //test.GetComponent<Rigidbody2D>().Velocity = new Vector2(20, 0);
-            //test.GetComponent<SpriteRenderer>().Tint = Color.Yellow;
+            for(int x = -1; x < 2; x += 2) {
+                for (int y = -1; y < 2; y += 2) {
+                    GameObject wallCorner = GameObjects.AddReturn(new GameObject());
+                    wallCorner.transform.Position = new Vector3(x * 117, y * 78, 0);
+                    wallCorner.transform.Scale = new Vector3(-x, y, 0);
+                    wallCorner.AddComponent<SpriteRenderer>();
+                    SpriteRenderer wallCornerRend = wallCorner.GetComponent<SpriteRenderer>();
+                    wallCornerRend.Sprite = Resources.Sprite_Room_WallCorner_01;
+                    wallCornerRend.DrawLayer = DrawLayer.ID["Background"];
+                    wallCornerRend.OrderInLayer = 21;
+                }
+            }
 
-            GameObject test2 = GameObjects.AddReturn(new Prefab_TestPrefab());
-            test2.transform.Position = new Vector3(0, 0, 0);
-            //test2.GetComponent<Rigidbody2D>().Velocity *= -1;
-            //test2.transform.Scale *= 1.5f;
-            //test2.RemoveComponent<Rigidbody2D>();
-            test2.AddComponent<KeyboardController>();
+            //GameObject floor = GameObjects.AddReturn(new GameObject());
+            //floor.transform.Scale = new Vector3(480, 320, 0);
+            //floor.AddComponent<SpriteRenderer>();
+            //SpriteRenderer sr = floor.GetComponent<SpriteRenderer>();
+            //sr.DrawLayer = DrawLayer.ID["Background"];
+            //sr.OrderInLayer = 20; // Just in case
+            //sr.Sprite = Resources.Sprite_Pixel;
+            //sr.Tint = new Color(28, 35, 64);
+
         }
 
 

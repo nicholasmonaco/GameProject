@@ -31,7 +31,7 @@ namespace GameProject.Code.Core {
         public static Matrix ProjectionMatrix => MainCamera.ProjectionMatrix;
         public static Matrix ViewMatrix => MainCamera.ViewMatrix;
 
-        public static Vector3 ViewOffset => new Vector3(Resolution.X / 2, Resolution.Y / 2, 0);
+        public static Vector3 ViewOffset => new Vector3(Resolution.X / 2, Resolution.Y / 2, 0) / (MainCamera.Size * 2);
 
 
 

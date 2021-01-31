@@ -17,10 +17,10 @@ namespace GameProject.Code.Core {
         public Action ViewChangeAction = () => { };
         public void ViewChangeAction_Camera() {
             //ViewMatrix = Matrix.CreateLookAt(_worldMatrix.Translation, _worldMatrix.Forward, _worldMatrix.Up);
-            ViewMatrix = Matrix.CreateTranslation(-_worldPosition) * 
+            ViewMatrix = Matrix.CreateTranslation(-_worldPosition) *
+                         Matrix.CreateScale(GameManager.MainCamera.Size) *
                          Matrix.CreateTranslation(-GameManager.ViewOffset) * 
                          Matrix.CreateRotationZ(-0) * 
-                         Matrix.CreateScale(GameManager.MainCamera.Size) * 
                          Matrix.CreateTranslation(GameManager.ViewOffset);
         }
 

@@ -38,3 +38,5 @@ C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Ball.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Arrow.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Square_01.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Pixel.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Misc\test_isaac.xnb

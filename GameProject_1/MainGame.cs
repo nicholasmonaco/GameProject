@@ -25,6 +25,10 @@ namespace GameProject {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            _graphics.PreferredBackBufferWidth = 480 * 2;
+            _graphics.PreferredBackBufferHeight = 320 * 2;
+            _graphics.ApplyChanges();
         }
 
         protected override void Initialize() {
@@ -90,9 +94,9 @@ namespace GameProject {
             // I think these transformations could somehow be implemented to when the variable viewmatrix is set, but as of now it doesn't work.
             Matrix viewMatrix = GameManager.MainCamera.ViewMatrix * 
                                 Matrix.CreateScale(1, -1, 1) * 
-                                Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0); 
+                                Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0);
 
-            _spriteBatch.Begin(transformMatrix: viewMatrix);
+            _spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, rasterizerState: RasterizerState.CullNone, transformMatrix: viewMatrix);
             // TODO: Add your drawing code here
             GameManager.CurrentScene.Draw(_spriteBatch);
             // End user drawing
