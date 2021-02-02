@@ -45,8 +45,10 @@ namespace GameProject.Code.Core {
         }
 
 
-        public void AddComponent<T>() {
-            _components.Add(Activator.CreateInstance(typeof(T), this) as Component);
+        public T AddComponent<T>() where T: Component {
+            T newComp = Activator.CreateInstance(typeof(T), this) as T;
+            _components.Add(newComp);
+            return newComp;
         }
 
         public T GetComponent<T>() {
@@ -130,6 +132,10 @@ namespace GameProject.Code.Core {
             GameManager.CurrentScene.GameObjects.Remove(this);
             // As far as I know, this is the best way to do this. The gameobjects only exist in the list in the scene, so this should be fine.
         }
-        
+
+        //public override int GetHashCode() {
+        //    return Guid.NewGuid();
+        //}
+
     }
 }

@@ -18,7 +18,7 @@ namespace GameProject.Code.Core {
         public void ViewChangeAction_Camera() {
             //ViewMatrix = Matrix.CreateLookAt(_worldMatrix.Translation, _worldMatrix.Forward, _worldMatrix.Up);
             ViewMatrix = Matrix.CreateTranslation(-_worldPosition) *
-                         Matrix.CreateScale(GameManager.MainCamera.Size) *
+                         Matrix.CreateScale(GameManager.MainCamera.Size, GameManager.MainCamera.Size, 1) * //Note: this is split up to preserve the layerDepth with sb.Draw()
                          Matrix.CreateTranslation(-GameManager.ViewOffset) * 
                          Matrix.CreateRotationZ(-0) * 
                          Matrix.CreateTranslation(GameManager.ViewOffset);
@@ -73,12 +73,15 @@ namespace GameProject.Code.Core {
                 ////then, we move the world rotation by that quaternion
                 //Forward = Vector3.Transform(Forward, diff);
                 //Up = Vector3.Transform(Up, diff);
+
                 _worldRotationRad = value * MathEx.Deg2Rad;
                 _worldRotation = value;
                 ViewChangeAction();
                 RecalculateWorldMatrix();
             }
         }
+
+        public float Rotation_Rads => _worldRotationRad;
 
         public Vector3 Scale {
             get { return _worldScale; }

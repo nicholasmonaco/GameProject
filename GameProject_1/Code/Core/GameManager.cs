@@ -19,13 +19,16 @@ namespace GameProject.Code.Core {
 
         public static Camera MainCamera;
 
+        public static Random WorldRandom;
 
         public static bool MainGameAssigned => _mainGame != null;
 
         public static Scene CurrentScene => _mainGame.SceneList[_curSceneID];
 
         public static Viewport Viewport => _mainGame.GraphicsDevice.Viewport;
-        public static Point Resolution { get { return _mainGame.GraphicsDevice.Viewport.Bounds.Size; } }
+        //public static Point Resolution { get { return Viewport.Bounds.Size; } }
+        //public static Point Resolution { get { return _mainGame.Window.ClientBounds.Size; } }
+        public static Point Resolution { get { return _mainGame.Window.ClientBounds.Size; } }
 
         // Camera stuff
         public static Matrix ProjectionMatrix => MainCamera.ProjectionMatrix;

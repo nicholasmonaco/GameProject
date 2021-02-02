@@ -1,8 +1,11 @@
 ﻿// Collider2D.cs - Nick Monaco
 
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+
+using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Core.Components {
     
@@ -64,11 +67,29 @@ namespace GameProject.Code.Core.Components {
             return Bounds.IsOverlapping(other.Bounds);
         }
 
-        //public void DoCollision() {
-        //    foreach(Collider2D c in GameManager.CurrentScene.Collider2Ds) {
-        //        Bounds.IsOverlapping(c.Bounds);
-        //    }
-        //}
+
+
+        public override void Draw(SpriteBatch sb) {
+            for (int i = 0; i < Bounds._points.Length-1; i++) {
+                DrawLine(sb, transform, Bounds._points[i], Bounds._points[i + 1]);
+            }
+        }
+
+
+        private static void DrawLine(SpriteBatch sb, Transform t, Vector2 start, Vector2 end) {
+            Vector2 edge = end - start;
+            float angle = (float)MathF.Atan2(edge.Y, edge.X);
+
+            sb.Draw(Resources.Sprite_Pixel,
+                    start,
+                    null,
+                    Color.Lime,
+                    angle,
+                    Vector2.Zero,
+                    new Vector2(edge.Length(), 1).FlipY(),
+                    SpriteEffects.None,
+                    0.9f);
+        }
 
 
 

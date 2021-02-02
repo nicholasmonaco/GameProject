@@ -22,12 +22,9 @@ namespace GameProject.Code.Scripts.Components {
         private Rigidbody2D _rb;
 
 
+
         public override void Awake() {
             _rb = GetComponent<Rigidbody2D>();
-            
-            //Input.OnShoot_Down += () => {
-            //    StartCoroutine(CoroutineTest_01());
-            //};
         }
 
         public override void Update() {

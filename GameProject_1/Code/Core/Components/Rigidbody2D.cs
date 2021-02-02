@@ -40,7 +40,7 @@ namespace GameProject.Code.Core.Components {
         }
 
 
-        public void _PhysicsUpdate() {
+        public void _PhysicsUpdate() { //the rotation is being messed up by either this or someting in scene. fix it
             // Check for collision
             bool willCollide = false;
             bool nonTriggerCollision = false;
@@ -48,7 +48,8 @@ namespace GameProject.Code.Core.Components {
 
             foreach (Collider2D localCollider in Subcolliders) {
                 foreach (Collider2D collider in GameManager.CurrentScene.Collider2Ds) {
-                    if (collider == localCollider) continue;
+                    //if (collider == localCollider) continue; // This doesn't account for multiple colliders. relpaced with below
+                    if (Subcolliders.Contains(collider)) continue;
 
                     bool entered = false;
                     if (!localCollider.Entered.ContainsKey(collider)) localCollider.Entered.Add(collider, false);
@@ -128,7 +129,6 @@ namespace GameProject.Code.Core.Components {
                 
             }
 
-
             if (willCollide && nonTriggerCollision) {
                 _position += (Velocity * Time.fixedDeltaTime) + pushbackVec * 0.4f;
             } else {
@@ -136,6 +136,7 @@ namespace GameProject.Code.Core.Components {
             }
 
             if (Drag != 0) _position -= Velocity * Drag * Time.fixedDeltaTime;
+            
             transform.Position = _position.ToVector3();
         }
 

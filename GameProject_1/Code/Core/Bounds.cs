@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
     
@@ -16,7 +17,7 @@ namespace GameProject.Code.Core {
     /// </summary>
     public class Bounds {
         private Vector2[] _origPoints;
-        private Vector2[] _points;
+        public Vector2[] _points { get; private set; }
 
         private Vector2[] _edges;
 
@@ -24,15 +25,31 @@ namespace GameProject.Code.Core {
         public Vector2 OrigCenter = Vector2.Zero;
         public Vector2 Center = Vector2.Zero;
 
+        public Collider2D ParentCollider;
+
         public Bounds() { }
 
         public Bounds(Vector2[] shapePoints) {
             _origPoints = new Vector2[shapePoints.Length];
             _points = new Vector2[shapePoints.Length];
+
             Array.Copy(shapePoints, _points, shapePoints.Length);
             Array.Copy(shapePoints, _origPoints, shapePoints.Length);
 
             _edges = new Vector2[shapePoints.Length - 1]; // As the shape will connect, the last point and first point are the same
+            ComputeEdges();
+        }
+
+        public void ResetBounds(Vector2[] newPoints) {
+            _origPoints = new Vector2[newPoints.Length];
+            _points = new Vector2[newPoints.Length];
+
+            Array.Copy(newPoints, _points, newPoints.Length);
+            Array.Copy(newPoints, _origPoints, newPoints.Length);
+
+            ApplyWorldMatrix(ParentCollider.transform.WorldMatrix); // if this cant be done here, just do it in the parent's call of ResetBounds()
+
+            _edges = new Vector2[newPoints.Length - 1]; // As the shape will connect, the last point and first point are the same
             ComputeEdges();
         }
 
@@ -42,7 +59,7 @@ namespace GameProject.Code.Core {
             //vec dir = b.position - a.position
 
             for(int i = 0; i < _edges.Length; i++) {
-                _edges[i] = _points[i + 1] - _points[i];
+                _edges[i] = Vector2.Normalize(_points[i + 1] - _points[i]);
             }
         }
 
@@ -193,7 +210,7 @@ namespace GameProject.Code.Core {
             min = dot;
             max = dot;
 
-            for(int i = 0; i < bounds._points.Length; i++) {
+            for(int i = 0; i < bounds._points.Length-1; i++) {                
                 dot = Vector2.Dot(bounds._points[i], axis);
                 if(dot < min) {
                     min = dot;
@@ -217,6 +234,10 @@ namespace GameProject.Code.Core {
         public Vector2 GetRectCenter() {
             return new Vector2(_points[0].X + (_points[1].X-_points[0].X) / 2, _points[2].Y + (_points[1].Y - _points[2].Y) / 2);
         }
+
+
+
+        
     }
 }
 

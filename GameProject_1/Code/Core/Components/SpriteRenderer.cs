@@ -52,18 +52,14 @@ namespace GameProject.Code.Core.Components {
                     transform.Position.ToVector2(), 
                     null, 
                     Tint, 
-                    transform.Rotation, 
+                    transform.Rotation_Rads, 
                     new Vector2(Sprite.Width/2f, Sprite.Height/2f), 
                     transform.Scale.ToVector2().FlipY(), 
                     SpriteEffects.None, 
                     _realDrawOrder);
         }
 
-        public override void Update() {
-            //transform.Position += new Vector3(0, 0.05f, 0);
-            //transform.Scale += new Vector3(0, 0.005f, 0);
-            //transform.Rotation += 0.01f;
-        }
+        public Point SpriteSize => (new Vector2(Sprite.Width, Sprite.Height) * transform.Scale.ToVector2()).ToPoint();
 
     }
 }

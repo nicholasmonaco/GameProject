@@ -169,6 +169,15 @@ namespace GameProject.Code.Core {
             }
 
             // End checking for event handlers
+
+
+
+            // Fullscreen detection
+            localVal = _keyboardState.IsKeyDown(Keys.F);
+            lastLocalVal = _lastKeyboardState.IsKeyDown(Keys.F);
+            if(localVal && !lastLocalVal) {
+                OnFullscreenToggle();
+            }
         }
 
 
@@ -193,6 +202,8 @@ namespace GameProject.Code.Core {
         public static Action OnMouseLeft_Released = _emptyAction;
         public static Action OnMouseRight_Down = _emptyAction;
         public static Action OnMouseRight_Released = _emptyAction;
+
+        public static Action OnFullscreenToggle = _emptyAction;
 
         // End event handler methods
     }

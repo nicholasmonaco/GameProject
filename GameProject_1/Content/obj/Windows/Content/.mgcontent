@@ -4,6 +4,10 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Door_Inside.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Door_Regular_Base.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Wall_1-01.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Wall_1-02.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Misc/Arrow.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Misc/Ball.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Misc/Pixel.png</File>
@@ -11,6 +15,10 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Misc/test_isaac.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

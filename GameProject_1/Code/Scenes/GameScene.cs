@@ -10,6 +10,7 @@ using GameProject.Code.Core.Components;
 using GameProject.Code.Prefabs;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Scripts.Components;
+using GameProject.Code.Scripts.Util;
 
 namespace GameProject.Code.Scenes {
     
@@ -29,17 +30,57 @@ namespace GameProject.Code.Scenes {
             GameObjects.Add(new Prefab_MainCamera());
 
 
-            for(int x = -1; x < 2; x += 2) {
+            for (int x = -1; x < 2; x += 2) {
                 for (int y = -1; y < 2; y += 2) {
                     GameObject wallCorner = GameObjects.AddReturn(new GameObject());
                     wallCorner.transform.Position = new Vector3(x * 117, y * 78, 0);
                     wallCorner.transform.Scale = new Vector3(-x, y, 0);
-                    wallCorner.AddComponent<SpriteRenderer>();
-                    SpriteRenderer wallCornerRend = wallCorner.GetComponent<SpriteRenderer>();
-                    wallCornerRend.Sprite = Resources.Sprite_Room_WallCorner_01;
+                    SpriteRenderer wallCornerRend = wallCorner.AddComponent<SpriteRenderer>();
+                    wallCornerRend.Sprite = Resources.Sprite_RoomCorner_1[GameManager.WorldRandom.Next(0, Resources.Sprite_RoomCorner_1.Length)];
                     wallCornerRend.DrawLayer = DrawLayer.ID["Background"];
                     wallCornerRend.OrderInLayer = 21;
                 }
+            }
+
+            for (int i = 0; i < 4; i++) {
+                Direction dir = (Direction)i;
+                float rotation = 0;
+                Vector3 pos = new Vector3(206, 128, 0);
+                switch (dir) {
+                    default:
+                    case Direction.Up:
+                        pos.X = 0;
+                        break;
+                    case Direction.Down:
+                        pos.X = 0;
+                        pos.Y *= -1;
+                        rotation = 180;
+                        break;
+                    case Direction.Left:
+                        pos.Y = 0;
+                        rotation = 270;
+                        break;
+                    case Direction.Right:
+                        pos.Y = 0;
+                        pos.X *= -1;
+                        rotation = 90;
+                        break;
+                }
+
+                GameObject door = GameObjects.AddReturn(new GameObject());
+                door.transform.Position = pos;
+                door.transform.Rotation = rotation;
+                SpriteRenderer sr = door.AddComponent<SpriteRenderer>();
+                sr.Sprite = Resources.Sprite_Door_Normal_Base;
+                sr.DrawLayer = DrawLayer.ID["WorldStructs"];
+                sr.OrderInLayer = 25;
+
+                sr = door.AddComponent<SpriteRenderer>();
+                sr.Sprite = Resources.Sprite_Door_Inside;
+                sr.DrawLayer = DrawLayer.ID["WorldStructs"];
+                sr.OrderInLayer = 20;
+
+                door._components.Add(new RectCollider2D(sr));
             }
 
             //GameObject floor = GameObjects.AddReturn(new GameObject());
@@ -50,6 +91,29 @@ namespace GameProject.Code.Scenes {
             //sr.OrderInLayer = 20; // Just in case
             //sr.Sprite = Resources.Sprite_Pixel;
             //sr.Tint = new Color(28, 35, 64);
+
+
+            GameObject thing = GameObjects.AddReturn(new Prefab_TestPrefab());
+            thing.transform.Scale *= 0.5f;
+            thing.Name = "PlayerTestCube";
+
+
+
+            //SpriteRenderer sss = thing.AddComponent<SpriteRenderer>();
+            //sss.Sprite = Resources.Sprite_TestSquare;
+            //sss.DrawLayer = 10;
+            //thing.transform.Scale = new Vector3(0.35f, 0.35f, 0);
+            //thing.AddComponent<Rigidbody2D>();
+            //thing.AddComponent<KeyboardController>();
+            //thing.AddComponent<Collider2D>();
+
+            //thing = GameObjects.AddReturn(new GameObject());
+            //sss = thing.AddComponent<SpriteRenderer>();
+            //sss.Sprite = Resources.Sprite_TestSquare;
+            //sss.DrawLayer = 10;
+            //thing.transform.Position = new Vector3(60, 0, 0);
+            //thing.transform.Scale = new Vector3(0.35f, 0.35f, 0);
+            //thing.AddComponent<RectCollider2D>();
 
         }
 

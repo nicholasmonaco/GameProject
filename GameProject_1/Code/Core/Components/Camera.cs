@@ -23,7 +23,7 @@ namespace GameProject.Code.Core.Components {
         
         public Vector2 CurrentResolution { 
             set {
-                float scaleFactor = value.X / ConstantResolution.X;
+                float scaleFactor = value.Y / ConstantResolution.Y;
                 Size = ConstantSize * scaleFactor;
             } 
         }
@@ -38,7 +38,6 @@ namespace GameProject.Code.Core.Components {
             GameManager.MainCamera = this; // For now, there should only be one camera ever, so this is fine
 
             ProjectionMatrix = Matrix.CreateOrthographicOffCenter(0, GameManager.Viewport.Width, GameManager.Viewport.Height, 0, NearZ, FarZ);
-            //ProjectionMatrix = Matrix.CreateOrthographicOffCenter(0, 800, 480, 0, NearZ, FarZ);
 
             // Now that the projection matrix exists, we need to modify it so that 0,0 is at the center of the screen and +y is up, not down.
             //ProjectionMatrix = Matrix.CreateTranslation(GameManager.Resolution.X, GameManager.Resolution.Y, 0) * ProjectionMatrix;
@@ -49,6 +48,10 @@ namespace GameProject.Code.Core.Components {
             transform.ViewChangeAction();
         }
 
+        public void ResetResolution() {
+            CurrentResolution = GameManager.Resolution.ToVector2();
+            transform.ViewChangeAction();
+        }
 
 
 

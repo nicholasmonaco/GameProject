@@ -34,9 +34,22 @@ namespace GameProject {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             GameManager.SetMainGame(this);
+            GameManager.WorldRandom = new System.Random(); //Move this later to work with seed
+
             Window.Title = "Game Project";
 
             Input.Start();
+            Input.OnFullscreenToggle = () => {
+                bool fullscreen = !_graphics.IsFullScreen;
+                _graphics.IsFullScreen = fullscreen;
+                int width = fullscreen ? GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width : 480 * 2;
+                int height = fullscreen ? GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height : 320 * 2;
+                _graphics.PreferredBackBufferWidth = width; //These two actually change the resolution of the window
+                _graphics.PreferredBackBufferHeight = height;
+                //GraphicsDevice.Viewport = new Viewport(0, 0, width - width % 480, height - height % 320);
+                _graphics.ApplyChanges();
+                GameManager.MainCamera.ResetResolution();
+            };
             // End user initialization
 
             base.Initialize();
@@ -93,7 +106,7 @@ namespace GameProject {
 
             // I think these transformations could somehow be implemented to when the variable viewmatrix is set, but as of now it doesn't work.
             Matrix viewMatrix = GameManager.MainCamera.ViewMatrix * 
-                                Matrix.CreateScale(1, -1, 1) * 
+                                Matrix.CreateScale(1, -1, 1) *
                                 Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0);
 
             _spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, rasterizerState: RasterizerState.CullNone, transformMatrix: viewMatrix);
