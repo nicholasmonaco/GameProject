@@ -59,12 +59,8 @@ namespace GameProject.Code.Core.Components {
 
 
         public float Distance(Collider2D other) {
-            return 5;
+            throw new NotImplementedException();
             // min distance between this collider and other
-        }
-
-        public bool IsTouching(Collider2D other) {
-            return Bounds.IsOverlapping(other.Bounds);
         }
 
 

@@ -80,7 +80,9 @@ namespace GameProject.Code.Scenes {
                 sr.DrawLayer = DrawLayer.ID["WorldStructs"];
                 sr.OrderInLayer = 20;
 
-                door._components.Add(new RectCollider2D(sr));
+                Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(10, -24), new Vector2(-10, -24), new Vector2(-20, 3.5f) };
+                PolygonCollider2D pc = door._components.AddReturn(new PolygonCollider2D(door, doorBounds)) as PolygonCollider2D;
+                pc.IsTrigger = true;
             }
 
             //GameObject floor = GameObjects.AddReturn(new GameObject());

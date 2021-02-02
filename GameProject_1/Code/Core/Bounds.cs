@@ -47,8 +47,6 @@ namespace GameProject.Code.Core {
             Array.Copy(newPoints, _points, newPoints.Length);
             Array.Copy(newPoints, _origPoints, newPoints.Length);
 
-            ApplyWorldMatrix(ParentCollider.transform.WorldMatrix); // if this cant be done here, just do it in the parent's call of ResetBounds()
-
             _edges = new Vector2[newPoints.Length - 1]; // As the shape will connect, the last point and first point are the same
             ComputeEdges();
         }
@@ -233,6 +231,39 @@ namespace GameProject.Code.Core {
 
         public Vector2 GetRectCenter() {
             return new Vector2(_points[0].X + (_points[1].X-_points[0].X) / 2, _points[2].Y + (_points[1].Y - _points[2].Y) / 2);
+        }
+
+
+        /// <summary>
+        /// Finds the centroid of an n-sided, closed, convex, polygon.
+        /// Logic and code sample from:
+        /// https://bell0bytes.eu/centroid-convex/#:~:text=Obviously%20the%20formula%20to%20calculate,%E2%8B%85%20C%201%20%3D%20C%201%20.
+        /// </summary>
+        /// <returns>The center of the polygon represented by the bound's points.</returns>
+        public Vector2 GetPolygonCenter() {
+            Vector2 centroid = Vector2.Zero;
+            float determinant = 0;
+            float tempDeterminant;
+            int j;
+            int pointCount = _points.Length;
+
+            for(int i = 0; i < pointCount; i++) {
+                if(i + 1 == pointCount) {
+                    j = 0;
+                } else {
+                    j = i + 1;
+                }
+
+                tempDeterminant = _points[i].X * _points[j].Y - _points[j].X * _points[i].Y;
+                determinant += tempDeterminant;
+
+                centroid.X += (_points[i].X + _points[j].X) * tempDeterminant;
+                centroid.Y += (_points[i].Y + _points[j].Y) * tempDeterminant;
+            }
+
+            centroid /= 3 * determinant;
+
+            return centroid;
         }
 
 

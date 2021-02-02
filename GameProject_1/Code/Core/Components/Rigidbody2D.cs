@@ -62,7 +62,7 @@ namespace GameProject.Code.Core.Components {
                         pushbackVec += result.MinimumTranslationVector;
 
                         if (!willCollide) willCollide = true;
-                        if (!localCollider.IsTrigger && !nonTriggerCollision) nonTriggerCollision = true;
+                        if (!collider.IsTrigger && !localCollider.IsTrigger && !nonTriggerCollision) nonTriggerCollision = true;
                     }
 
                     //Debug.Log($"will intersect: {result.WillIntersect} | intersecting: {result.Intersecting}");
@@ -74,7 +74,7 @@ namespace GameProject.Code.Core.Components {
                     //as long as it's true, we are staying, but until its false then we cant exit
 
                     if (!entered && result.WillIntersect) {
-                        if (localCollider.IsTrigger) {
+                        if (!nonTriggerCollision) {
                             _triggerActions += () => {
                                 OnTriggerEnter2D_Direct(collider);
                                 localCollider.OnTriggerEnter2D_Direct(collider);
@@ -90,7 +90,7 @@ namespace GameProject.Code.Core.Components {
                             };
                         }
                     } else if (entered && !result.WillIntersect) {
-                        if (localCollider.IsTrigger) {
+                        if (!nonTriggerCollision) {
                             _triggerActions += () => {
                                 OnTriggerExit2D_Direct(collider);
                                 localCollider.OnTriggerExit2D_Direct(collider);
@@ -106,7 +106,7 @@ namespace GameProject.Code.Core.Components {
                             };
                         }
                     } else if (entered) {
-                        if (localCollider.IsTrigger) {
+                        if (!nonTriggerCollision) {
                             _triggerActions += () => {
                                 OnTriggerStay2D_Direct(collider);
                                 localCollider.OnTriggerStay2D_Direct(collider);
