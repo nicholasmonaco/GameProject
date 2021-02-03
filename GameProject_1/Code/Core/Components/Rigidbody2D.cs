@@ -56,13 +56,48 @@ namespace GameProject.Code.Core.Components {
                     else { entered = localCollider.Entered[collider]; }
 
                     Vector2 otherVelocity = collider.AttachedRigidbody == null ? Vector2.Zero : collider.AttachedRigidbody.Velocity;
-                    CollisionResult2D result = Bounds.DetectCollision(localCollider.Bounds, collider.Bounds, Velocity, otherVelocity);
+
+                    // Use a switch depending on what type of shape match up it is
+                    //CollisionResult2D result = PolygonBounds.DetectPolygonCollision(localCollider.Bounds, collider.Bounds, Velocity, otherVelocity);
+                    CollisionResult2D result;
+
+                    switch (localCollider) {
+                        case PolygonCollider2D local_poly:
+                            switch (collider) {
+                                case PolygonCollider2D other_poly:
+                                    //polygon polygon
+                                    result = PolygonBounds.DetectPolygonCollision(local_poly.Bounds as PolygonBounds, other_poly.Bounds as PolygonBounds, Velocity, otherVelocity);
+                                    break;
+                                case CircleCollider2D other_circle:
+                                    //polygon circle
+                                    break;
+                            }
+                            break;
+                        case CircleCollider2D local_circle:
+                            switch (collider) {
+                                case PolygonCollider2D other_poly:
+                                    //circle polygon
+                                    break;
+                                case CircleCollider2D other_circle:
+                                    //circle circle
+                                    break;
+                            }
+                            break;
+                        default:
+                            result = new CollisionResult2D();
+                            result.Intersecting = false;
+                            result.WillIntersect = false;
+                            result.MinimumTranslationVector = Vector2.Zero;
+                            break;
+                    }
+
 
                     if (result.WillIntersect) {
-                        pushbackVec += result.MinimumTranslationVector;
+                        bool notTrigger = !(collider.IsTrigger || localCollider.IsTrigger);
+                        if (notTrigger) pushbackVec += result.MinimumTranslationVector;
 
                         if (!willCollide) willCollide = true;
-                        if (!collider.IsTrigger && !localCollider.IsTrigger && !nonTriggerCollision) nonTriggerCollision = true;
+                        if (notTrigger && !nonTriggerCollision) nonTriggerCollision = true;
                     }
 
                     //Debug.Log($"will intersect: {result.WillIntersect} | intersecting: {result.Intersecting}");
@@ -129,14 +164,26 @@ namespace GameProject.Code.Core.Components {
                 
             }
 
+            Vector2 origVelNoPushback_N = Vector2.Normalize(Velocity);
+
             if (willCollide && nonTriggerCollision) {
-                _position += (Velocity * Time.fixedDeltaTime) + pushbackVec * 0.4f;
+                _position += Velocity * Time.fixedDeltaTime + pushbackVec;
+                Velocity += pushbackVec / Time.fixedDeltaTime;
             } else {
                 _position += Velocity * Time.fixedDeltaTime;
             }
 
-            if (Drag != 0) _position -= Velocity * Drag * Time.fixedDeltaTime;
-            
+            //if (Drag != 0) _position -= Velocity * Drag * Time.fixedDeltaTime;
+            //if (Drag != 0) _position -= ((Velocity * Drag).Length() >= Velocity.Length() ? Velocity : (Velocity * Drag)) * Time.fixedDeltaTime;
+
+            //if (Velocity != Vector2.Zero) Velocity += -origVelNoPushback_N * Drag;
+
+            if (Drag != 0 && Velocity != Vector2.Zero) {
+                Vector2 checker = Velocity + (-origVelNoPushback_N * Drag);
+                if (Vector2.Normalize(checker) == -Vector2.Normalize(Velocity)) Velocity = Vector2.Zero;
+                else Velocity = checker;
+            }
+
             transform.Position = _position.ToVector3();
         }
 

@@ -21,6 +21,8 @@ namespace GameProject.Code.Core {
 
         public static Random WorldRandom;
 
+        public static bool Debug = true; // Show collider barriers, 
+
         public static bool MainGameAssigned => _mainGame != null;
 
         public static Scene CurrentScene => _mainGame.SceneList[_curSceneID];

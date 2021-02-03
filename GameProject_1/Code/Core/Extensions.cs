@@ -108,9 +108,7 @@ namespace GameProject.Code.Core {
             return new Vector4(v.X, v.Y, 0, 1);
         }
 
-        //public static int GetRange(this Random random) {
-        //    return random.Next(0, )
-        //}
+        
 
     }
 }

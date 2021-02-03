@@ -15,7 +15,8 @@ namespace GameProject.Code.Core.Components {
     public class SpriteRenderer : Renderer {
 
         public Texture2D Sprite;
-        public Color Tint = Color.White;
+        public Color Color = Color.White;
+        public Vector2 SpriteScale = Vector2.One;
 
         public int DrawLayer { 
             get { return _drawLayer; }
@@ -38,8 +39,10 @@ namespace GameProject.Code.Core.Components {
         private float _realDrawOrder = 0;
 
 
-        public SpriteRenderer(GameObject attached) : base(attached) {
-
+        public SpriteRenderer(GameObject attached) : base(attached) { }
+        
+        public SpriteRenderer(GameObject attached, Texture2D sprite) : base(attached) {
+            Sprite = sprite;
         }
 
 
@@ -51,10 +54,10 @@ namespace GameProject.Code.Core.Components {
             sb.Draw(Sprite, 
                     transform.Position.ToVector2(), 
                     null, 
-                    Tint, 
+                    Color, 
                     transform.Rotation_Rads, 
                     new Vector2(Sprite.Width/2f, Sprite.Height/2f), 
-                    transform.Scale.ToVector2().FlipY(), 
+                    transform.Scale.ToVector2().FlipY() * SpriteScale, 
                     SpriteEffects.None, 
                     _realDrawOrder);
         }

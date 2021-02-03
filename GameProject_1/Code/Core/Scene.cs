@@ -14,7 +14,7 @@ namespace GameProject.Code.Core {
     /// </summary>
     public abstract class Scene {
 
-        public List<GameObject> GameObjects;
+        public List<GameObject> GameObjects; //change this to use guids and be made of a GameObjectReferencer class, so that we can just set the gameobject reference in there to be null when we want it to be destroyed
         public List<Collider2D> Collider2Ds;
 
         private List<Coroutine> _coroutines;

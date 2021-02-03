@@ -12,28 +12,35 @@ namespace GameProject.Code.Core.Components {
     /// </summary>
     public class RectCollider2D : Collider2D {
 
+        private PolygonBounds PolyBounds => Bounds as PolygonBounds;
+
+
         public RectCollider2D(GameObject attached) : base(attached) {
-            Bounds = new Bounds(new Vector2[] { new Vector2(-1, 1),       // Top Left
+            Bounds = new PolygonBounds(new Vector2[] { new Vector2(-1, 1),       // Top Left
                                                 new Vector2(1, 1),        // Top Right
                                                 new Vector2(1, -1),       // Bottom Right
-                                                new Vector2(-1, -1),      // Bottom Left 
-                                                new Vector2(-1, 1) });    // Top Left
+                                                new Vector2(-1, -1) },    // Bottom Left 
+                                                false);   
 
-            Bounds.Center = Bounds.GetRectCenter();
+            Bounds.Center = PolyBounds.GetRectCenter();
             Bounds.OrigCenter = Bounds.Center;
             Bounds.ParentCollider = this;
+
+            //Size = new Vector2(2, 2); // ??? is this right?
         }
 
         public RectCollider2D(GameObject attached, float Width, float Height, float xOffset, float yOffset) : base(attached) {
-            Bounds = new Bounds(new Vector2[] { new Vector2(-Width/2 + xOffset, Height/2 + yOffset),       // Top Left
+            Bounds = new PolygonBounds(new Vector2[] { new Vector2(-Width/2 + xOffset, Height/2 + yOffset),       // Top Left
                                                 new Vector2(Width/2 + xOffset, Height/2 + yOffset),        // Top Right
                                                 new Vector2(Width/2 + xOffset, -Height/2 + yOffset),       // Bottom Right
-                                                new Vector2(-Width/2 + xOffset, -Height/2 + yOffset),      // Bottom Left 
-                                                new Vector2(-Width/2 + xOffset, Height/2 + yOffset) });    // Top Left
+                                                new Vector2(-Width/2 + xOffset, -Height/2 + yOffset) },    // Bottom Left 
+                                                false);    
 
-            Bounds.Center = Bounds.GetRectCenter();
+            Bounds.Center = PolyBounds.GetRectCenter();
             Bounds.OrigCenter = Bounds.Center;
             Bounds.ParentCollider = this;
+
+            Size = new Vector2(Width, Height);
         }
 
         public RectCollider2D(SpriteRenderer sr) : this(sr.gameObject, 

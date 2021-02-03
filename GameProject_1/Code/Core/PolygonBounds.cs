@@ -1,7 +1,5 @@
 ﻿// Bounds.cs - Nick Monaco
-// Intersection logic (currently unused) from:
-// https://rbrundritt.wordpress.com/2008/10/20/approximate-points-of-intersection-of-two-line-segments/
-// Polygon collidion detection logic from:
+// Polygon-polygon collision detection logic from:
 // https://www.codeproject.com/Articles/15573/2D-Polygon-Collision-Detection
 
 using System;
@@ -15,39 +13,33 @@ namespace GameProject.Code.Core {
     /// <summary>
     /// Data structure representing the boundaries of a polygonal shape.
     /// </summary>
-    public class Bounds {
+    public class PolygonBounds : AbstractBounds {
         private Vector2[] _origPoints;
         public Vector2[] _points { get; private set; }
 
         private Vector2[] _edges;
 
-        public delegate Vector2 Vector2Return();
-        public Vector2 OrigCenter = Vector2.Zero;
-        public Vector2 Center = Vector2.Zero;
+        
+        public PolygonBounds() { }
 
-        public Collider2D ParentCollider;
-
-        public Bounds() { }
-
-        public Bounds(Vector2[] shapePoints) {
-            _origPoints = new Vector2[shapePoints.Length];
-            _points = new Vector2[shapePoints.Length];
-
-            Array.Copy(shapePoints, _points, shapePoints.Length);
-            Array.Copy(shapePoints, _origPoints, shapePoints.Length);
-
-            _edges = new Vector2[shapePoints.Length - 1]; // As the shape will connect, the last point and first point are the same
-            ComputeEdges();
+        public PolygonBounds(Vector2[] shapePoints, bool preClosed) {
+            ResetBounds(shapePoints, preClosed);
         }
 
-        public void ResetBounds(Vector2[] newPoints) {
-            _origPoints = new Vector2[newPoints.Length];
-            _points = new Vector2[newPoints.Length];
+        public void ResetBounds(Vector2[] newPoints, bool preClosed) {
+            int additive = preClosed ? 0 : 1;
+            _origPoints = new Vector2[newPoints.Length + additive];
+            _points = new Vector2[newPoints.Length + additive];
 
             Array.Copy(newPoints, _points, newPoints.Length);
             Array.Copy(newPoints, _origPoints, newPoints.Length);
 
-            _edges = new Vector2[newPoints.Length - 1]; // As the shape will connect, the last point and first point are the same
+            if (!preClosed) {
+                _points[^1] = _points[0]; // This is apparantly able to use this indexing operator thing, very cool
+                _origPoints[^1] = _origPoints[0];
+            }
+
+            _edges = new Vector2[_origPoints.Length - 1]; // As the shape will connect, the last point and first point are the same
             ComputeEdges();
         }
 
@@ -61,81 +53,21 @@ namespace GameProject.Code.Core {
             }
         }
 
-        public bool IsOverlapping(Bounds other) {
-            if(_points.Length > 2 && other._points.Length > 2) {
-                for(int i = 0; i < _points.Length-1; i++) {
-                    for (int k = 0; k < other._points.Length-1; k++) {
-                        if(GetIntersectionPoint(_points[i], _points[i+1], other._points[k], other._points[k+1], out _)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public bool GetIntersectionPoint(Vector2 p1, Vector2 p2, Vector2 q1, Vector2 q2, out Vector2 intersectionPoint) {
-            //latitude is y
-            float a1 = p2.Y - p1.Y;
-            float b1 = p1.X - p2.X;
-            float c1 = a1 * p1.X + b1 * p1.Y;
-
-            float a2 = q2.Y - q1.Y;
-            float b2 = q1.X - q2.X;
-            float c2 = a2 * q1.X + b2 * q1.Y;
-
-            float determinate = a1 * b2 - a2 * b2;
-
-            intersectionPoint = Vector2.Zero;
-
-            if(determinate != 0) {
-                intersectionPoint = new Vector2((b2 * c1 - b1 * c2), (a1 * c2 - a2 * c1)) / determinate;
-
-                if(InBoundingBox(p1, p2, intersectionPoint) && InBoundingBox(q1, q2, intersectionPoint)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                // Lines are parallel, so no collision
-                return false;
-            }
-        }
-
-        private bool InBoundingBox(Vector2 r1, Vector2 r2, Vector2 r3) {
-            bool betweenY;
-            bool betweenX;
-
-            if(r1.Y < r2.Y) {
-                betweenY = (r1.Y <= r3.Y && r2.Y >= r3.Y);
-            } else {
-                betweenY = (r1.Y >= r3.Y && r2.Y <= r3.Y);
-            }
-
-            if(r1.X < r2.X) {
-                betweenX = (r1.X <= r3.X && r2.X >= r3.X);
-            } else {
-                betweenX = (r1.X >= r3.X && r2.X <= r3.X);
-            }
-
-            return (betweenX && betweenY);
-        }
 
 
-        public void ApplyWorldMatrix(Matrix worldMatrix) {
+        public override void ApplyWorldMatrix(Transform worldTransform) {
             for(int i = 0; i < _points.Length; i++) {
-                _points[i] = Vector3.Transform(_origPoints[i].ToVector3(), worldMatrix).ToVector2();
+                _points[i] = Vector3.Transform(_origPoints[i].ToVector3(), worldTransform.WorldMatrix).ToVector2();
             }
 
-            Center = Vector3.Transform(OrigCenter.ToVector3(), worldMatrix).ToVector2();
+            Center = Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2();
             ComputeEdges();
         }
 
 
         // New Collision Algorithm - Seperating Axis Theorem
 
-        public static CollisionResult2D DetectCollision(Bounds colliderA, Bounds colliderB, Vector2 velocityA, Vector2 velocityB) {
+        public static CollisionResult2D DetectPolygonCollision(PolygonBounds colliderA, PolygonBounds colliderB, Vector2 velocityA, Vector2 velocityB) {
             Vector2 velocity = (velocityA - velocityB) * Time.fixedDeltaTime; // Relative velocity
             CollisionResult2D result = new CollisionResult2D();
             result.Intersecting = true;
@@ -203,7 +135,7 @@ namespace GameProject.Code.Core {
             return result;
         }
 
-        private static void ProjectCollider(Vector2 axis, Bounds bounds, ref float min, ref float max) {
+        private static void ProjectCollider(Vector2 axis, PolygonBounds bounds, ref float min, ref float max) {
             float dot = Vector2.Dot(axis, bounds._points[0]);
             min = dot;
             max = dot;
@@ -236,8 +168,8 @@ namespace GameProject.Code.Core {
 
         /// <summary>
         /// Finds the centroid of an n-sided, closed, convex, polygon.
-        /// Logic and code sample from:
-        /// https://bell0bytes.eu/centroid-convex/#:~:text=Obviously%20the%20formula%20to%20calculate,%E2%8B%85%20C%201%20%3D%20C%201%20.
+        /// Logic and code sample from
+        /// https://bell0bytes.eu/centroid-convex/
         /// </summary>
         /// <returns>The center of the polygon represented by the bound's points.</returns>
         public Vector2 GetPolygonCenter() {
@@ -272,8 +204,4 @@ namespace GameProject.Code.Core {
     }
 }
 
-public struct CollisionResult2D {
-    public bool WillIntersect; // Will they intersect next?
-    public bool Intersecting; // Currently intersecting?
-    public Vector2 MinimumTranslationVector; //The motion to apply to collider A in order to push the polygons apart.
-}
+

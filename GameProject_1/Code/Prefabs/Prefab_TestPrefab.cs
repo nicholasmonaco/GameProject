@@ -20,16 +20,16 @@ namespace GameProject.Code.Prefabs {
             SpriteRenderer sr = _components.AddReturn(new SpriteRenderer(this)) as SpriteRenderer;
             sr.Sprite = Resources.Sprite_TestSquare;
             sr.DrawLayer = 10;
+            sr.SpriteScale *= 0.5f;
 
             Rigidbody2D rb = _components.AddReturn(new Rigidbody2D(this)) as Rigidbody2D;
 
-            //RectCollider2D coll = _components.AddReturn(new RectCollider2D(this, sr.Sprite.Width * transform.Scale.X, sr.Sprite.Height * transform.Scale.Y, sr.Sprite.Width / 2f * transform.Scale.X, sr.Sprite.Height / 2f * transform.Scale.Y)) as RectCollider2D;
 
-            _components.Add(new RectCollider2D(sr));
+            //_components.Add(new RectCollider2D(sr));
+            _components.Add(new RectCollider2D(this, new Vector2(28, 28)));
 
             AddComponent<KeyboardController>();
 
-            //_components.Add(new RectCollider2D(this, 64, 64));
         }
     }
 }

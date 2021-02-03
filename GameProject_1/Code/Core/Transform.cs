@@ -25,14 +25,21 @@ namespace GameProject.Code.Core {
         }
 
 
-        //public Vector3 LocalPosition { 
-        //    get { return _worldMatrix.Translation; } 
-        //    set {
-        //        // First, find the difference between current position and new position (by comparing the values used above)
-        //        // Then move it by that much
-        //        _worldMatrix = Matrix.CreateTranslation(value - _worldMatrix.Translation) * _worldMatrix;
-        //    } 
-        //}
+
+        public Vector3 LocalPosition {
+            get { return _localPosition; }
+            set {
+                if (Parent == null) { Position = value; } 
+                else {
+                    _localPosition = value;
+                    _worldPosition = ParentPos + _localPosition;
+
+                    ViewChangeAction();
+                    RecalculateWorldMatrix();
+                    gameObject.rigidbody2D?.ResetPosition();
+                }
+            }
+        }
 
         //public Quaternion LocalRotation {
         //    get { return _worldMatrix.Rotation(); }
@@ -47,7 +54,7 @@ namespace GameProject.Code.Core {
         //        // First, find the difference between current scale and new scale (by comparing the values used above)
         //        // Then change it by that much
         //        //ReScale(diff);
-                
+
         //        //Debug.Log($"Scale Pre: ({value.X}, {value.Y}, {value.Z})");
         //        _worldMatrix = Matrix.Invert(Matrix.CreateScale(_worldMatrix.Scale())) * _worldMatrix;
         //        _worldMatrix = Matrix.CreateScale(/*value - _transformMatrix.Scale()*/value) * _worldMatrix; //so whats happening is this operation is setting it to 0 somehow
@@ -58,10 +65,12 @@ namespace GameProject.Code.Core {
         public Vector3 Position {
             get { return _worldPosition; }
             set {
-                _worldPosition = value;
-                ViewChangeAction();
-                RecalculateWorldMatrix();
-                gameObject.rigidbody2D?.ResetPosition();
+                //_worldPosition = value;
+                LocalPosition = value - ParentPos;
+
+                //ViewChangeAction(); //These 3 things are handled in LocalPosition
+                //RecalculateWorldMatrix();
+                //gameObject.rigidbody2D?.ResetPosition();
             }
         }
 
@@ -162,6 +171,8 @@ namespace GameProject.Code.Core {
         public Transform Parent = null;
         public List<Transform> _children;
 
+        private Vector3 ParentPos => Parent == null ? Vector3.Zero : Parent.Position;
+
         // This is representative of world space for this single transform
         public Matrix WorldMatrix { get; private set; } = Matrix.Identity;
         public Matrix ViewMatrix { get; private set; } = Matrix.Identity;
@@ -170,10 +181,12 @@ namespace GameProject.Code.Core {
 
 
         // V3
-        private Vector3 _worldPosition = Vector3.Zero;
+        private Vector3 _worldPosition = Vector3.Zero; //World position is ParentPos + _localPos
         private float _worldRotation = 0;
         private float _worldRotationRad = 0;
         private Vector3 _worldScale = Vector3.One;
+
+        private Vector3 _localPosition = Vector3.Zero; //_localPos is the distance from ParentPos
 
         public Vector3 RenderOffsets = Vector3.Zero;
 
@@ -217,6 +230,8 @@ namespace GameProject.Code.Core {
             RecalculateWorldMatrix();
         }
 
+        public Transform(GameObject attach, GameObject parent) : this(attach, parent.transform) { }
+
         public Transform(GameObject attach, Vector3 position, float rotation, Vector3 scale) : this(attach) {
             Position = position;
             Rotation = rotation;
@@ -235,34 +250,13 @@ namespace GameProject.Code.Core {
 
         // Transforms from local space to world space
         public Vector3 TransformPoint(Vector3 point) {
-            Transform t = this;
-            Vector3 pos = point;
-            while (t.Parent != null){
-                Matrix m = Matrix.CreateTranslation(pos);
-                m = t.WorldMatrix * m;
-
-                pos = m.Translation;
-
-                t = t.Parent;
-            }
-            
-            return pos;
+            return ParentPos + point;
         }
 
         // Transforms from world space to local space
         public Vector3 InverseTransformPoint(Vector3 point) {
-            Transform t = this;
-            Vector3 pos = point;
-            while (t.Parent != null) {
-                Matrix m = Matrix.CreateTranslation(pos);
-                m = Matrix.Invert(t.WorldMatrix) * m; // I think this should work, we'll see.
 
-                pos = m.Translation;
-
-                t = t.Parent;
-            }
-
-            return pos;
+            return point - ParentPos;
         }
 
         // Transforms from local space to world space

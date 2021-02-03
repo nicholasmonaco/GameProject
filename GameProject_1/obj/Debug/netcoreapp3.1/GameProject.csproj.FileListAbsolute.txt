@@ -44,3 +44,6 @@ C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Wall_1-02.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Door_Inside.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Door_Regular_Base.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Wall_2-01.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Wall_2-02.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Misc\26_Test.xnb

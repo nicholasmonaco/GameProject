@@ -45,8 +45,18 @@ namespace GameProject.Code.Core {
         }
 
 
-        public T AddComponent<T>() where T: Component {
+        public T AddComponent<T>() where T : Component {
             T newComp = Activator.CreateInstance(typeof(T), this) as T;
+            _components.Add(newComp);
+            return newComp;
+        }
+
+        public T AddComponent<T>(params object[] parameters) where T: Component {
+            object[] p = new object[parameters.Length + 1];
+            p[0] = this;
+            Array.Copy(parameters, 0, p, 1, parameters.Length);
+
+            T newComp = Activator.CreateInstance(typeof(T), p) as T;
             _components.Add(newComp);
             return newComp;
         }
@@ -72,7 +82,7 @@ namespace GameProject.Code.Core {
         public bool RemoveComponent<T>() {
             foreach (Component c in _components) {
                 if (c is T _) {
-                    c.Destroy();
+                    Component.Destroy(c);
                     return true;
                 }
             }
@@ -128,8 +138,8 @@ namespace GameProject.Code.Core {
         // End standard scene methods
 
 
-        public void Destroy() {
-            GameManager.CurrentScene.GameObjects.Remove(this);
+        public static void Destroy(GameObject g) {
+            GameManager.CurrentScene.GameObjects.Remove(g);
             // As far as I know, this is the best way to do this. The gameobjects only exist in the list in the scene, so this should be fine.
         }
 

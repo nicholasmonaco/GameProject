@@ -68,6 +68,8 @@ namespace GameProject.Code.Core {
 
         public virtual void Draw(SpriteBatch sb) { }
 
+        public virtual void OnDestroy() { }
+
 
 
         public Coroutine StartCoroutine(IEnumerator routine) {
@@ -79,10 +81,14 @@ namespace GameProject.Code.Core {
             return gameObject.GetComponent<T>();
         }
 
-        public virtual void Destroy() {
-            gameObject._components.Remove(this);
+        public static void Destroy(Component c) {
+            c.OnDestroy();
+            c.gameObject._components.Remove(c);
         }
 
+        public static void Destroy(GameObject g) {
+            GameManager.CurrentScene.GameObjects.Remove(g);
+        }
 
 
 

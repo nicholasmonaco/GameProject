@@ -36,9 +36,24 @@ namespace GameProject.Code.Scenes {
                     wallCorner.transform.Position = new Vector3(x * 117, y * 78, 0);
                     wallCorner.transform.Scale = new Vector3(-x, y, 0);
                     SpriteRenderer wallCornerRend = wallCorner.AddComponent<SpriteRenderer>();
-                    wallCornerRend.Sprite = Resources.Sprite_RoomCorner_1[GameManager.WorldRandom.Next(0, Resources.Sprite_RoomCorner_1.Length)];
+                    wallCornerRend.Sprite = Resources.Sprite_RoomCorner_2[GameManager.WorldRandom.Next(0, Resources.Sprite_RoomCorner_2.Length)];
                     wallCornerRend.DrawLayer = DrawLayer.ID["Background"];
                     wallCornerRend.OrderInLayer = 21;
+
+                    Vector2[] cornerPolygonPoints = new Vector2[] { new Vector2(-110, 70),
+                                                                    new Vector2(97, 70),
+                                                                    new Vector2(97, 55),
+                                                                    new Vector2(106, 28),
+                                                                    new Vector2(-67, 28) };
+                    wallCorner._components.Add(new PolygonCollider2D(wallCorner, cornerPolygonPoints, false));
+
+                    cornerPolygonPoints = new Vector2[] { new Vector2(-110, 70),
+                                                          new Vector2(-67, 28),
+                                                          new Vector2(-67, -67),
+                                                          new Vector2(-92, -58),
+                                                          new Vector2(-110, -70) };
+                    wallCorner._components.Add(new PolygonCollider2D(wallCorner, cornerPolygonPoints, false));
+
                 }
             }
 
@@ -80,42 +95,15 @@ namespace GameProject.Code.Scenes {
                 sr.DrawLayer = DrawLayer.ID["WorldStructs"];
                 sr.OrderInLayer = 20;
 
-                Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(10, -24), new Vector2(-10, -24), new Vector2(-20, 3.5f) };
-                PolygonCollider2D pc = door._components.AddReturn(new PolygonCollider2D(door, doorBounds)) as PolygonCollider2D;
+                Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(10, -24), new Vector2(-10, -24) };
+                PolygonCollider2D pc = door._components.AddReturn(new PolygonCollider2D(door, doorBounds, false)) as PolygonCollider2D;
                 pc.IsTrigger = true;
             }
 
-            //GameObject floor = GameObjects.AddReturn(new GameObject());
-            //floor.transform.Scale = new Vector3(480, 320, 0);
-            //floor.AddComponent<SpriteRenderer>();
-            //SpriteRenderer sr = floor.GetComponent<SpriteRenderer>();
-            //sr.DrawLayer = DrawLayer.ID["Background"];
-            //sr.OrderInLayer = 20; // Just in case
-            //sr.Sprite = Resources.Sprite_Pixel;
-            //sr.Tint = new Color(28, 35, 64);
 
 
-            GameObject thing = GameObjects.AddReturn(new Prefab_TestPrefab());
-            thing.transform.Scale *= 0.5f;
-            thing.Name = "PlayerTestCube";
+            GameObjects.Add(new Prefab_Player());
 
-
-
-            //SpriteRenderer sss = thing.AddComponent<SpriteRenderer>();
-            //sss.Sprite = Resources.Sprite_TestSquare;
-            //sss.DrawLayer = 10;
-            //thing.transform.Scale = new Vector3(0.35f, 0.35f, 0);
-            //thing.AddComponent<Rigidbody2D>();
-            //thing.AddComponent<KeyboardController>();
-            //thing.AddComponent<Collider2D>();
-
-            //thing = GameObjects.AddReturn(new GameObject());
-            //sss = thing.AddComponent<SpriteRenderer>();
-            //sss.Sprite = Resources.Sprite_TestSquare;
-            //sss.DrawLayer = 10;
-            //thing.transform.Position = new Vector3(60, 0, 0);
-            //thing.transform.Scale = new Vector3(0.35f, 0.35f, 0);
-            //thing.AddComponent<RectCollider2D>();
 
         }
 

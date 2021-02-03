@@ -17,7 +17,9 @@ namespace GameProject.Code.Core.Components {
 
         public bool IsTrigger = false;
         public Rigidbody2D AttachedRigidbody = null;
-        public Bounds Bounds;
+        public AbstractBounds Bounds;
+
+        public Vector2 Size { get; protected set; } = Vector2.Zero;
 
         public Dictionary<Collider2D, bool> Entered;
 
@@ -26,8 +28,7 @@ namespace GameProject.Code.Core.Components {
             GameManager.CurrentScene.Collider2Ds.Add(this);
         }
 
-        public override void Destroy() {
-            base.Destroy();
+        public override void OnDestroy() {
             GameManager.CurrentScene.Collider2Ds.Remove(this);
             AttachedRigidbody.Subcolliders.Remove(this);
         }
@@ -39,8 +40,8 @@ namespace GameProject.Code.Core.Components {
 
             FindAttachedRigidbody();
 
-            Bounds.ApplyWorldMatrix(transform.WorldMatrix);
-            transform.WorldMatrixUpdateAction += () => { Bounds.ApplyWorldMatrix(transform.WorldMatrix); };
+            Bounds.ApplyWorldMatrix(transform);
+            transform.WorldMatrixUpdateAction += () => { Bounds.ApplyWorldMatrix(transform); };
         }
 
         private void FindAttachedRigidbody() {
@@ -65,14 +66,10 @@ namespace GameProject.Code.Core.Components {
 
 
 
-        public override void Draw(SpriteBatch sb) {
-            for (int i = 0; i < Bounds._points.Length-1; i++) {
-                DrawLine(sb, transform, Bounds._points[i], Bounds._points[i + 1]);
-            }
-        }
+        
 
 
-        private static void DrawLine(SpriteBatch sb, Transform t, Vector2 start, Vector2 end) {
+        protected static void DrawLine(SpriteBatch sb, Vector2 start, Vector2 end) {
             Vector2 edge = end - start;
             float angle = (float)MathF.Atan2(edge.Y, edge.X);
 
@@ -82,7 +79,7 @@ namespace GameProject.Code.Core.Components {
                     Color.Lime,
                     angle,
                     Vector2.Zero,
-                    new Vector2(edge.Length(), 1).FlipY(),
+                    new Vector2(edge.Length(), 0.5f).FlipY(),
                     SpriteEffects.None,
                     0.9f);
         }
