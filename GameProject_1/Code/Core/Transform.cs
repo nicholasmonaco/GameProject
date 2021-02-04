@@ -29,15 +29,16 @@ namespace GameProject.Code.Core {
         public Vector3 LocalPosition {
             get { return _localPosition; }
             set {
-                if (Parent == null) { Position = value; } 
-                else {
+                if (Parent == null) { 
+                    _worldPosition = value;
+                } else {
                     _localPosition = value;
-                    _worldPosition = ParentPos + _localPosition;
-
-                    ViewChangeAction();
-                    RecalculateWorldMatrix();
-                    gameObject.rigidbody2D?.ResetPosition();
+                    _worldPosition = ParentPos + _localPosition;    
                 }
+
+                ViewChangeAction();
+                RecalculateWorldMatrix();
+                gameObject.rigidbody2D?.ResetPosition();
             }
         }
 

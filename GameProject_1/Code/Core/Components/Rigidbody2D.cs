@@ -61,25 +61,43 @@ namespace GameProject.Code.Core.Components {
                     //CollisionResult2D result = PolygonBounds.DetectPolygonCollision(localCollider.Bounds, collider.Bounds, Velocity, otherVelocity);
                     CollisionResult2D result;
 
-                    switch (localCollider) {
-                        case PolygonCollider2D local_poly:
-                            switch (collider) {
-                                case PolygonCollider2D other_poly:
+                    AbstractBounds localBounds = localCollider.Bounds;
+                    AbstractBounds otherBounds = collider.Bounds;
+
+                    switch (localBounds) {
+                        case PolygonBounds local_poly:
+                            switch (otherBounds) {
+                                case PolygonBounds other_poly:
                                     //polygon polygon
-                                    result = PolygonBounds.DetectPolygonCollision(local_poly.Bounds as PolygonBounds, other_poly.Bounds as PolygonBounds, Velocity, otherVelocity);
+                                    result = PolygonBounds.DetectPolygonCollision(local_poly, other_poly, Velocity, otherVelocity);
                                     break;
-                                case CircleCollider2D other_circle:
+                                case CircleBounds other_circle:
                                     //polygon circle
+                                    result = AbstractBounds.DetectDualTypeCollision(other_circle, local_poly, otherVelocity, Velocity);
+                                    break;
+                                default:
+                                    result = new CollisionResult2D();
+                                    result.Intersecting = false;
+                                    result.WillIntersect = false;
+                                    result.MinimumTranslationVector = Vector2.Zero;
                                     break;
                             }
                             break;
-                        case CircleCollider2D local_circle:
-                            switch (collider) {
-                                case PolygonCollider2D other_poly:
+                        case CircleBounds local_circle:
+                            switch (otherBounds) {
+                                case PolygonBounds other_poly:
                                     //circle polygon
+                                    result = AbstractBounds.DetectDualTypeCollision(local_circle, other_poly, Velocity, otherVelocity);
                                     break;
-                                case CircleCollider2D other_circle:
+                                case CircleBounds other_circle:
                                     //circle circle
+                                    result = CircleBounds.DetectCircleCollision(local_circle, other_circle, Velocity, otherVelocity);
+                                    break;
+                                default:
+                                    result = new CollisionResult2D();
+                                    result.Intersecting = false;
+                                    result.WillIntersect = false;
+                                    result.MinimumTranslationVector = Vector2.Zero;
                                     break;
                             }
                             break;
@@ -178,7 +196,7 @@ namespace GameProject.Code.Core.Components {
 
             //if (Velocity != Vector2.Zero) Velocity += -origVelNoPushback_N * Drag;
 
-            if (Drag != 0 && Velocity != Vector2.Zero) {
+            if (Drag != 0 && Velocity != Vector2.Zero && !float.IsNaN(origVelNoPushback_N.X)) {
                 Vector2 checker = Velocity + (-origVelNoPushback_N * Drag);
                 if (Vector2.Normalize(checker) == -Vector2.Normalize(Velocity)) Velocity = Vector2.Zero;
                 else Velocity = checker;

@@ -23,45 +23,118 @@ namespace GameProject.Code.Core {
         /// <summary>
         /// Detects the collision between a polygon and a circle.
         /// Original logic and code layout from 
-        /// https://stackoverflow.com/questions/43485700/xna-monogame-detecting-collision-between-circle-and-rectangle-not-working
+        /// http://www.jeffreythompson.org/collision-detection/poly-circle.php
         /// </summary>
         /// <param name="cir">The CircleBounds involved in the collision.</param>
         /// <param name="poly">The PolygonBounds involved in the position.</param>
         /// <returns>A CollisionResult2D containing data about the collision.</returns>
-        //private static CollisionResult2D DetectDualTypeCollision(CircleBounds cir, PolygonBounds poly) {
+        public static CollisionResult2D DetectDualTypeCollision(CircleBounds cir, PolygonBounds poly, Vector2 velocityCir, Vector2 velocityPoly) {
+            CollisionResult2D result = new CollisionResult2D();
+            result.Intersecting = false;
+            result.WillIntersect = false;
 
-        //    // Get the rectangle half width and height
-        //    float rW = (rect.Width) / 2;
-        //    float rH = (rect.Height) / 2;
+            Vector2 minPushback = Vector2.Zero;
 
-        //    // Get the positive distance. This exploits the symmetry so that we now are
-        //    // just solving for one corner of the rectangle (memory tell me it fabs for 
-        //    // floats but I could be wrong and its abs)
-        //    float distX = Math.Abs(cir.Center.X - (rect.Left + rW));
-        //    float distY = Math.Abs(cir.Center.Y - (rect.Top + rH));
+            //Vector2 velocity = velocityCir - velocityPoly; // Relative velocity
 
-        //    if (distX >= cir.Radius + rW || distY >= cir.Radius + rH) {
-        //        // Outside see diagram circle E
-        //        return false;
-        //    }
-        //    if (distX < rW || distY < rH) {
-        //        // Inside see diagram circles A and B
-        //        return true; // touching
-        //    }
 
-        //    // Now only circles C and D left to test
-        //    // get the distance to the corner
-        //    distX -= rW;
-        //    distY -= rH;
+            int next;
+            for (int current = 0; current < poly._points.Length; current++) {
+                // Get next point in list
+                next = current + 1;
+                if (next == poly._points.Length) next = 0;
 
-        //    // Find distance to corner and compare to circle radius 
-        //    // (squared and the sqrt root is not needed
-        //    if (distX * distX + distY * distY < cir.Radius * cir.Radius) {
-        //        // Touching see diagram circle C
-        //        return true;
-        //    }
-        //    return false;
-        //}
+                // Get the points important to our current position
+                Vector2 currentPoint = poly._points[current];
+                Vector2 nextPoint = poly._points[next];
+
+
+                // Step 1: Check if the colliders are currently intersecting
+
+                if (!result.Intersecting) {
+                    // Check for collision between the circle and the line formed from the two points
+                    bool colliding = DetectLineCircleCollision(currentPoint, nextPoint, cir.Center, cir.Radius, out _);
+                    if (colliding) {
+                        if (!result.Intersecting) result.Intersecting = true;
+                    };
+                }
+
+
+                // Step 2: Find if the colliders will intersect
+                currentPoint += velocityPoly * Time.fixedDeltaTime;
+                nextPoint += velocityPoly * Time.fixedDeltaTime;
+
+                Vector2 repulseVec;
+                bool willCollide = DetectLineCircleCollision(currentPoint, nextPoint, cir.Center + velocityCir * Time.fixedDeltaTime, cir.Radius, out repulseVec);
+                if (!result.WillIntersect && willCollide) result.WillIntersect = true;
+
+                //if (result.Intersecting && willCollide) continue; // or should it be break? check later
+
+                // Step 3: Add the minimum translation vector to pushback on the collider so that it will move back
+                minPushback += repulseVec;
+            }
+
+            result.MinimumTranslationVector = minPushback;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Detects if a circle is intersecting a line.
+        /// Original logic and code from 
+        /// http://www.jeffreythompson.org/collision-detection/poly-circle.php
+        /// </summary>
+        /// <param name="currentPoint">One endpoint of the line</param>
+        /// <param name="nextPoint">The other endpoint of the line</param>
+        /// <param name="circCenter">The center of the circle</param>
+        /// <param name="circRadius">The radius of the circle</param>
+        /// <returns>If the circle is intersecting with the line</returns>
+        private static bool DetectLineCircleCollision(Vector2 currentPoint, Vector2 nextPoint, Vector2 circCenter, float circRadius, out Vector2 repulseVec) {
+            // First, check that the ends of the lines aren't in the circle
+            if(DetectPointCircleCollision(currentPoint, circCenter, circRadius) || 
+               DetectPointCircleCollision(nextPoint, circCenter, circRadius)) {
+                repulseVec = Vector2.Zero;
+                return true;
+            }
+
+            // Get the length of the line
+            float length = Vector2.Distance(currentPoint, nextPoint);
+
+            // Get the dot product of the line and the circle
+            float dot = (((circCenter.X - currentPoint.X) * (nextPoint.X - currentPoint.X)) + ((circCenter.Y - currentPoint.Y) * (nextPoint.Y-currentPoint.Y))) / MathF.Pow(length, 2);
+
+            // Find closest point on the line to the circle
+            Vector2 closest = new Vector2(currentPoint.X + (dot * (nextPoint.X - currentPoint.X)),
+                                          currentPoint.Y + (dot * (nextPoint.Y - currentPoint.Y)));
+
+            // Check that the point is actually on the line
+            float distSum = Vector2.Distance(closest, currentPoint) + Vector2.Distance(closest, nextPoint);
+            if (!(distSum >= length - 0.05f && distSum <= length + 0.05f)) {
+                repulseVec = Vector2.Zero;
+                return false; 
+            }
+
+            // Get distance from center of circle to closest point
+            float dist = Vector2.Distance(closest, circCenter);
+            repulseVec = ((circCenter + Vector2.Normalize(circCenter - closest) * circRadius) - closest) * Time.fixedDeltaTime;
+            
+            // Return if the circle is on the line
+            return dist <= circRadius;
+        }
+
+        /// <summary>
+        /// Detects if a point is within a circle.
+        /// </summary>
+        /// <param name="point">The point to check</param>
+        /// <param name="circCenter">The center of the circle</param>
+        /// <param name="circRadius">The radius of the circle</param>
+        /// <returns>If the point is within the circle</returns>
+        private static bool DetectPointCircleCollision(Vector2 point, Vector2 circCenter, float circRadius) {
+            float dist = Vector2.Distance(point, circCenter);
+            return dist <= circRadius;
+        }
+
+
     }
 }
 public struct CollisionResult2D {

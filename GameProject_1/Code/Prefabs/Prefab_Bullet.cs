@@ -15,6 +15,7 @@ namespace GameProject.Code.Prefabs {
             Rigidbody2D rb = AddComponent<Rigidbody2D>();
 
             Collider2D collider = AddComponent<CircleCollider2D>(1); //Radius of 1
+            collider.IsTrigger = true;
             // End adding components
         }
 

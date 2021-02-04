@@ -9,9 +9,9 @@ namespace GameProject.Code.Core {
     public class CircleBounds : AbstractBounds {
 
         private float _origRadius = 1;
-        private float _radius = 1;
+        public float Radius = 1;
 
-        private Vector2 _radiusScale = Vector2.One;
+        public Vector2 RadiusScale = Vector2.One;
 
 
         
@@ -26,25 +26,45 @@ namespace GameProject.Code.Core {
             OrigCenter = newCenter;
             Center = newCenter;
             _origRadius = newRadius;
-            _radius = newRadius;
+            Radius = newRadius;
         }
 
         public override void ApplyWorldMatrix(Transform worldTransform) {
-
             Center = Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2();
-            _radiusScale = worldTransform.Scale.ToVector2();
+            RadiusScale = worldTransform.Scale.ToVector2();
 
             if(GameManager.Debug) (ParentCollider as CircleCollider2D).WorldMatrixChanged = true;
         }
 
 
-        public void DetectCircleCollision(CircleBounds colliderA, CircleBounds colliderB, Vector2 velocityA, Vector2 velocityB) {
+        public static CollisionResult2D DetectCircleCollision(CircleBounds colliderA, CircleBounds colliderB, Vector2 velocityA, Vector2 velocityB) {
             Vector2 velocity = (velocityA - velocityB) * Time.fixedDeltaTime; // Relative velocity
             CollisionResult2D result = new CollisionResult2D();
             result.Intersecting = true;
             result.WillIntersect = true;
 
-            //TODO
+            
+            // Step 1: Check if currently intersecting
+            result.Intersecting = (colliderB.Center - colliderA.Center).Length() < (colliderB.Radius + colliderA.Radius);
+
+            // Step 2: Check if will intersect
+            Vector2 cA_v = colliderA.Center + velocityA * Time.fixedDeltaTime;
+            Vector2 cB_v = colliderB.Center + velocityB * Time.fixedDeltaTime;
+            result.WillIntersect = (cB_v - cA_v).Length() < (colliderB.Radius + colliderA.Radius);
+
+            //Debug.Log($"Colliding: {result.Intersecting} | WillCollide: {result.WillIntersect}");
+            //Debug.Log($"CenterDist: {(colliderB.Center - colliderA.Center).Length()} | Radius difference: {colliderB.Radius + colliderA.Radius}");
+            //Debug.Log($"Pos: ({colliderA.Center.X}, {colliderA.Center.Y})");
+
+            // Step 3: Set to mintranslationVector
+
+            //difference of radii - actual measured distance
+            Vector2 radiusDist = Vector2.Normalize(cB_v - cA_v) * (colliderB.Radius + colliderA.Radius);
+            Vector2 actualDist = (cB_v - cA_v);
+            Vector2 pushback = radiusDist - actualDist;
+            result.MinimumTranslationVector = -pushback; //maybe not negative, but i think its right
+
+            return result;
         }
     }
 }

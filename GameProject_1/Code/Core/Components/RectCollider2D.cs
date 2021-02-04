@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameProject.Code.Core.Components {
     
@@ -52,5 +53,16 @@ namespace GameProject.Code.Core.Components {
         public RectCollider2D(GameObject attached, float Width, float Height) : this(attached, Width, Height, 0, 0) { }
         public RectCollider2D(GameObject attached, Vector2 size, Vector2 offset) : this(attached, size.X, size.Y, offset.X, offset.Y){ }
         public RectCollider2D(GameObject attached, Vector2 size) : this(attached, size.X, size.Y, 0, 0) { }
+
+
+
+
+        // Debug
+        public override void Draw(SpriteBatch sb) {
+            if (!GameManager.Debug) return;
+            for (int i = 0; i < PolyBounds._points.Length - 1; i++) {
+                DrawLine(sb, PolyBounds._points[i], PolyBounds._points[i + 1]);
+            }
+        }
     }
 }

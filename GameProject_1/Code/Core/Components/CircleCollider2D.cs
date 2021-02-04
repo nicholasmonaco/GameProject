@@ -26,6 +26,7 @@ namespace GameProject.Code.Core.Components {
             Bounds = new CircleBounds(center, offset, radius);
 
             Bounds.ParentCollider = this;
+            Size = new Vector2(radius, radius) * 2;
         }
 
         public CircleCollider2D(GameObject attached, Vector2 center, float radius) : this(attached, center, Vector2.Zero, radius) { }
@@ -40,12 +41,15 @@ namespace GameProject.Code.Core.Components {
 
             if (WorldMatrixChanged) {
                 // Approximate as n-gon
+                float radius = CircBounds.Radius;
+                Vector2 pos = CircBounds.Center;
+
                 int pointCount = 20;
                 float div = MathF.PI * 2 / pointCount;
-                _debugPoints = new Vector2[pointCount + 1];
+                _debugPoints = new Vector2[pointCount];
                 for (int i = 0; i < pointCount; i++) {
                     float divI = div * i;
-                    _debugPoints[i] = new Vector2(MathF.Cos(divI), MathF.Sin(divI));
+                    _debugPoints[i] = new Vector2(MathF.Cos(divI), MathF.Sin(divI)) * radius + pos;
                 }
                 _debugPoints[pointCount - 1] = _debugPoints[0];
                 WorldMatrixChanged = false;
@@ -55,6 +59,7 @@ namespace GameProject.Code.Core.Components {
             for (int i = 0; i < _debugPoints.Length - 1; i++) {
                 DrawLine(sb, _debugPoints[i], _debugPoints[i + 1]);
             }
+            //DrawLine(sb, _debugPoints[^1], _debugPoints[0]);
         }
     }
 }

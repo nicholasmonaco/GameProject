@@ -104,7 +104,6 @@ namespace GameProject.Code.Scenes {
 
             GameObjects.Add(new Prefab_Player());
 
-
         }
 
 
