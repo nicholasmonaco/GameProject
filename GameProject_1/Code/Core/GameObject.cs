@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
@@ -15,13 +16,35 @@ namespace GameProject.Code.Core {
     /// The base of all GameObjects, which is how everything in a scene is structured.
     /// </summary>
     public class GameObject {
+        private const BindingFlags __bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
         public List<Component> _components;
         public Transform transform;
         public Rigidbody2D rigidbody2D = null;
 
         public string Name = "GameObject";
+        private bool _enabled = true;
+        public bool Enabled {
+            get { return _enabled; }
+            set {
+                _enabled = value;
+
+                if (value) {
+                    if (!_everAwaked) Awake();
+                    OnEnable();
+                    if (!_everStarted) Start();
+                }
+
+                foreach (Transform t in transform._children) {
+                    t.gameObject.Enabled = value;
+                }
+            }
+        }
         public string Tag = null;
         public int Layer = 0; // Default layer
+
+        protected bool _everAwaked = false;
+        protected bool _everStarted = false;
 
 
         public GameObject() {
@@ -103,11 +126,21 @@ namespace GameProject.Code.Core {
             foreach (Component c in _components) {
                 c.Awake();
             }
+
+            _everAwaked = true;
         }
 
         public void Start() {
             foreach (Component c in _components) {
                 c.Start();
+            }
+
+            _everStarted = true;
+        }
+
+        public void OnEnable() {
+            foreach (Component c in _components) {
+                c.OnEnable();
             }
         }
 
@@ -134,14 +167,49 @@ namespace GameProject.Code.Core {
                 c.Draw(sb);
             }
         }
-        
+
         // End standard scene methods
+
+
+        public static T Instantiate<T>(Vector3 position, Transform parent) where T : GameObject {
+            T obj = Activator.CreateInstance(typeof(T)) as T;
+            obj.transform.Parent = parent;
+            obj.transform.Position = position;
+            return GameManager.CurrentScene.GameObjects.AddReturn(obj) as T;
+        }
+
+        public static T Instantiate<T>(Vector3 position) where T : GameObject {
+            return Instantiate<T>(position, null);
+        }
+
+        public static T Instantiate<T>() where T : GameObject {
+            return Instantiate<T>(Vector3.Zero, null);
+        }
 
 
         public static void Destroy(GameObject g) {
             GameManager.CurrentScene.GameObjects.Remove(g);
-            // As far as I know, this is the best way to do this. The gameobjects only exist in the list in the scene, so this should be fine.
+
+            g.Dispose();
         }
+
+        private void Dispose() {
+            foreach(Component comp in _components) {
+                comp.Destroy();
+            }
+
+
+            // Okay, this is some cursed programming.
+            // For the class, get all of the global variables. Yeah, all of them.
+            // For each of those, if it's not a struct, set it to be null.
+            PropertyInfo[] props = this.GetType().GetProperties(__bindingFlags);
+            foreach (PropertyInfo property in props) {
+                if (!(property.PropertyType).IsValueType) {
+                    property.SetValue(this, null);
+                }
+            }
+        }
+
 
         //public override int GetHashCode() {
         //    return Guid.NewGuid();

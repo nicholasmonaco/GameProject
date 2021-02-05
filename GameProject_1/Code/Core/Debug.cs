@@ -11,6 +11,9 @@ namespace GameProject.Code.Core {
     /// </summary>
     public static class Debug {
 
+        public static readonly bool ShowColliders = true;
+
+
         public static void Log(string output) {
             System.Diagnostics.Debug.WriteLine(output);
         }

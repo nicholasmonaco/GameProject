@@ -38,21 +38,24 @@ namespace GameProject.Code.Core {
         public virtual void Awake() {
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                g.Awake();
+                if (g.Enabled) {
+                    g.Awake();
+                    g.OnEnable();
+                }
             }
         }
 
         public virtual void Start() {
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                g.Start();
+                if(g.Enabled) g.Start();
             }
         }
 
         public virtual void Update() {
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                g.Update();
+                if(g.Enabled) g.Update();
             }
 
             // Handle coroutines
@@ -74,14 +77,14 @@ namespace GameProject.Code.Core {
         public virtual void FixedUpdate() {
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                g.FixedUpdate();
+                if(g.Enabled) g.FixedUpdate();
             }
         }
 
         public virtual void LateUpdate() {
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                g.LateUpdate();
+                if(g.Enabled) g.LateUpdate();
             }
 
             // Handle coroutines
@@ -100,7 +103,7 @@ namespace GameProject.Code.Core {
         public virtual void Draw(SpriteBatch sb) {
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                g.Draw(sb);
+                if(g.Enabled) g.Draw(sb);
             }
         }
 
@@ -113,6 +116,7 @@ namespace GameProject.Code.Core {
             Action _collisionActions = () => { };
 
             foreach (GameObject go in GameObjects) {
+                if (!go.Enabled) continue;
                 //search for rigidbody in children
                 if(go.rigidbody2D != null) {
                     go.rigidbody2D._PhysicsUpdate();

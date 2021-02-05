@@ -12,6 +12,11 @@ namespace GameProject.Code.Scripts.Components {
         private Rigidbody2D _playerRB;
         // End components
 
+        // Public values
+        public bool CanMove = true;
+        public bool FreezeMovement = false;
+        // End public values
+
         // Private values
         private float _maxSpeed = 105;
         private float _acceleration = 800;
@@ -22,9 +27,8 @@ namespace GameProject.Code.Scripts.Components {
         private bool _shooting = false;
         // End private values
 
-        public PlayerController(GameObject attached) : base(attached) {
-            
-        }
+        public PlayerController(GameObject attached) : base(attached) { }
+
 
         public override void PreAwake() {
             base.PreAwake();
@@ -36,6 +40,8 @@ namespace GameProject.Code.Scripts.Components {
             Input.OnShoot_Down += OnShootDown;
             Input.OnShoot_Released += OnShootUp;
             // End input
+
+            GameManager.Player = this;
         }
 
 
@@ -47,10 +53,15 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         public override void FixedUpdate() {
-            _playerRB.Velocity += _moveVec * _acceleration * Time.fixedDeltaTime;
+            if (FreezeMovement) {
+                _playerRB.Velocity = Vector2.Zero;
+            } else {
+                if (!CanMove) return;
+                _playerRB.Velocity += _moveVec * _acceleration * Time.fixedDeltaTime;
 
-            if(_playerRB.Velocity.Length() > _maxSpeed) {
-                _playerRB.Velocity += -_playerRB.Velocity * (_playerRB.Velocity.Length() - _maxSpeed) * Time.fixedDeltaTime;
+                if (_playerRB.Velocity.Length() > _maxSpeed) {
+                    _playerRB.Velocity += -_playerRB.Velocity * (_playerRB.Velocity.Length() - _maxSpeed) * Time.fixedDeltaTime;
+                }
             }
         }
 

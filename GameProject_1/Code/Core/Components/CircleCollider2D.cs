@@ -32,12 +32,10 @@ namespace GameProject.Code.Core.Components {
         public CircleCollider2D(GameObject attached, Vector2 center, float radius) : this(attached, center, Vector2.Zero, radius) { }
         public CircleCollider2D(GameObject attached, float radius) : this(attached, Vector2.Zero, Vector2.Zero, radius) { }
 
-        
-
 
 
         public override void Draw(SpriteBatch sb) {
-            if (!GameManager.Debug) return;
+            if (!Debug.ShowColliders) return;
 
             if (WorldMatrixChanged) {
                 // Approximate as n-gon

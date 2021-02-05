@@ -33,7 +33,7 @@ namespace GameProject.Code.Core {
             Center = Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2();
             RadiusScale = worldTransform.Scale.ToVector2();
 
-            if(GameManager.Debug) (ParentCollider as CircleCollider2D).WorldMatrixChanged = true;
+            if(Debug.ShowColliders) (ParentCollider as CircleCollider2D).WorldMatrixChanged = true;
         }
 
 

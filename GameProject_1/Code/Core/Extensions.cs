@@ -108,6 +108,10 @@ namespace GameProject.Code.Core {
             return new Vector4(v.X, v.Y, 0, 1);
         }
 
+        public static Point InvertPoint(this Point p) {
+            return new Point(-p.X, -p.Y);
+        }
+
         
 
     }

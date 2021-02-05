@@ -4,15 +4,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core.Components;
+using System.Reflection;
 
 namespace GameProject.Code.Core {
     
     /// <summary>
     /// The base for all GameObject components.
     /// </summary>
-    public class Component {
+    public abstract class Component {
+        private const BindingFlags __bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
         public GameObject gameObject;
         public Transform transform;
 
@@ -60,6 +64,8 @@ namespace GameProject.Code.Core {
 
         public virtual void Start() { }
 
+        public virtual void OnEnable() { }
+
         public virtual void Update() { }
 
         public virtual void FixedUpdate() { }
@@ -81,14 +87,56 @@ namespace GameProject.Code.Core {
             return gameObject.GetComponent<T>();
         }
 
+
+        public static T Instantiate<T>(Vector3 position, Transform parent) where T : GameObject {
+            return GameObject.Instantiate<T>(position, parent);
+        }
+
+        public static T Instantiate<T>(Vector3 position) where T : GameObject {
+            return GameObject.Instantiate<T>(position, null);
+        }
+
+        public static T Instantiate<T>() where T : GameObject {
+            return GameObject.Instantiate<T>();
+        }
+
+
+
+        public void Destroy() {
+            Dispose();
+        }
+
+        public virtual void Dispose() {
+            //transform = null;
+            //gameObject = null;
+
+            // Okay, this is some cursed programming.
+            // For the class, get all of the global variables. Yeah, all of them.
+            // For each of those, if it's not a struct, set it to be null.
+            PropertyInfo[] props = this.GetType().GetProperties(__bindingFlags);
+            foreach(PropertyInfo property in props) {
+                if (!(property.PropertyType).IsValueType) {
+                    //if (typeof(Component).IsAssignableFrom(property.PropertyType)) {
+                        // This is where you would go down the chain, but I dont think we'll need to
+                    //}
+
+                    property.SetValue(this, null);
+                }
+            }
+        }
+
+
         public static void Destroy(Component c) {
             c.OnDestroy();
             c.gameObject._components.Remove(c);
+            c.Dispose();
         }
 
         public static void Destroy(GameObject g) {
             GameManager.CurrentScene.GameObjects.Remove(g);
         }
+
+        
 
 
 

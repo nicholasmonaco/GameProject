@@ -13,6 +13,9 @@ namespace GameProject.Code.Core.Components {
     /// could be worked around with some clever scripting.
     /// </summary>
     public class Camera : Component {
+        public static Camera main => GameManager.MainCamera;
+
+
         private const float ConstantSize = 1f;
         public float Size;
         public Matrix ProjectionMatrix { get; private set; }
@@ -57,6 +60,7 @@ namespace GameProject.Code.Core.Components {
 
         public Matrix FinalTransformationMatrix => ProjectionMatrix * ViewMatrix;
         //also probably want something to make worldspace not be clientspace (in between projection and view matricies)
+
 
     }
 }

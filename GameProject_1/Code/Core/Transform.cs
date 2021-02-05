@@ -209,6 +209,8 @@ namespace GameProject.Code.Core {
             transform = this;
             gameObject = attach;
 
+            _children = new List<Transform>();
+
             Position = Vector3.Zero;
             Rotation = 0;
             Scale = Vector3.One;
@@ -222,6 +224,7 @@ namespace GameProject.Code.Core {
             gameObject = attach;
 
             Parent = parent;
+            _children = new List<Transform>();
 
             Position = Vector3.Zero;
             Rotation = 0;
@@ -245,6 +248,13 @@ namespace GameProject.Code.Core {
             Scale = scale;
         }
 
+
+
+        public override void OnDestroy() {
+            foreach(Transform t in _children) {
+                GameObject.Destroy(t.gameObject);
+            }
+        }
 
 
 

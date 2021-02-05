@@ -37,7 +37,10 @@ namespace GameProject.Code.Core {
 
         public override void LateUpdate() {
             BaseCoroutine curRoutine = _routineCode.Current as BaseCoroutine;
-            if (curRoutine.Finished) StepThrough();
+            if (curRoutine == null || curRoutine.Finished) {
+                StepThrough();
+                return;
+            }
 
             switch (_routineCode.Current) {
                 case WaitForEndOfFrame _:
@@ -48,7 +51,10 @@ namespace GameProject.Code.Core {
 
         public override void FixedUpdate() {
             BaseCoroutine curRoutine = _routineCode.Current as BaseCoroutine;
-            if (curRoutine.Finished) StepThrough();
+            if (curRoutine == null || curRoutine.Finished) {
+                StepThrough();
+                return;
+            }
 
             switch (_routineCode.Current) {
                 case WaitForFixedUpdate _:
