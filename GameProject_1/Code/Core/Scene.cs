@@ -20,6 +20,8 @@ namespace GameProject.Code.Core {
         private List<Coroutine> _coroutines;
         private Action _coroutineQueue = () => { };
 
+        private Action _instantiateList = () => { };
+
 
 
         public Scene() { }
@@ -36,6 +38,10 @@ namespace GameProject.Code.Core {
         }
 
         public virtual void Awake() {
+            // Instantiate initial gameobjects
+            //_instantiateList();
+            //_instantiateList = () => { };
+
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
                 if (g.Enabled) {
@@ -53,6 +59,10 @@ namespace GameProject.Code.Core {
         }
 
         public virtual void Update() {
+            // Instantiate new GameObjects
+            _instantiateList();
+            _instantiateList = () => { };
+
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
                 if(g.Enabled) g.Update();
@@ -158,6 +168,15 @@ namespace GameProject.Code.Core {
         //    GameObjects.Remove(obj);
         //}
 
+
+        public void Instantiate(GameObject obj) {
+            _instantiateList += () => {
+                GameManager.CurrentScene.GameObjects.Add(obj);
+                obj.Awake();
+                if (obj.Enabled) obj.OnEnable();
+                obj.Start();
+            };
+        }
 
 
         public static void LoadScene(Scene scene, ContentManager content) {

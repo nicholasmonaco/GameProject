@@ -36,6 +36,8 @@ namespace GameProject.Code.Core {
                     _worldPosition = ParentPos + _localPosition;    
                 }
 
+                //Debug.Log($"{gameObject.Name} | _worldPos: {_worldPosition}");
+
                 ViewChangeAction();
                 RecalculateWorldMatrix();
                 gameObject.rigidbody2D?.ResetPosition();

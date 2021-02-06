@@ -25,6 +25,11 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_Door_Inside;
         public static Texture2D Sprite_Door_Normal_Base;
 
+        public static Texture2D Sprite_Bullet_Standard;
+
+
+        public static SpriteFont Font_Debug;
+
 
 
 
@@ -52,6 +57,10 @@ namespace GameProject.Code.Core {
             Sprite_Door_Inside = content.Load<Texture2D>("Textures/Level/Door/Door_Inside");
             Sprite_Door_Normal_Base = content.Load<Texture2D>("Textures/Level/Door/Door_Regular_Base");
 
+            Sprite_Bullet_Standard = content.Load<Texture2D>("Textures/Bullet/PhotonShot");
+
+
+            Font_Debug = content.Load<SpriteFont>("Fonts/arial");
 
 
             Debug.Log("Textures loaded.");

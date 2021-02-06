@@ -19,13 +19,15 @@ namespace GameProject.Code.Scripts.Components {
 
 
         public override void OnTriggerEnter2D(Collider2D other) {
-            if(other.gameObject.Layer == (int)LayerID.Player) {
+            if(other.gameObject.Layer == (int)LayerID.Player && !GameManager.Map.ChangingRooms) {
                 Debug.Log("Player entered door");
                 StartCoroutine(RoomTransition(DoorDirection, CameraMoveStyle.Slide));
             }
         }
 
         private IEnumerator RoomTransition(Direction doorDirection, CameraMoveStyle camMoveStyle) {
+            GameManager.Map.ChangingRooms = true;
+
             Point additive;
             switch (doorDirection) {
                 default:
@@ -78,14 +80,16 @@ namespace GameProject.Code.Scripts.Components {
             GameManager.PlayerTransform.Position = GetOppositeDoorPosition(nextRoom.transform, doorDirection);
 
             // unload last room
-            GameManager.Map.CurrentRoom.gameObject.Enabled = false;
             GameManager.Map.UnloadCurrentRoom();
 
             // set real current room position
-            GameManager.Map.CurrentGridPos += additive;
+            GameManager.Map.SetCurrentRoomInDirection(additive);
 
             // resume player movement
             GameManager.Player.FreezeMovement = false;
+
+            // reset checker flag
+            GameManager.Map.ChangingRooms = false;
         }
 
 

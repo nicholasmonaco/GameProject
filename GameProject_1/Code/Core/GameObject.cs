@@ -9,14 +9,18 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Scripts.Components.Bullet;
 
 namespace GameProject.Code.Core {
-    
+
     /// <summary>
     /// The base of all GameObjects, which is how everything in a scene is structured.
     /// </summary>
     public class GameObject {
         private const BindingFlags __bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
+        private Action _emptyList = () => {};
+        private Action _destroyList = () => { };
 
         public List<Component> _components;
         public Transform transform;
@@ -112,6 +116,13 @@ namespace GameProject.Code.Core {
             return false;
         }
 
+        public void RemoveComponent(Component c) {
+            _destroyList += () => {
+                _components.Remove(c);
+                c.Dispose();
+            };
+        }
+
 
         // Standard scene methods
 
@@ -148,18 +159,35 @@ namespace GameProject.Code.Core {
             foreach (Component c in _components) {
                 c.Update();
             }
+
+            //if (_destroyList != _emptyList) {
+                _destroyList();
+                _destroyList = _emptyList;
+            //}   
         }
 
         public void LateUpdate() {
             foreach (Component c in _components) {
                 c.LateUpdate();
             }
+
+            //if (!_destroyList.Method.Equals(_emptyList)) {
+                _destroyList();
+                _destroyList = _emptyList;
+            //}
         }
 
         public void FixedUpdate() {
             foreach (Component c in _components) {
                 c.FixedUpdate();
             }
+
+            //if (!_destroyList.Method.Equals(_emptyList)) {
+                _destroyList();
+                _destroyList = _emptyList;
+            //}
+
+
         }
 
         public void Draw(SpriteBatch sb) {
@@ -175,7 +203,9 @@ namespace GameProject.Code.Core {
             T obj = Activator.CreateInstance(typeof(T)) as T;
             obj.transform.Parent = parent;
             obj.transform.Position = position;
-            return GameManager.CurrentScene.GameObjects.AddReturn(obj) as T;
+            //return GameManager.CurrentScene.GameObjects.AddReturn(obj) as T;
+            GameManager.CurrentScene.Instantiate(obj);
+            return obj;
         }
 
         public static T Instantiate<T>(Vector3 position) where T : GameObject {
@@ -198,6 +228,7 @@ namespace GameProject.Code.Core {
                 comp.Destroy();
             }
 
+            Debug.Log("messed with gameobjecy dispose");
 
             // Okay, this is some cursed programming.
             // For the class, get all of the global variables. Yeah, all of them.

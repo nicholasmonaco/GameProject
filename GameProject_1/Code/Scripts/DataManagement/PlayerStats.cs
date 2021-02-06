@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameProject.Code.Scripts.DataManagement {
+namespace GameProject.Code.Scripts {
     public static class PlayerStats {
 
         public static Action DeathAction = () => { };
@@ -35,14 +35,14 @@ namespace GameProject.Code.Scripts.DataManagement {
 
 
         // Regular stats
-        public static float Speed;
-        public static float Range;
-        public static float ShotRate;
-        public static float ShotSpeed;
-        public static float ShotSize;
-        public static float Damage;
-        public static float Knockback;
-        public static float Luck;
+        public static float Speed = 1;
+        public static float Range = 1.2f;
+        public static float ShotRate = 0.5f;
+        public static float ShotSpeed = 90;
+        public static float ShotSize = 1;
+        public static float Damage = 1;
+        public static float Knockback = 0.5f;
+        public static float Luck = 0;
 
         public static float Ex_Benefit = 0;
         public static float Ex_Curse = 0;

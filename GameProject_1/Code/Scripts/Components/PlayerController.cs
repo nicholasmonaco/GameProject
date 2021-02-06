@@ -4,6 +4,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Prefabs;
+using GameProject.Code.Scripts;
+using GameProject.Code.Scripts.Components.Bullet;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameProject.Code.Scripts.Components {
     public class PlayerController : Component {
@@ -78,10 +82,19 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         private void ShootLogic() {
-            Vector2 aimDir = Input.AimDirection;
             Debug.Log("Bullet spawned");
+
+            Vector2 aimDir = Vector2.Normalize(Input.MouseWorldPosition - transform.Position.ToVector2());
+            
+            Bullet_Standard bullet = Instantiate<Prefab_Bullet>().GetComponent<Bullet_Standard>();
+            bullet.transform.Position = transform.Position; //can customize this later
+            bullet.InitBullet(aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
         }
 
+        //public override void Draw(SpriteBatch sb) {
+        //    base.Draw(sb);
+        //    sb.DrawString(Resources.Font_Debug, $"mousepos: {Input.MouseWorldPosition}", new Vector2(0, 0), Color.Red, 0, Vector2.Zero, -0.5f, SpriteEffects.None, 1);
+        //}
 
 
         private void OnShootDown() {

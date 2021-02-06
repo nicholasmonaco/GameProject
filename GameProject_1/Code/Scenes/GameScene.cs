@@ -11,6 +11,7 @@ using GameProject.Code.Prefabs;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Util;
+using GameProject.Code.Scripts.Components.Entity;
 
 namespace GameProject.Code.Scenes {
     
@@ -35,6 +36,8 @@ namespace GameProject.Code.Scenes {
 
 
             GameObjects.Add(new Prefab_Player());
+
+            GameObjects.Add(new Prefab_Chaser());
         }
 
 

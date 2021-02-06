@@ -32,6 +32,11 @@ namespace GameProject.Code.Core.Components {
         public CircleCollider2D(GameObject attached, Vector2 center, float radius) : this(attached, center, Vector2.Zero, radius) { }
         public CircleCollider2D(GameObject attached, float radius) : this(attached, Vector2.Zero, Vector2.Zero, radius) { }
 
+        public CircleCollider2D(GameObject attached, SpriteRenderer sr) : this(attached,
+                                                                               Vector2.Zero,
+                                                                               Vector2.Zero,
+                                                                               sr.Sprite.Width * sr.SpriteScale.X * sr.transform.Scale.X) { }
+
 
 
         public override void Draw(SpriteBatch sb) {

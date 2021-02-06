@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace GameProject.Code.Core {
-    
+
     /// <summary>
     /// Handles all input detection, providing event actions for when certain buttons are pressed or released.
     /// </summary>
@@ -61,6 +61,14 @@ namespace GameProject.Code.Core {
             get { return _mousePosition; }
             private set { _mousePosition = value; }
         }
+
+        public static Vector2 MouseWorldPosition { get {
+            Matrix transformMat = GameManager.ViewMatrix *
+                                  Matrix.CreateScale(1, -1, 1) *
+                                  Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0);
+
+            return Vector3.Transform(MousePosition.ToVector3(), Matrix.Invert(transformMat)).ToVector2(); } 
+        }
         // End direct input properties
 
 
@@ -78,6 +86,8 @@ namespace GameProject.Code.Core {
             // State retrieval
             _lastKeyboardState = _keyboardState;
             _keyboardState = Keyboard.GetState();
+
+            _mouseState = Mouse.GetState();
             // End state retrieval
 
             //---

@@ -45,8 +45,8 @@ namespace GameProject.Code.Core.Components {
         }
 
         public RectCollider2D(SpriteRenderer sr) : this(sr.gameObject, 
-                                                        sr.Sprite.Width, 
-                                                        sr.Sprite.Height, 
+                                                        sr.Sprite.Width * sr.SpriteScale.X, 
+                                                        sr.Sprite.Height * sr.SpriteScale.Y, 
                                                         0, 
                                                         0) { }
 

@@ -103,7 +103,7 @@ namespace GameProject.Code.Core {
 
 
         public void Destroy() {
-            Dispose();
+            gameObject.RemoveComponent(this);
         }
 
         public virtual void Dispose() {
@@ -117,10 +117,17 @@ namespace GameProject.Code.Core {
             foreach(PropertyInfo property in props) {
                 if (!(property.PropertyType).IsValueType) {
                     //if (typeof(Component).IsAssignableFrom(property.PropertyType)) {
-                        // This is where you would go down the chain, but I dont think we'll need to
+                    // This is where you would go down the chain, but I dont think we'll need to
                     //}
 
-                    property.SetValue(this, null);
+                    MethodInfo[] info = property.GetAccessors(true);
+                    foreach(MethodInfo i in info) {
+                        if(i.ReturnType == typeof(void)) {
+                            // then it has a setter we can manipulate
+                            property.SetValue(this, null);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -128,8 +135,9 @@ namespace GameProject.Code.Core {
 
         public static void Destroy(Component c) {
             c.OnDestroy();
-            c.gameObject._components.Remove(c);
-            c.Dispose();
+            //c.gameObject._components.Remove(c);
+            //c.Dispose();
+            c.gameObject.RemoveComponent(c);
         }
 
         public static void Destroy(GameObject g) {

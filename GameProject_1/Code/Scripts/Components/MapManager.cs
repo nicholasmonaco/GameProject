@@ -17,8 +17,9 @@ namespace GameProject.Code.Scripts.Components {
         public static Vector2 RoomSize = new Vector2(512, 216); //idk if this is right, check later
 
         public Dictionary<Point, Room> RoomGrid;
-        public Room CurrentRoom;
+        public Room CurrentRoom { get; private set; }
         public Point CurrentGridPos;
+        public bool ChangingRooms = false;
 
         public Point GridPos_StartingRoom { get; private set; }
         public Point GridPos_BossRoom { get; private set; }
@@ -118,6 +119,16 @@ namespace GameProject.Code.Scripts.Components {
 
         public void UnloadCurrentRoom() {
             CurrentRoom.gameObject.Enabled = false;
+        }
+
+        public void SetCurrentRoom(Point gridPos) {
+            CurrentGridPos = gridPos;
+            CurrentRoom = RoomGrid[gridPos];
+        }
+
+        public void SetCurrentRoomInDirection(Point additive) {
+            CurrentGridPos += additive;
+            CurrentRoom = RoomGrid[CurrentGridPos];
         }
 
         public bool RoomAtGridCoords(Point gridPos) {

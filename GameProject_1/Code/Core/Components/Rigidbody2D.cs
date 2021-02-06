@@ -32,11 +32,15 @@ namespace GameProject.Code.Core.Components {
 
         public Rigidbody2D(GameObject attached) : base(attached) {
             Subcolliders = new List<Collider2D>(1);
+            Velocity = Vector2.Zero;
             ResetPosition();
         }
 
         public void ResetPosition() {
+            //if(gameObject.Name == "Bullet") Debug.Log($"pos8 ({gameObject.Name}): ({_position.X}, {_position.Y})");
+            //if (gameObject.Name == "Bullet") Debug.Log($"pos8a ({gameObject.Name}): ({transform.Position.X}, {transform.Position.Y})");
             _position = transform.Position.ToVector2();
+            //if (gameObject.Name == "Bullet") Debug.Log($"pos9 ({gameObject.Name}): ({_position.X}, {_position.Y})");
         }
 
 
@@ -184,6 +188,8 @@ namespace GameProject.Code.Core.Components {
 
             Vector2 origVelNoPushback_N = Vector2.Normalize(Velocity);
 
+            //Debug.Log($"{gameObject.Name} | Velocity 1: {Velocity}");
+
             if (willCollide && nonTriggerCollision) {
                 _position += Velocity * Time.fixedDeltaTime + pushbackVec;
                 Velocity += pushbackVec / Time.fixedDeltaTime;
@@ -202,7 +208,16 @@ namespace GameProject.Code.Core.Components {
                 else Velocity = checker;
             }
 
+            //Debug.Log($"pos5 ({gameObject.Name}): ({transform.Position.X}, {transform.Position.Y})");
+
+            //Debug.Log($"{gameObject.Name} | Velocity: {Velocity}, pushbackVec: {pushbackVec}");
+
+            //if (float.IsNaN(_position.X)) {
+            //    _position = transform.Position.ToVector2();
+            //} // this should not ever be called in therory
+            
             transform.Position = _position.ToVector3();
+            //Debug.Log($"pos6 ({gameObject.Name}): ({transform.Position.X}, {transform.Position.Y})");
         }
 
 

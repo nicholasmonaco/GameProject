@@ -49,8 +49,9 @@ namespace GameProject.Code.Scripts.Components {
                 for (int y = -1; y < 2; y += 2) {
                     GameObject wallCorner = Instantiate<GameObject>();
                     wallCorner.transform.Parent = transform;
-                    wallCorner.transform.Position = new Vector3(x * 117, y * 78, 0);
+                    wallCorner.transform.LocalPosition = new Vector3(x * 117, y * 78, 0);
                     wallCorner.transform.Scale = new Vector3(-x, y, 0);
+                    wallCorner.Layer = (int)LayerID.EdgeWall;
 
                     SpriteRenderer wallCornerRend = wallCorner.AddComponent<SpriteRenderer>();
                     wallCornerRend.Sprite = Resources.Sprite_RoomCorner_2[GameManager.WorldRandom.Next(0, Resources.Sprite_RoomCorner_2.Length)];
@@ -110,7 +111,7 @@ namespace GameProject.Code.Scripts.Components {
                 // Generate door if relevant
                 GameObject door = Instantiate<GameObject>();
                 door.transform.Parent = transform;
-                door.transform.Position = pos;
+                door.transform.LocalPosition = pos;
                 door.transform.Rotation = rotation;
 
                 SpriteRenderer sr = door.AddComponent<SpriteRenderer>();

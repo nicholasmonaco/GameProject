@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace GameProject.Code.Core {
     
@@ -14,8 +15,9 @@ namespace GameProject.Code.Core {
         public static readonly bool ShowColliders = true;
 
 
-        public static void Log(string output) {
-            System.Diagnostics.Debug.WriteLine(output);
+        public static void Log(string output, [CallerLineNumber] int lineNum = 0, [CallerMemberName] string caller = null, [CallerFilePath] string fp = null) {
+            string[] splits = fp.Split('\\', '.');
+            System.Diagnostics.Debug.WriteLine($"{splits[splits.Length-2]}.{caller}() (Line {lineNum}) | {output}");
         }
 
     }
