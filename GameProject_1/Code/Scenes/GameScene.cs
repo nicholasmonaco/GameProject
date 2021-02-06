@@ -37,7 +37,7 @@ namespace GameProject.Code.Scenes {
 
             GameObjects.Add(new Prefab_Player());
 
-            GameObjects.Add(new Prefab_Chaser());
+            //GameObjects.Add(new Prefab_Chaser());
 
             GameObjects.Add(new Prefab_Reticle());
 
@@ -51,12 +51,18 @@ namespace GameProject.Code.Scenes {
             tr.Color = Color.Red;
 
             GameObject wk = GameObjects.AddReturn(new GameObject());
-            tr = wk.AddComponent<TextRenderer>(Resources.Font_Debug, "Wave 1");
+            TextRenderer tr2 = wk.AddComponent<TextRenderer>(Resources.Font_Debug, "Wave 1");
             wk.transform.Position = new Vector3(0, 120, 0);
             wk.transform.Scale = new Vector3(0.14f, 0.14f, 1);
-            tr.DrawLayer = DrawLayer.ID["HUD"];
-            tr.OrderInLayer = 89;
-            tr.Color = Color.Red;
+            tr2.DrawLayer = DrawLayer.ID["HUD"];
+            tr2.OrderInLayer = 89;
+            tr2.Color = Color.Red;
+
+            ScoreKeeper score = sk.AddComponent<ScoreKeeper>();
+            score.WaveText = tr;
+            score.ScoreText = tr2;
+
+            score.NextWave();
         }
 
 

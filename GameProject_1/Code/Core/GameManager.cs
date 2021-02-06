@@ -37,9 +37,9 @@ namespace GameProject.Code.Core {
 
         // Temp stuff for first release
         public static int Score = 0;
-        public static int Wave = 1;
+        public static int Wave = 0;
         public static int EnemiesLeft = 3;
-
+        public static ScoreKeeper ScoreKeeper;
         // End
 
 

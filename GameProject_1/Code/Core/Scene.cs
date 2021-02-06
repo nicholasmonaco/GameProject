@@ -65,7 +65,7 @@ namespace GameProject.Code.Core {
 
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                if(g.Enabled) g.Update();
+                if(g.Enabled && g._everAwaked) g.Update();
             }
 
             // Handle coroutines
@@ -87,14 +87,14 @@ namespace GameProject.Code.Core {
         public virtual void FixedUpdate() {
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                if(g.Enabled) g.FixedUpdate();
+                if(g.Enabled && g._everAwaked) g.FixedUpdate();
             }
         }
 
         public virtual void LateUpdate() {
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
-                if(g.Enabled) g.LateUpdate();
+                if(g.Enabled && g._everAwaked) g.LateUpdate();
             }
 
             // Handle coroutines

@@ -47,7 +47,7 @@ namespace GameProject.Code.Core {
         public string Tag = null;
         public int Layer = 0; // Default layer
 
-        protected bool _everAwaked = false;
+        public bool _everAwaked = false;
         protected bool _everStarted = false;
 
 
@@ -157,7 +157,7 @@ namespace GameProject.Code.Core {
 
         public void Update() {
             foreach (Component c in _components) {
-                c.Update();
+                if(c._everAwaked) c.Update();
             }
 
             //if (_destroyList != _emptyList) {
@@ -168,7 +168,7 @@ namespace GameProject.Code.Core {
 
         public void LateUpdate() {
             foreach (Component c in _components) {
-                c.LateUpdate();
+                if(c._everAwaked) c.LateUpdate();
             }
 
             //if (!_destroyList.Method.Equals(_emptyList)) {
@@ -179,7 +179,7 @@ namespace GameProject.Code.Core {
 
         public void FixedUpdate() {
             foreach (Component c in _components) {
-                c.FixedUpdate();
+                if(c._everAwaked) c.FixedUpdate();
             }
 
             //if (!_destroyList.Method.Equals(_emptyList)) {

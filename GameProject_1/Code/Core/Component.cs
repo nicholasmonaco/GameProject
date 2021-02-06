@@ -20,6 +20,10 @@ namespace GameProject.Code.Core {
         public GameObject gameObject;
         public Transform transform;
 
+        public bool _everAwaked;
+        public bool _everStarted;
+
+
         public Component(GameObject attached) {
             gameObject = attached;
             transform = attached.transform;
@@ -58,6 +62,8 @@ namespace GameProject.Code.Core {
                 rb.OnTriggerExit2D_Direct += OnTriggerExit2D;
                 rb.RefixActionsToSubcolliders(); //should this be here? maybe the colliders will just pull them from their attached rigidbodies
             }
+
+            _everAwaked = true;
         }
 
         public virtual void Awake() { }
