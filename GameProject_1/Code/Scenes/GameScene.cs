@@ -43,7 +43,7 @@ namespace GameProject.Code.Scenes {
 
 
             GameObject sk = GameObjects.AddReturn(new GameObject());
-            TextRenderer tr = sk.AddComponent<TextRenderer>(Resources.Font_Debug, "Score: 999");
+            TextRenderer tr = sk.AddComponent<TextRenderer>(Resources.Font_Debug, "Score: 0");
             sk.transform.Position = new Vector3(0, 140, 0);
             sk.transform.Scale = new Vector3(0.2f, 0.2f, 1);
             tr.DrawLayer = DrawLayer.ID["HUD"];
@@ -59,8 +59,8 @@ namespace GameProject.Code.Scenes {
             tr2.Color = Color.Red;
 
             ScoreKeeper score = sk.AddComponent<ScoreKeeper>();
-            score.WaveText = tr;
-            score.ScoreText = tr2;
+            score.WaveText = tr2;
+            score.ScoreText = tr;
 
             score.NextWave();
         }
