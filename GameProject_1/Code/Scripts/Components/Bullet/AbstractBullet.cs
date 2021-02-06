@@ -64,6 +64,10 @@ namespace GameProject.Code.Scripts.Components.Bullet {
             BulletRenderer.transform.Rotation = rotation;
         }
 
+        public void TurnEvil() {
+            gameObject.Layer = (int)LayerID.Bullet_Evil;
+        }
+
 
 
         public override void FixedUpdate() {

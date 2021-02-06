@@ -40,7 +40,7 @@ namespace GameProject.Code.Scripts {
         public static float ShotRate = 0.5f;
         public static float ShotSpeed = 90;
         public static float ShotSize = 1;
-        public static float Damage = 1;
+        public static float Damage = 3;
         public static float Knockback = 0.5f;
         public static float Luck = 0;
 

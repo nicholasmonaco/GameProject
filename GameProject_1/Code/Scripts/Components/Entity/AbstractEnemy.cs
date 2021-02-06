@@ -12,7 +12,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         private bool _dead = false;
-        private float _health = 1;
+        protected float _health = 1;
         public float Health {
             get { return _health; }
             set {

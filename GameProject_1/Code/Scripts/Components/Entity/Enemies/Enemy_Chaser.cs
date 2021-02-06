@@ -12,7 +12,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         private const float _seeDistance = 150;
-        private const float _speed = 65;
+        private const float _speed = 50;
 
         private Rigidbody2D _enemyRB;
 
@@ -20,6 +20,8 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
         public override void PreAwake() {
             base.PreAwake();
+
+            _health = 15;
 
             _enemyRB = GetComponent<Rigidbody2D>();
             _enemyRB.Velocity = Vector2.Zero;
@@ -40,7 +42,27 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         protected override IEnumerator DeathAnimation() {
-            throw new NotImplementedException();
+            _enemyRB.Velocity = Vector2.Zero;
+            Destroy(GetComponent<Collider2D>());
+            Destroy(GetComponent<Rigidbody2D>());
+
+            float dieDur_Total = 0.25f; // Length of death animation
+            float dieDur = dieDur_Total;
+
+            Vector2 origScale = transform.Scale.ToVector2();
+
+            while (dieDur > 0) {
+                yield return new WaitForFixedUpdate();
+                dieDur -= Time.fixedDeltaTime;
+                transform.Scale = Vector2.Lerp(Vector2.Zero, origScale, dieDur / dieDur_Total).ToVector3();
+            }
+
+            yield return new WaitForEndOfFrame();
+            transform.Scale = Vector3.Zero;
+
+            //_extraDeathAction();
+
+            Destroy(gameObject);
         }
     }
 }

@@ -164,7 +164,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Misc/Square_01.png
 
-#begin Textures/Misc/test_isaac.png
+#begin Textures/UI/Reticle_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -174,5 +174,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Misc/test_isaac.png
+/build:Textures/UI/Reticle_0.png
 

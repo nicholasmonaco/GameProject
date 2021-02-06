@@ -35,7 +35,7 @@ namespace GameProject.Code.Core.Components {
         public CircleCollider2D(GameObject attached, SpriteRenderer sr) : this(attached,
                                                                                Vector2.Zero,
                                                                                Vector2.Zero,
-                                                                               sr.Sprite.Width * sr.SpriteScale.X * sr.transform.Scale.X) { }
+                                                                               sr.Sprite.Width/2f * sr.SpriteScale.X * sr.transform.Scale.X) { }
 
 
 

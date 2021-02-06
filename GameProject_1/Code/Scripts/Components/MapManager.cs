@@ -50,8 +50,8 @@ namespace GameProject.Code.Scripts.Components {
 
 
             RoomGrid = new Dictionary<Point, Room>() { 
-                { new Point(0, 0), null},
-                { new Point(1, 0), null}
+                { new Point(0, 0), null }//,
+                //{ new Point(1, 0), null}
             };
 
 

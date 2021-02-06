@@ -38,6 +38,25 @@ namespace GameProject.Code.Scenes {
             GameObjects.Add(new Prefab_Player());
 
             GameObjects.Add(new Prefab_Chaser());
+
+            GameObjects.Add(new Prefab_Reticle());
+
+
+            GameObject sk = GameObjects.AddReturn(new GameObject());
+            TextRenderer tr = sk.AddComponent<TextRenderer>(Resources.Font_Debug, "Score: 999");
+            sk.transform.Position = new Vector3(0, 140, 0);
+            sk.transform.Scale = new Vector3(0.2f, 0.2f, 1);
+            tr.DrawLayer = DrawLayer.ID["HUD"];
+            tr.OrderInLayer = 90;
+            tr.Color = Color.Red;
+
+            GameObject wk = GameObjects.AddReturn(new GameObject());
+            tr = wk.AddComponent<TextRenderer>(Resources.Font_Debug, "Wave 1");
+            wk.transform.Position = new Vector3(0, 120, 0);
+            wk.transform.Scale = new Vector3(0.14f, 0.14f, 1);
+            tr.DrawLayer = DrawLayer.ID["HUD"];
+            tr.OrderInLayer = 89;
+            tr.Color = Color.Red;
         }
 
 

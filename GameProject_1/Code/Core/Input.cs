@@ -87,6 +87,7 @@ namespace GameProject.Code.Core {
             _lastKeyboardState = _keyboardState;
             _keyboardState = Keyboard.GetState();
 
+            _lastMouseState = _mouseState;
             _mouseState = Mouse.GetState();
             // End state retrieval
 
@@ -105,10 +106,20 @@ namespace GameProject.Code.Core {
             //---
 
             // Checking for event handlers
+            bool localVal, lastLocalVal;
 
             // Shoot
-            bool localVal = _keyboardState.IsKeyDown(Act_Shoot);
-            bool lastLocalVal = _lastKeyboardState.IsKeyDown(Act_Shoot);
+            // Change this based on settings later
+            //localVal = _keyboardState.IsKeyDown(Act_Shoot);
+            //lastLocalVal = _lastKeyboardState.IsKeyDown(Act_Shoot);
+            //if (localVal && !lastLocalVal) {
+            //    OnShoot_Down();
+            //} else if (!localVal && lastLocalVal) {
+            //    OnShoot_Released();
+            //}
+
+            localVal = _mouseState.LeftButton == ButtonState.Pressed;
+            lastLocalVal = _lastMouseState.LeftButton == ButtonState.Released;
             if (localVal && !lastLocalVal) {
                 OnShoot_Down();
             } else if (!localVal && lastLocalVal) {

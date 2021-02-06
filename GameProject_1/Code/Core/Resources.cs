@@ -27,6 +27,7 @@ namespace GameProject.Code.Core {
 
         public static Texture2D Sprite_Bullet_Standard;
 
+        public static Texture2D[] Sprite_UI_Reticles;
 
         public static SpriteFont Font_Debug;
 
@@ -58,6 +59,9 @@ namespace GameProject.Code.Core {
             Sprite_Door_Normal_Base = content.Load<Texture2D>("Textures/Level/Door/Door_Regular_Base");
 
             Sprite_Bullet_Standard = content.Load<Texture2D>("Textures/Bullet/PhotonShot");
+
+            Sprite_UI_Reticles = new Texture2D[1];
+            Sprite_UI_Reticles[0] = content.Load<Texture2D>("Textures/UI/Reticle_0");
 
 
             Font_Debug = content.Load<SpriteFont>("Fonts/arial");

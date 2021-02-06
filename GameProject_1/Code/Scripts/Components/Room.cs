@@ -106,30 +106,43 @@ namespace GameProject.Code.Scripts.Components {
                 }
 
                 // Make sure to not make a door if there is literally no room in that direction at all.
-                if (!GameManager.Map.RoomInDirection(gridDir.InvertPoint())) continue;
+                if (GameManager.Map.RoomInDirection(gridDir.InvertPoint())) {
 
-                // Generate door if relevant
-                GameObject door = Instantiate<GameObject>();
-                door.transform.Parent = transform;
-                door.transform.LocalPosition = pos;
-                door.transform.Rotation = rotation;
+                    // Generate door if relevant
+                    GameObject door = Instantiate<GameObject>();
+                    door.transform.Parent = transform;
+                    door.transform.LocalPosition = pos;
+                    door.transform.Rotation = rotation;
 
-                SpriteRenderer sr = door.AddComponent<SpriteRenderer>();
-                sr.Sprite = Resources.Sprite_Door_Normal_Base;
-                sr.DrawLayer = DrawLayer.ID["WorldStructs"];
-                sr.OrderInLayer = 25;
+                    SpriteRenderer sr = door.AddComponent<SpriteRenderer>();
+                    sr.Sprite = Resources.Sprite_Door_Normal_Base;
+                    sr.DrawLayer = DrawLayer.ID["WorldStructs"];
+                    sr.OrderInLayer = 25;
 
-                sr = door.AddComponent<SpriteRenderer>();
-                sr.Sprite = Resources.Sprite_Door_Inside;
-                sr.DrawLayer = DrawLayer.ID["WorldStructs"];
-                sr.OrderInLayer = 20;
+                    sr = door.AddComponent<SpriteRenderer>();
+                    sr.Sprite = Resources.Sprite_Door_Inside;
+                    sr.DrawLayer = DrawLayer.ID["WorldStructs"];
+                    sr.OrderInLayer = 20;
 
-                Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(10, -24), new Vector2(-10, -24) };
-                PolygonCollider2D pc = door._components.AddReturn(new PolygonCollider2D(door, doorBounds, false)) as PolygonCollider2D;
-                pc.IsTrigger = true;
+                    Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(10, -24), new Vector2(-10, -24) };
+                    PolygonCollider2D pc = door._components.AddReturn(new PolygonCollider2D(door, doorBounds, false)) as PolygonCollider2D;
+                    pc.IsTrigger = true;
 
-                DoorController dc = door.AddComponent<DoorController>();
-                dc.DoorDirection = dir;
+                    DoorController dc = door.AddComponent<DoorController>();
+                    dc.DoorDirection = dir;
+
+                } else {
+                    GameObject doorFiller = Instantiate<GameObject>();
+                    doorFiller.transform.Parent = transform;
+                    doorFiller.transform.LocalPosition = pos;
+                    doorFiller.transform.Rotation = rotation;
+
+                    Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(11, -22), new Vector2(-11, -22) };
+                    PolygonCollider2D pc = doorFiller._components.AddReturn(new PolygonCollider2D(doorFiller, doorBounds, false)) as PolygonCollider2D;
+                    pc.IsTrigger = false;
+                }
+
+                
             }
         }
 

@@ -1,0 +1,3 @@
+﻿Content/Textures - All textures created by Nick Monaco
+
+Content/Fonts/arial.spritefont - created by Windows

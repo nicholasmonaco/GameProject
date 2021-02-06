@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 using GameProject.Code.Scripts;
+using GameProject.Code.Scripts.Components.Entity;
 
 namespace GameProject.Code.Scripts.Components.Bullet {
     public class Bullet_Standard : AbstractBullet {
@@ -28,8 +29,8 @@ namespace GameProject.Code.Scripts.Components.Bullet {
             if (DefaultCollisionLogic(collision)) { return; }
 
             if (collision.gameObject.Layer == (int)LayerID.Enemy) { // Enemy layer
-                //AbstractEnemy enemy = collision.attachedRigidbody.GetComponent<AbstractEnemy>();
-                //enemy.Health -= _damage;
+                AbstractEnemy enemy = collision.AttachedRigidbody.GetComponent<AbstractEnemy>();
+                enemy.Health -= _damage;
                 //enemy.ApplyKnockback(BulletRB.velocity.normalized * _knockbackForce / Game.Manager.PlayerStats.ShotCount);
 
                 if (_curPiercingRemain == 0)

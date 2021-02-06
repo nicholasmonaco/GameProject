@@ -24,7 +24,7 @@ namespace GameProject {
         public MainGame() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
             _graphics.PreferredBackBufferWidth = 480 * 2;
             _graphics.PreferredBackBufferHeight = 320 * 2;
@@ -36,7 +36,7 @@ namespace GameProject {
             GameManager.SetMainGame(this);
             GameManager.WorldRandom = new System.Random(); //Move this later to work with seed
 
-            Window.Title = "Game Project";
+            Window.Title = "Baton Rouge";
 
             Input.Start();
             Input.OnFullscreenToggle = () => {

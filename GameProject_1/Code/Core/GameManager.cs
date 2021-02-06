@@ -33,7 +33,14 @@ namespace GameProject.Code.Core {
         public static PlayerController Player;
         public static Transform PlayerTransform => Player.transform;
         public static MapManager Map;
-        
+
+
+        // Temp stuff for first release
+        public static int Score = 0;
+        public static int Wave = 1;
+        public static int EnemiesLeft = 3;
+
+        // End
 
 
 
