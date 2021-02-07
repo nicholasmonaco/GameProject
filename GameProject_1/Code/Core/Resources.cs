@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using GameProject.Code.Scripts.Components.Entity;
 
 namespace GameProject.Code.Core {
     
@@ -28,6 +29,8 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_Bullet_Standard;
 
         public static Texture2D[] Sprite_UI_Reticles;
+
+        public static Dictionary<Pickup, Texture2D> Sprite_Pickups;
 
         public static SpriteFont Font_Debug;
 
@@ -62,6 +65,9 @@ namespace GameProject.Code.Core {
 
             Sprite_UI_Reticles = new Texture2D[1];
             Sprite_UI_Reticles[0] = content.Load<Texture2D>("Textures/UI/Reticle_0");
+
+            Sprite_Pickups = new Dictionary<Pickup, Texture2D>();
+
 
 
             Font_Debug = content.Load<SpriteFont>("Fonts/arial");

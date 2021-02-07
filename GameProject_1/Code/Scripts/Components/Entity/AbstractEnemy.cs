@@ -38,11 +38,6 @@ namespace GameProject.Code.Scripts.Components.Entity {
             //play death animation
             yield return StartCoroutine(DeathAnimation());
 
-            //TEMP 0.1 - Update wave data
-            GameManager.ScoreKeeper.UpdateScore(GameManager.Score += 1);
-            if (--GameManager.EnemiesLeft <= 0) GameManager.ScoreKeeper.NextWave();
-            //end
-
             //when death animation is over, destroy
             Destroy(this.gameObject);
         }
