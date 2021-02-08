@@ -71,6 +71,14 @@ namespace GameProject.Code.Core {
         }
         // End direct input properties
 
+        public static Vector2 ScreenPointToWorld(Vector2 screenPos) {
+            Matrix transformMat = GameManager.ViewMatrix *
+                                  Matrix.CreateScale(1, -1, 1) *
+                                  Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0);
+
+            return Vector3.Transform(screenPos.ToVector3(), Matrix.Invert(transformMat)).ToVector2();
+        }
+
 
 
         public static void Start() {

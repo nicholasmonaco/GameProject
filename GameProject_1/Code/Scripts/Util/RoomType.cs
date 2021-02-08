@@ -17,6 +17,7 @@ namespace GameProject.Code.Scripts.Util {
         Challenge,
         SuperSecret,
         Casino,
+        Decision,
         MiniBoss
     }
 }

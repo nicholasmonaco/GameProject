@@ -17,9 +17,27 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Misc/Ball.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Misc/Pixel.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Misc/Square_01.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/BonusHeart_Whole.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/Coin.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/Coin_5.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/EnergyCell.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/Heart_Half.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/Heart_Whole.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Minimap_Current.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Minimap_Explored.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Minimap_Unexplored.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Reticle_0.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

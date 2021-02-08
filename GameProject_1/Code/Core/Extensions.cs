@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using GameProject.Code.Scripts.Util;
 
 namespace GameProject.Code.Core {
     
@@ -113,6 +114,31 @@ namespace GameProject.Code.Core {
         }
 
         
+        public static float NextValue(this Random random, float minValue, float maxValue) {
+            return (float)random.NextDouble() * (maxValue - minValue) + minValue;
+        }
+
+        public static Direction InvertDirection(this Direction direction) {
+            if (direction == Direction.None) return Direction.None;
+
+            return (Direction)(((int)direction + 2) % 4);
+        }
+
+        public static Point GetDirectionPoint(this Direction direction) {
+            switch (direction) {
+                default:
+                case Direction.None:
+                    return new Point(0, 0);
+                case Direction.Up:
+                    return new Point(0, 1);
+                case Direction.Down:
+                    return new Point(0, -1);
+                case Direction.Left:
+                    return new Point(-1, 0);
+                case Direction.Right:
+                    return new Point(1, 0);
+            }
+        }
 
     }
 }

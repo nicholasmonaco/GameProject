@@ -30,6 +30,18 @@ namespace GameProject.Code.Scripts {
             }
         }
 
+        private static int _maxHealth_Red = 6;
+        private static int _maxHealth_Bonus = 0;
+
+        public static int MaxHealth_Red { 
+            get { return _maxHealth_Red; }
+            set { _maxHealth_Red = Math.Max(0, value / 2); }
+        }
+        public static int MaxHealth_Bonus {
+            get { return _maxHealth_Bonus; }
+            set { _maxHealth_Bonus = Math.Max(0, value / 2); }
+        }
+
         public static int CurHealth_Red = 6; // Current number of filled RED hearts - Measured in half-hearts
         public static int CurHealth_Bonus = 0; // Current number of BONUS hearts - Measured in in half-hearts
 
@@ -51,5 +63,10 @@ namespace GameProject.Code.Scripts {
         // Special abilities
         public static int HomingStr = 0;
         public static int PiercingCount = 0;
+
+
+        // Other values
+        public static int Money = 0;
+        public static int Keys = 0;
     }
 }

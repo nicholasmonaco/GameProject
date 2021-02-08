@@ -1,6 +1,7 @@
 ﻿// GameScene.cs - Nick Monaco
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Content;
@@ -29,19 +30,27 @@ namespace GameProject.Code.Scenes {
 
             // This is essentially where there should be a list of default GameObjects in the scene.
             GameObjects.Add(new Prefab_MainCamera());
+            Instantiate(new Prefab_Canvas());
 
             GameObject levelMapGO = GameObjects.AddReturn(new GameObject());
             MapManager map = levelMapGO.AddComponent<MapManager>();
-            map.GenerateLevel(LevelID.QuarantineLevel);
 
+            StartCoroutine(StartLevel());
+        }
 
-            GameObjects.Add(new Prefab_Player());
+        private IEnumerator StartLevel() {
+            yield return StartCoroutine(GameManager.Map.GenerateLevel(LevelID.QuarantineLevel)); //replace with levelID variable later
 
-            //GameObjects.Add(new Prefab_Chaser());
+            // Create minimap
+            Instantiate(new Prefab_Minimap());
 
-            GameObjects.Add(new Prefab_Reticle());
+            // Spawn player
+            //GameObjects.Add(new Prefab_Player());
+            Instantiate(new Prefab_Player());
 
-
+            // Create reticle
+            //GameObjects.Add(new Prefab_Reticle());
+            Instantiate(new Prefab_Reticle());
         }
 
 

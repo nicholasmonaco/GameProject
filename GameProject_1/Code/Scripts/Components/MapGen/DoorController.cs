@@ -18,9 +18,8 @@ namespace GameProject.Code.Scripts.Components {
         public Direction DoorDirection;
 
 
-        public override void OnTriggerEnter2D(Collider2D other) {
+        public override void OnTriggerStay2D(Collider2D other) {
             if(other.gameObject.Layer == (int)LayerID.Player && !GameManager.Map.ChangingRooms) {
-                Debug.Log("Player entered door");
                 StartCoroutine(RoomTransition(DoorDirection, CameraMoveStyle.Slide));
             }
         }
@@ -32,16 +31,16 @@ namespace GameProject.Code.Scripts.Components {
             switch (doorDirection) {
                 default:
                 case Direction.Up:
-                    additive = new Point(0, -1);
-                    break;
-                case Direction.Down:
                     additive = new Point(0, 1);
                     break;
+                case Direction.Down:
+                    additive = new Point(0, -1);
+                    break;
                 case Direction.Left:
-                    additive = new Point(1, 0);
+                    additive = new Point(-1, 0);
                     break;
                 case Direction.Right:
-                    additive = new Point(-1, 0);
+                    additive = new Point(1, 0);
                     break;
             }
 
@@ -55,14 +54,21 @@ namespace GameProject.Code.Scripts.Components {
             // teleport camera one room distance in the direction if TransitionType is teleport
             switch (camMoveStyle) {
                 case CameraMoveStyle.Slide:
-                    float timer_max = 0.7f; // Time the camera slides
+                    float timer_max = 0.3f; // Time the camera slides
                     float timer = timer_max;
+                    bool playerTeleported = false;
                     Vector3 origPos = Camera.main.transform.Position;
 
                     while(timer > 0) {
                         timer -= Time.deltaTime;
-                        yield return null;
-                        Camera.main.transform.Position = Vector3.Lerp(nextRoom.transform.Position, origPos, timer / timer_max);
+                        yield return new WaitForEndOfFrame();
+                        Camera.main.transform.Position = Vector3.SmoothStep(nextRoom.transform.Position, origPos, timer / timer_max);
+
+                        if(!playerTeleported && timer <= timer_max / 2f) {
+                            // teleport player to opposite door point
+                            GameManager.PlayerTransform.Position = GetOppositeDoorPosition(nextRoom.transform, doorDirection);
+                            playerTeleported = true;
+                        }
                     }
 
                     yield return new WaitForEndOfFrame();
@@ -76,8 +82,6 @@ namespace GameProject.Code.Scripts.Components {
                     break;
             }
 
-            // teleport player to opposite door point
-            GameManager.PlayerTransform.Position = GetOppositeDoorPosition(nextRoom.transform, doorDirection);
 
             // unload last room
             GameManager.Map.UnloadCurrentRoom();
@@ -94,16 +98,17 @@ namespace GameProject.Code.Scripts.Components {
 
 
         private static Vector3 GetOppositeDoorPosition(Transform nextRoom, Direction doorDirection) {
+            // This door direction is the door we will be coming throuh in the next room (i think)
             switch (doorDirection) {
                 default:
                 case Direction.Down:
-                    return nextRoom.TransformPoint(new Vector3(0, 80, 0)); // Up door
+                    return nextRoom.TransformPoint(new Vector3(0, 90, 0)); // Up door
                 case Direction.Up:
-                    return nextRoom.TransformPoint(new Vector3(0, -80, 0)); // Down door
+                    return nextRoom.TransformPoint(new Vector3(0, -90, 0)); // Down door
                 case Direction.Left:
-                    return nextRoom.TransformPoint(new Vector3(120, 0, 0)); // Right door
+                    return nextRoom.TransformPoint(new Vector3(168, 0, 0)); // Right door
                 case Direction.Right:
-                    return nextRoom.TransformPoint(new Vector3(-120, 0, 0)); // Left door
+                    return nextRoom.TransformPoint(new Vector3(-168, 0, 0)); // Left door
             }
         }
     }

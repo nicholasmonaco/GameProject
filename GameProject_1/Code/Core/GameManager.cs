@@ -29,6 +29,7 @@ namespace GameProject.Code.Core {
 
         // Game world stuff
         public static Camera MainCamera;
+        public static Canvas MainCanvas;
         public static Random WorldRandom;
         public static PlayerController Player;
         public static Transform PlayerTransform => Player.transform;

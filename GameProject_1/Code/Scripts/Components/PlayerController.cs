@@ -82,8 +82,6 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         private void ShootLogic() {
-            Debug.Log("Bullet spawned");
-
             Vector2 aimDir = Vector2.Normalize(Input.MouseWorldPosition - transform.Position.ToVector2());
             
             Bullet_Standard bullet = Instantiate<Prefab_Bullet>().GetComponent<Bullet_Standard>();

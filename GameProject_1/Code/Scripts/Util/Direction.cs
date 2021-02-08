@@ -3,6 +3,8 @@
         Up = 0,
         Left = 1,
         Down = 2,
-        Right = 3
+        Right = 3,
+
+        None = 7
     }
 }

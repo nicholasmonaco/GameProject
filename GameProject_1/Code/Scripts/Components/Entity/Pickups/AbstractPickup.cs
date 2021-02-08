@@ -67,6 +67,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         PowerCell,
         Coin,
         Coin_5,
+
         Chest_Free,
         Chest_Free_Opened,
         Chest_Locked,

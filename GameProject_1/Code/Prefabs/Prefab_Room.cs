@@ -9,6 +9,8 @@ using System.Text;
 namespace GameProject.Code.Prefabs {
     public class Prefab_Room : GameObject {
         public Prefab_Room() : base() {
+            Name = "Room";
+
             Room roomData = AddComponent<Room>();
 
 

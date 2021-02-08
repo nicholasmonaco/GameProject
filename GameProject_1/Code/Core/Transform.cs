@@ -33,7 +33,7 @@ namespace GameProject.Code.Core {
                     _worldPosition = value;
                 } else {
                     _localPosition = value;
-                    _worldPosition = ParentPos + _localPosition;    
+                    _worldPosition = ParentPos + (_localPosition * ParentScale);    
                 }
 
                 //Debug.Log($"{gameObject.Name} | _worldPos: {_worldPosition}");
@@ -41,6 +41,8 @@ namespace GameProject.Code.Core {
                 ViewChangeAction();
                 RecalculateWorldMatrix();
                 gameObject.rigidbody2D?.ResetPosition();
+
+                UpdateChildren();
             }
         }
 
@@ -51,25 +53,29 @@ namespace GameProject.Code.Core {
         //    }
         //}
 
-        //public Vector3 LocalScale {
-        //    get { return _worldMatrix.Scale(); }
-        //    set {
-        //        // First, find the difference between current scale and new scale (by comparing the values used above)
-        //        // Then change it by that much
-        //        //ReScale(diff);
+        public Vector3 LocalScale {
+            get { return _localScale; }
+            set {
+                if (Parent == null) {
+                    _worldScale = value;
+                } else {
+                    _localScale = value;
+                    _worldScale = ParentScale * _localScale;
+                }
 
-        //        //Debug.Log($"Scale Pre: ({value.X}, {value.Y}, {value.Z})");
-        //        _worldMatrix = Matrix.Invert(Matrix.CreateScale(_worldMatrix.Scale())) * _worldMatrix;
-        //        _worldMatrix = Matrix.CreateScale(/*value - _transformMatrix.Scale()*/value) * _worldMatrix; //so whats happening is this operation is setting it to 0 somehow
-        //        //Debug.Log($"Scale Post: ({LocalScale.X}, {LocalScale.Y}, {LocalScale.Z})");
-        //    }
-        //}
+                ViewChangeAction();
+                RecalculateWorldMatrix();
+                gameObject.rigidbody2D?.ResetPosition();
+
+                UpdateChildren();
+            }
+        }
 
         public Vector3 Position {
             get { return _worldPosition; }
             set {
                 //_worldPosition = value;
-                LocalPosition = value - ParentPos;
+                LocalPosition = (value * ParentScale) - ParentPos;
 
                 //ViewChangeAction(); //These 3 things are handled in LocalPosition
                 //RecalculateWorldMatrix();
@@ -90,6 +96,8 @@ namespace GameProject.Code.Core {
                 _worldRotation = value;
                 ViewChangeAction();
                 RecalculateWorldMatrix();
+
+                UpdateChildren();
             }
         }
 
@@ -98,13 +106,10 @@ namespace GameProject.Code.Core {
         public Vector3 Scale {
             get { return _worldScale; }
             set {
-                ////first, we need to undo the current scale
-                //_worldMatrix = Matrix.CreateWorld(Position, Forward, Up); // By resetting it to a new world matrix, the scale is removed, as position is unaffected by scale
-                ////then, we need to apply the new scale
-                //_worldMatrix = Matrix.CreateScale(value) * _worldMatrix;
+                LocalScale = value / ParentScale;
 
-                _worldScale = value;
-                RecalculateWorldMatrix();
+                //_worldScale = value;
+                //RecalculateWorldMatrix();
             }
         }
 
@@ -169,12 +174,30 @@ namespace GameProject.Code.Core {
                    Matrix.CreateTranslation(_worldPosition);
         }
 
+        public void UpdateChildren() {
+            foreach(Transform t in _children) {
+                t.Position = t.Position;
+            }
+        }
+
 
         // Variables
-        public Transform Parent = null;
+        //public Transform Parent = null;
+        private Transform _parent = null;
+        public Transform Parent {
+            get { return _parent; }
+            set {
+                _parent?._children.Remove(this);
+                _parent = value;
+                value?._children.Add(this);
+            }
+        }
+
+
         public List<Transform> _children;
 
         private Vector3 ParentPos => Parent == null ? Vector3.Zero : Parent.Position;
+        private Vector3 ParentScale => Parent == null ? Vector3.One : Parent.Scale;
 
         // This is representative of world space for this single transform
         public Matrix WorldMatrix { get; private set; } = Matrix.Identity;
@@ -190,6 +213,7 @@ namespace GameProject.Code.Core {
         private Vector3 _worldScale = Vector3.One;
 
         private Vector3 _localPosition = Vector3.Zero; //_localPos is the distance from ParentPos
+        private Vector3 _localScale = Vector3.One;
 
         public Vector3 RenderOffsets = Vector3.Zero;
 
@@ -263,13 +287,13 @@ namespace GameProject.Code.Core {
 
         // Transforms from local space to world space
         public Vector3 TransformPoint(Vector3 point) {
-            return ParentPos + point;
+            return Position + point;
         }
 
         // Transforms from world space to local space
         public Vector3 InverseTransformPoint(Vector3 point) {
 
-            return point - ParentPos;
+            return point - Position;
         }
 
         // Transforms from local space to world space

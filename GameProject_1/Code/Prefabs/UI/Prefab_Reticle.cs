@@ -9,6 +9,9 @@ using GameProject.Code.Scripts.Components;
 namespace GameProject.Code.Prefabs {
     public class Prefab_Reticle : GameObject {
         public Prefab_Reticle() : base() {
+            Name = "Reticle";
+
+            //transform.Parent = GameManager.MainCamera.transform;
 
             SpriteRenderer sr = AddComponent<SpriteRenderer>();
             sr.Sprite = Resources.Sprite_UI_Reticles[0];
