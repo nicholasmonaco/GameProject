@@ -109,7 +109,9 @@ namespace GameProject.Code.Core {
 
 
         public void Destroy() {
+            OnDestroy();
             gameObject.RemoveComponent(this);
+            Dispose();
         }
 
         public virtual void Dispose() {
@@ -140,14 +142,11 @@ namespace GameProject.Code.Core {
 
 
         public static void Destroy(Component c) {
-            c.OnDestroy();
-            //c.gameObject._components.Remove(c);
-            //c.Dispose();
-            c.gameObject.RemoveComponent(c);
+            c.Destroy();
         }
 
         public static void Destroy(GameObject g) {
-            GameManager.CurrentScene.GameObjects.Remove(g);
+            GameObject.Destroy(g);
         }
 
         

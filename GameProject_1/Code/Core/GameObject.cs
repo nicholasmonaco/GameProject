@@ -225,10 +225,9 @@ namespace GameProject.Code.Core {
 
         private void Dispose() {
             foreach(Component comp in _components) {
+                //Debug.Log("Destroyed " + comp);
                 comp.Destroy();
             }
-
-            Debug.Log("messed with gameobjecy dispose");
 
             // Okay, this is some cursed programming.
             // For the class, get all of the global variables. Yeah, all of them.

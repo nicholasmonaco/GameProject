@@ -17,7 +17,7 @@ namespace GameProject.Code.Prefabs {
 
             SpriteRenderer overlayIcon = AddComponent<SpriteRenderer>();
             overlayIcon.DrawLayer = DrawLayer.ID["HUD"];
-            overlayIcon.OrderInLayer = 56;
+            overlayIcon.OrderInLayer = 57;
 
             MinimapTile tile = AddComponent<MinimapTile>();
             tile.SetSpriteRenderers(baseIcon, overlayIcon);

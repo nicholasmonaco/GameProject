@@ -14,11 +14,31 @@ namespace GameProject.Code.Prefabs {
 
             transform.Parent = GameManager.MainCanvas.transform;
             transform.LocalPosition = new Vector3(165, 100, 0);
-            transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
             
 
-            MinimapController mc = AddComponent<MinimapController>();
+            GameObject minimapHolder = Instantiate<GameObject>(transform.Position, transform);
+            minimapHolder.transform.LocalPosition = Vector3.Zero;
+            minimapHolder.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
+
+            MinimapController mc = minimapHolder.AddComponent<MinimapController>();
             mc.InitMinimap();
+
+            GameObject curRoomHighlighter = Instantiate<GameObject>(transform.Position, transform);
+            curRoomHighlighter.transform.LocalPosition = Vector3.Zero;
+            curRoomHighlighter.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
+            SpriteRenderer s = curRoomHighlighter.AddComponent<SpriteRenderer>();
+            s.Sprite = Resources.Sprite_MinimapIcons[MinimapIcon.Current];
+            s.DrawLayer = DrawLayer.ID["HUD"];
+            s.OrderInLayer = 56;
+
+            GameObject background = Instantiate<GameObject>(transform.Position, transform);
+            background.transform.LocalPosition = Vector3.Zero;
+            //background.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
+            s = background.AddComponent<SpriteRenderer>();
+            s.Sprite = Resources.Sprite_MinimapBackground;
+            s.DrawLayer = DrawLayer.ID["HUD"];
+            s.OrderInLayer = 50;
+
         }
 
     }

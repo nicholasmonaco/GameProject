@@ -16,6 +16,43 @@ namespace GameProject.Code.Scripts.Components {
 
 
         public Direction DoorDirection;
+        private DoorType _doorType = DoorType.Normal;
+        public SpriteRenderer DoorRenderer;
+        private SpriteRenderer _secondaryRenderer;
+
+
+        public void SwitchDoorType(DoorType newType) {
+            switch (_doorType) {
+                default:
+                    break;
+                case DoorType.Boss:
+                    Destroy(_secondaryRenderer.gameObject);
+                    break;
+            }
+
+            _doorType = newType;
+            DoorRenderer.Sprite = Resources.Sprites_DoorFrames[newType];
+
+            switch (newType) {
+                default:
+                    break;
+                case DoorType.Boss:
+                    GameObject eyes = Instantiate<GameObject>(transform.Position, transform);
+                    _secondaryRenderer = eyes.AddComponent<SpriteRenderer>();
+                    _secondaryRenderer.DrawLayer = DoorRenderer.DrawLayer;
+                    _secondaryRenderer.OrderInLayer = 27;
+                    eyes.transform.Rotation = transform.Rotation;
+                    eyes.transform.LocalPosition += (DoorDirection.GetDirectionPoint().ToVector2() * new Vector2(12, 12)).ToVector3();
+
+                    SpriteAnimator anim = eyes.AddComponent<SpriteAnimator>();
+                    anim.InitAnimation(_secondaryRenderer, Resources.Sprites_BossDoorEyeAnim.Count);
+                    for(int i=0;i< Resources.Sprites_BossDoorEyeAnim.Count; i++) {
+                        anim.AddFrame(Resources.Sprites_BossDoorEyeAnim[i], 0.4f); //duration of 0.4 seconds per frame
+                    }
+                    anim.StartAnimating_Ponging();
+                    break;
+            }
+        }
 
 
         public override void OnTriggerStay2D(Collider2D other) {
@@ -58,11 +95,15 @@ namespace GameProject.Code.Scripts.Components {
                     float timer = timer_max;
                     bool playerTeleported = false;
                     Vector3 origPos = Camera.main.transform.Position;
+                    Point mult = ((new Point(additive.X * -1, additive.Y * -1)) - GameManager.Map.CurrentGridPos) * MinimapController.MinimapIconSize;
+                    Vector3 origMMPos = GameManager.Minimap.transform.LocalPosition;
+                    Vector3 nextMMPos = mult.ToVector2().ToVector3() * GameManager.Minimap.transform.LocalScale;
 
-                    while(timer > 0) {
+                    while (timer > 0) {
                         timer -= Time.deltaTime;
                         yield return new WaitForEndOfFrame();
                         Camera.main.transform.Position = Vector3.SmoothStep(nextRoom.transform.Position, origPos, timer / timer_max);
+                        GameManager.Minimap.transform.LocalPosition = Vector3.SmoothStep(nextMMPos, origMMPos, timer / timer_max);
 
                         if(!playerTeleported && timer <= timer_max / 2f) {
                             // teleport player to opposite door point
@@ -73,6 +114,7 @@ namespace GameProject.Code.Scripts.Components {
 
                     yield return new WaitForEndOfFrame();
                     Camera.main.transform.Position = nextRoom.transform.Position;
+                    GameManager.Minimap.transform.LocalPosition = nextMMPos;
 
                     break;
                 default:
@@ -88,6 +130,9 @@ namespace GameProject.Code.Scripts.Components {
 
             // set real current room position
             GameManager.Map.SetCurrentRoomInDirection(additive);
+
+            // update minimap
+            GameManager.Minimap.ShiftDirection(GameManager.Map.CurrentGridPos);
 
             // resume player movement
             GameManager.Player.FreezeMovement = false;

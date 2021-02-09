@@ -34,6 +34,7 @@ namespace GameProject.Code.Core {
         public static PlayerController Player;
         public static Transform PlayerTransform => Player.transform;
         public static MapManager Map;
+        public static MinimapController Minimap;
 
 
 

@@ -49,7 +49,7 @@ namespace GameProject.Code.Core.Components {
         public override void Draw(SpriteBatch sb) {
             // We'll probably change how this works with the quad rendering thing
             // At that point, honestly just make a new class for this that does that and for Transforms that uses quaternions
-
+            
             // While this doesnt fully implement quaternions, it is technically possible, it would just take a toooon of math. Just do it later with quads.
             sb.Draw(Sprite, 
                     transform.Position.ToVector2(), 

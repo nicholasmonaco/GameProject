@@ -9,6 +9,8 @@ namespace GameProject.Code.Scripts.Components {
     public class MinimapTile : Component {
         public MinimapTile(GameObject attached) : base(attached) { }
 
+        public Point RepPoint { get; private set; }
+
         private SpriteRenderer _baseRend;
         private SpriteRenderer _iconRend;
 
@@ -18,14 +20,29 @@ namespace GameProject.Code.Scripts.Components {
         }
 
 
-        public void InitMinimapTile(MinimapIcon overlayTile) {
+        public void InitMinimapTile(MinimapIcon overlayTile, Point respectiveGridPoint) {
+            RepPoint = respectiveGridPoint;
+
             _baseRend.Sprite = Resources.Sprite_MinimapIcons[MinimapIcon.Unexplored];
 
-            if(overlayTile == MinimapIcon.Normal) {
+            if(!Resources.Sprite_MinimapIcons.ContainsKey(overlayTile)) {
                 _iconRend.Destroy();
+                _iconRend = null;
             } else {
-                _iconRend.Sprite = Resources.Sprite_MinimapIcons[MinimapIcon.Unexplored];
+                _iconRend.Sprite = Resources.Sprite_MinimapIcons[overlayTile];
+                _iconRend.Color = Color.Transparent;
             }
+
+            _baseRend.Color = Color.Transparent;
+        }
+
+        public void SetExplored() {
+            _baseRend.Sprite = Resources.Sprite_MinimapIcons[MinimapIcon.Explored];
+        }
+
+        public void SetSeen() {
+            _baseRend.Color = Color.White;
+            if(_iconRend != null) _iconRend.Color = Color.White;
         }
 
     }

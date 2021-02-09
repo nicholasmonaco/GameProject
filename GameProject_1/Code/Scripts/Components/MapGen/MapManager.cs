@@ -55,7 +55,7 @@ namespace GameProject.Code.Scripts.Components {
 
 
             // Define map generation values
-            int minRooms = 5 /*+ GetRandomRoomsForFloor()*/;
+            int minRooms = 7 /*+ GetRandomRoomsForFloor()*/;
             int maxRooms = 10;
             
 
@@ -208,10 +208,24 @@ namespace GameProject.Code.Scripts.Components {
 
             CurrentGridPos = new Point(0, 0);
             CurrentRoom = RoomGrid[CurrentGridPos];
+            CurrentRoom.RoomType = RoomType.Starting;
+
+            List<(RoomType, RoomStyle, DoorType)> neededRooms = new List<(RoomType, RoomStyle, DoorType)>() {
+                (RoomType.Boss, RoomStyle.QuarantineLevel_01, DoorType.Boss), 
+                (RoomType.Item, RoomStyle.Item, DoorType.Item) 
+            };
 
             foreach(Point pos in RoomGrid.Keys) {
-                RoomGrid[pos].DeleteUnconnectedDoors();
+                Room room = RoomGrid[pos];
+                room.DeleteUnconnectedDoors();
                 //RoomGrid[pos].GenerateRoomLayout();
+
+                if(neededRooms.Count > 0 && room.Doors.Count == 1 && room.RoomType == RoomType.Normal) {
+                    int index = neededRooms.Count - 1;
+                    room.ResetType(neededRooms[index].Item1, neededRooms[index].Item2, neededRooms[index].Item3);
+                    Debug.Log($"Created {neededRooms[index].Item1} room at {pos}");
+                    neededRooms.RemoveAt(index);
+                }
             }
 
             foreach (Point pos in RoomGrid.Keys) {

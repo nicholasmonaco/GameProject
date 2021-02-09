@@ -34,7 +34,7 @@ namespace GameProject {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             GameManager.SetMainGame(this);
-            GameManager.WorldRandom = new System.Random(5); //Move this later to work with seed
+            GameManager.WorldRandom = new System.Random(); //Move this later to work with seed
 
             Window.Title = "Baton Rouge";
 

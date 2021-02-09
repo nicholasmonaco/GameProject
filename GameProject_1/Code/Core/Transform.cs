@@ -176,7 +176,7 @@ namespace GameProject.Code.Core {
 
         public void UpdateChildren() {
             foreach(Transform t in _children) {
-                t.Position = t.Position;
+                t.LocalPosition = t.LocalPosition;
             }
         }
 
@@ -285,12 +285,20 @@ namespace GameProject.Code.Core {
 
 
 
-        // Transforms from local space to world space
+        /// <summary>
+        /// Transforms a point from local space into world space.
+        /// </summary>
+        /// <param name="point">The point to transform</param>
+        /// <returns>The point's position in world space</returns>
         public Vector3 TransformPoint(Vector3 point) {
             return Position + point;
         }
 
-        // Transforms from world space to local space
+        /// <summary>
+        /// Transforms a point from world space in to local space.
+        /// </summary>
+        /// <param name="point">The point to transform</param>
+        /// <returns>The point's position in local space</returns>
         public Vector3 InverseTransformPoint(Vector3 point) {
 
             return point - Position;

@@ -59,3 +59,15 @@ C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Minimap\Minimap_Current.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Minimap\Minimap_Explored.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Minimap\Minimap_Unexplored.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Minimap\Background.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Door_Item.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Door_QuarantineZone_Base.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Door_Boss.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Boss_Eyes\BossEyes_0.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Boss_Eyes\BossEyes_1.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Boss_Eyes\BossEyes_2.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Boss_Eyes\BossEyes_3.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Boss_Eyes\BossEyes_4.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Boss_Eyes\BossEyes_5.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Minimap\Icon_Boss.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Minimap\Icon_Item.xnb

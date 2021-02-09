@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using GameProject.Code.Scripts.Components.Entity;
 using GameProject.Code.Scripts.Components;
+using GameProject.Code.Scripts.Util;
 
 namespace GameProject.Code.Core {
     
@@ -24,7 +25,10 @@ namespace GameProject.Code.Core {
         public static Dictionary<RoomStyle, List<Texture2D>> Sprites_RoomCorners;
 
         public static Texture2D Sprite_Door_Inside;
-        public static Texture2D Sprite_Door_Normal_Base;
+        public static Dictionary<DoorType, Texture2D> Sprites_DoorFrames;
+
+        public static List<Texture2D> Sprites_BossDoorEyeAnim;
+
 
         public static Texture2D Sprite_Bullet_Standard;
 
@@ -32,6 +36,7 @@ namespace GameProject.Code.Core {
 
         public static Dictionary<Pickup, Texture2D> Sprite_Pickups;
 
+        public static Texture2D Sprite_MinimapBackground;
         public static Dictionary<MinimapIcon, Texture2D> Sprite_MinimapIcons;
 
         public static SpriteFont Font_Debug;
@@ -59,10 +64,32 @@ namespace GameProject.Code.Core {
                 content.Load<Texture2D>("Textures/Level/Wall_2-01"),
                 content.Load<Texture2D>("Textures/Level/Wall_2-02") });
 
+            Sprites_RoomCorners.Add(RoomStyle.Item, new List<Texture2D>(2) {
+                content.Load<Texture2D>("Textures/Level/Wall_2-01"),
+                content.Load<Texture2D>("Textures/Level/Wall_2-02") });
+
+            Sprites_RoomCorners.Add(RoomStyle.Shop, new List<Texture2D>(2) {
+                content.Load<Texture2D>("Textures/Level/Wall_2-01"),
+                content.Load<Texture2D>("Textures/Level/Wall_2-02") });
+
 
 
             Sprite_Door_Inside = content.Load<Texture2D>("Textures/Level/Door/Door_Inside");
-            Sprite_Door_Normal_Base = content.Load<Texture2D>("Textures/Level/Door/Door_Regular_Base");
+
+            Sprites_DoorFrames = new Dictionary<DoorType, Texture2D>(3);
+            Sprites_DoorFrames.Add(DoorType.Item, content.Load<Texture2D>("Textures/Level/Door/Door_Item"));
+            Sprites_DoorFrames.Add(DoorType.Boss, content.Load<Texture2D>("Textures/Level/Door/Door_Boss"));
+            Sprites_DoorFrames.Add(DoorType.Normal, content.Load<Texture2D>("Textures/Level/Door/Door_QuarantineZone_Base"));
+
+
+            Sprites_BossDoorEyeAnim = new List<Texture2D>(6);
+            Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_0"));
+            Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_1"));
+            Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_2"));
+            Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_3"));
+            Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_4"));
+            Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_5"));
+
 
             Sprite_Bullet_Standard = content.Load<Texture2D>("Textures/Bullet/PhotonShot");
 
@@ -77,10 +104,14 @@ namespace GameProject.Code.Core {
             Sprite_Pickups.Add(Pickup.Coin_5, content.Load<Texture2D>("Textures/Pickup/Coin_5"));
             Sprite_Pickups.Add(Pickup.PowerCell, content.Load<Texture2D>("Textures/Pickup/EnergyCell"));
 
+            Sprite_MinimapBackground = content.Load<Texture2D>("Textures/UI/Minimap/Background");
+
             Sprite_MinimapIcons = new Dictionary<MinimapIcon, Texture2D>(3); //change when all icons are sprited
             Sprite_MinimapIcons.Add(MinimapIcon.Current, content.Load<Texture2D>("Textures/UI/Minimap/Minimap_Current"));
             Sprite_MinimapIcons.Add(MinimapIcon.Explored, content.Load<Texture2D>("Textures/UI/Minimap/Minimap_Explored"));
             Sprite_MinimapIcons.Add(MinimapIcon.Unexplored, content.Load<Texture2D>("Textures/UI/Minimap/Minimap_Unexplored"));
+            Sprite_MinimapIcons.Add(MinimapIcon.Item, content.Load<Texture2D>("Textures/UI/Minimap/Icon_Item"));
+            Sprite_MinimapIcons.Add(MinimapIcon.Boss, content.Load<Texture2D>("Textures/UI/Minimap/Icon_Boss"));
 
 
 

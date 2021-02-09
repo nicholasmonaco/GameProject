@@ -41,11 +41,14 @@ namespace GameProject.Code.Scripts.Components {
         public bool Beaten = true;
         public bool RevealedOnMinimap = false;
         public RoomType RoomType = RoomType.Normal;
+        public RoomStyle RoomStyle = RoomStyle.QuarantineLevel_01;
+
 
 
 
         public void GenerateRoom() {
             Doors = new Dictionary<Direction, DoorController>(4);
+            RoomType = RoomType.Normal;
 
             for (int x = -1; x < 2; x += 2) {
                 for (int y = -1; y < 2; y += 2) {
@@ -77,6 +80,24 @@ namespace GameProject.Code.Scripts.Components {
                 }
             }
 
+        }
+
+        public void ResetType(RoomType type, RoomStyle style, DoorType doorType) {
+            RoomType = type;
+            RoomStyle = style;
+            
+            //change corner pictures
+            
+            //change door sprites
+            foreach(Direction d in Doors.Keys) {
+                if (Resources.Sprites_DoorFrames.ContainsKey(doorType)) {
+                    Doors[d].SwitchDoorType(doorType);
+                    GameManager.Map.RoomGrid[GridPos + d.GetDirectionPoint()].Doors[d.InvertDirection()].SwitchDoorType(doorType);
+                } else {
+                    Doors[d].SwitchDoorType(DoorType.Normal);
+                    GameManager.Map.RoomGrid[GridPos + d.GetDirectionPoint()].Doors[d.InvertDirection()].SwitchDoorType(DoorType.Normal);
+                }
+            }
         }
 
         public void SetDoor(Direction dir, bool isDoor) {
@@ -114,14 +135,16 @@ namespace GameProject.Code.Scripts.Components {
                 door.transform.Rotation = rotation;
 
                 SpriteRenderer sr = door.AddComponent<SpriteRenderer>();
-                sr.Sprite = Resources.Sprite_Door_Normal_Base;
+
+                sr.Sprite = Resources.Sprites_DoorFrames[DoorType.Normal];
                 sr.DrawLayer = DrawLayer.ID["WorldStructs"];
                 sr.OrderInLayer = 25;
+                
 
-                sr = door.AddComponent<SpriteRenderer>();
-                sr.Sprite = Resources.Sprite_Door_Inside;
-                sr.DrawLayer = DrawLayer.ID["WorldStructs"];
-                sr.OrderInLayer = 20;
+                SpriteRenderer isr = door.AddComponent<SpriteRenderer>();
+                isr.Sprite = Resources.Sprite_Door_Inside;
+                isr.DrawLayer = DrawLayer.ID["WorldStructs"];
+                isr.OrderInLayer = 20;
 
                 Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(10, -22), new Vector2(-10, -22) };
                 PolygonCollider2D pc = door._components.AddReturn(new PolygonCollider2D(door, doorBounds, false)) as PolygonCollider2D;
@@ -130,7 +153,8 @@ namespace GameProject.Code.Scripts.Components {
                 DoorController dc = door.AddComponent<DoorController>();
                 dc.DoorDirection = dir;
                 Doors.Add(dir, dc);
-                Debug.Log("new door added: " + dir);
+
+                dc.DoorRenderer = sr; // Frame Renderer
 
             } else {
                 GameObject doorFiller = Instantiate<GameObject>();
@@ -141,6 +165,7 @@ namespace GameProject.Code.Scripts.Components {
                 Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(11, -22), new Vector2(-11, -22) };
                 PolygonCollider2D pc = doorFiller._components.AddReturn(new PolygonCollider2D(doorFiller, doorBounds, false)) as PolygonCollider2D;
                 pc.IsTrigger = false;
+                doorFiller.Layer = (int)LayerID.EdgeWall;
             }
         }
 
@@ -152,7 +177,7 @@ namespace GameProject.Code.Scripts.Components {
             }
 
             foreach(Direction d in possible) {
-                SetDoor(d, GameManager.WorldRandom.Next(0, 2) == 0 ? false : true);
+                SetDoor(d, GameManager.WorldRandom.Next(0, 3) == 0 ? false : true);
             }
         }
 
@@ -193,12 +218,15 @@ namespace GameProject.Code.Scripts.Components {
 
         public void DeleteUnconnectedDoors() {
             foreach(Direction dir in Doors.Keys) {
-                Debug.Log($"{GridPos}, {dir} = {GameManager.Map.RoomAtGridCoords(GridPos + dir.GetDirectionPoint())}");
-
                 if (!GameManager.Map.RoomAtGridCoords(GridPos + dir.GetDirectionPoint())) {
                     Destroy(Doors[dir].gameObject);
                     Doors.Remove(dir);
-                    //roll to see if we want a connector there if there's also a door in the other room
+
+                    
+                    //roll to see if we want a connector there if there's also a door in the other room?
+                }else if (!GameManager.Map.RoomGrid[GridPos + dir.GetDirectionPoint()].Doors.ContainsKey(dir.InvertDirection())) {
+                    Destroy(Doors[dir].gameObject);
+                    Doors.Remove(dir);
                 }
             }
 

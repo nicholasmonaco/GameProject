@@ -6,7 +6,16 @@
   <SourceFiles>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Fonts/arial.spritefont</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Bullet/PhotonShot.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Boss_Eyes/BossEyes_0.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Boss_Eyes/BossEyes_1.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Boss_Eyes/BossEyes_2.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Boss_Eyes/BossEyes_3.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Boss_Eyes/BossEyes_4.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Boss_Eyes/BossEyes_5.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Door_Boss.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Door_Inside.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Door_Item.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Door_QuarantineZone_Base.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Door/Door_Regular_Base.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Wall_1-01.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Level/Wall_1-02.png</File>
@@ -23,12 +32,27 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/EnergyCell.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/Heart_Half.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/Pickup/Heart_Whole.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Background.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Icon_Boss.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Icon_Item.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Minimap_Current.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Minimap_Explored.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Minimap/Minimap_Unexplored.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project 1/GameProject_1/GameProject_1/Content/Textures/UI/Reticle_0.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

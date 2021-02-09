@@ -30,7 +30,7 @@ namespace GameProject.Code.Core.Components {
 
         public override void OnDestroy() {
             GameManager.CurrentScene.Collider2Ds.Remove(this);
-            AttachedRigidbody.Subcolliders.Remove(this);
+            AttachedRigidbody?.Subcolliders.Remove(this);
         }
 
         public override void PreAwake() {
