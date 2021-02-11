@@ -71,3 +71,9 @@ C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Boss_Eyes\BossEyes_5.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Minimap\Icon_Boss.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Minimap\Icon_Item.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Invisible.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\BonusHeart_Half.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\BonusHeart_Whole.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Heart_Empty.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Heart_Half.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project 1\GameProject_1\GameProject_1\bin\Debug\netcoreapp3.1\Content\Textures\UI\Heart_Whole.xnb

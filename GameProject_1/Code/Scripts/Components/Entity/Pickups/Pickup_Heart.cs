@@ -33,11 +33,11 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         protected override bool CanPickup() {
-            return PlayerStats.CurHealth_Red <= PlayerStats.MaxHealth_Red;
+            return !PlayerStats.FullRedHealth;
         }
 
         protected override void OnPickup() {
-            PlayerStats.CurHealth_Red += _healthRestore;
+            PlayerStats.ChangeRedHealth(_healthRestore);
         }
     }
 }

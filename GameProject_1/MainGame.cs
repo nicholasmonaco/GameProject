@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameProject.Code.Core;
+using GameProject.Code.Core.Components;
 using GameProject.Code.Scenes;
 
 namespace GameProject {
@@ -26,15 +27,19 @@ namespace GameProject {
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
 
-            _graphics.PreferredBackBufferWidth = 480 * 2;
-            _graphics.PreferredBackBufferHeight = 320 * 2;
+            //_graphics.PreferredBackBufferWidth = 480 * 2;
+            //_graphics.PreferredBackBufferHeight = 320 * 2;
+            _graphics.PreferredBackBufferWidth = (int)Camera.ConstantResolution.X * 2;
+            _graphics.PreferredBackBufferHeight = (int)Camera.ConstantResolution.Y * 2;
             _graphics.ApplyChanges();
         }
 
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             GameManager.SetMainGame(this);
-            GameManager.WorldRandom = new System.Random(); //Move this later to work with seed
+            int seed = new System.Random().Next();
+            GameManager.WorldRandom = new System.Random(seed); //Move this later to work with seed
+            Debug.Log($"WorldRandom seed: {seed}");
 
             Window.Title = "Baton Rouge";
 
@@ -42,8 +47,8 @@ namespace GameProject {
             Input.OnFullscreenToggle = () => {
                 bool fullscreen = !_graphics.IsFullScreen;
                 _graphics.IsFullScreen = fullscreen;
-                int width = fullscreen ? GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width : 480 * 2;
-                int height = fullscreen ? GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height : 320 * 2;
+                int width = fullscreen ? GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width : (int)Camera.ConstantResolution.X * 2;
+                int height = fullscreen ? GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height : (int)Camera.ConstantResolution.Y * 2;
                 _graphics.PreferredBackBufferWidth = width; //These two actually change the resolution of the window
                 _graphics.PreferredBackBufferHeight = height;
                 //GraphicsDevice.Viewport = new Viewport(0, 0, width - width % 480, height - height % 320);

@@ -33,6 +33,7 @@ namespace GameProject.Code.Scripts.Components {
         public LevelID TextureID = 0;
         public int[] CornerTextureIDs;
         public Dictionary<Direction, DoorController> Doors;
+        private Dictionary<Direction, GameObject> _doorFillers;
         public Dictionary<ObstacleID, Vector2[]> ObstaclePositions;
         //public List<Enemy> Enemies;
         //public List<Entity> Entities; //this includes pickups that are prespawned
@@ -48,6 +49,7 @@ namespace GameProject.Code.Scripts.Components {
 
         public void GenerateRoom() {
             Doors = new Dictionary<Direction, DoorController>(4);
+            _doorFillers = new Dictionary<Direction, GameObject>(4);
             RoomType = RoomType.Normal;
 
             for (int x = -1; x < 2; x += 2) {
@@ -128,6 +130,8 @@ namespace GameProject.Code.Scripts.Components {
             // Make sure to not make a door if there is literally no room in that direction at all.
             //if (GameManager.Map.RoomAtGridCoords(GridPos + gridDir)) {
             if (isDoor) {
+                if (Doors.ContainsKey(dir)) return;
+
                 // Generate door if relevant
                 GameObject door = Instantiate<GameObject>();
                 door.transform.Parent = transform;
@@ -152,11 +156,17 @@ namespace GameProject.Code.Scripts.Components {
 
                 DoorController dc = door.AddComponent<DoorController>();
                 dc.DoorDirection = dir;
-                Doors.Add(dir, dc);
-
                 dc.DoorRenderer = sr; // Frame Renderer
 
+                if (_doorFillers.ContainsKey(dir)) {
+                    Destroy(_doorFillers[dir]);
+                    _doorFillers.Remove(dir);
+                }
+                Doors.Add(dir, dc);
+
             } else {
+                if (_doorFillers.ContainsKey(dir)) return;
+                
                 GameObject doorFiller = Instantiate<GameObject>();
                 doorFiller.transform.Parent = transform;
                 doorFiller.transform.LocalPosition = pos;
@@ -166,6 +176,12 @@ namespace GameProject.Code.Scripts.Components {
                 PolygonCollider2D pc = doorFiller._components.AddReturn(new PolygonCollider2D(doorFiller, doorBounds, false)) as PolygonCollider2D;
                 pc.IsTrigger = false;
                 doorFiller.Layer = (int)LayerID.EdgeWall;
+
+                if (Doors.ContainsKey(dir)) {
+                    Destroy(Doors[dir].gameObject);
+                    Doors.Remove(dir);
+                } 
+                _doorFillers.Add(dir, doorFiller);
             }
         }
 
@@ -192,6 +208,7 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         public void ForceSetDoors(int doorCount) {
+            //change this to genereate between doorCount and 4 rooms
             int leftToGen = doorCount;
             List<Direction> possible = new List<Direction>() { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
 

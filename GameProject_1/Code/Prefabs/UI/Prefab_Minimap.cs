@@ -13,19 +13,22 @@ namespace GameProject.Code.Prefabs {
             Name = "Minimap";
 
             transform.Parent = GameManager.MainCanvas.transform;
-            transform.LocalPosition = new Vector3(165, 100, 0);
+            //transform.LocalPosition = new Vector3(165, 100, 0);
+            UpdatePosition();
+
+            GameManager.MainCanvas.ExtentsUpdate += UpdatePosition;
             
 
             GameObject minimapHolder = Instantiate<GameObject>(transform.Position, transform);
             minimapHolder.transform.LocalPosition = Vector3.Zero;
-            minimapHolder.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
+            //minimapHolder.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
 
             MinimapController mc = minimapHolder.AddComponent<MinimapController>();
             mc.InitMinimap();
 
             GameObject curRoomHighlighter = Instantiate<GameObject>(transform.Position, transform);
             curRoomHighlighter.transform.LocalPosition = Vector3.Zero;
-            curRoomHighlighter.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
+            //curRoomHighlighter.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
             SpriteRenderer s = curRoomHighlighter.AddComponent<SpriteRenderer>();
             s.Sprite = Resources.Sprite_MinimapIcons[MinimapIcon.Current];
             s.DrawLayer = DrawLayer.ID["HUD"];
@@ -39,6 +42,12 @@ namespace GameProject.Code.Prefabs {
             s.DrawLayer = DrawLayer.ID["HUD"];
             s.OrderInLayer = 50;
 
+        }
+
+        private void UpdatePosition() {
+            transform.LocalPosition = new Vector3(GameManager.MainCanvas.Extents.X - 50,
+                                                  GameManager.MainCanvas.Extents.Y - 50,
+                                                  0);
         }
 
     }

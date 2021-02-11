@@ -10,6 +10,7 @@ using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 using GameProject.Code.Prefabs;
 using Microsoft.Xna.Framework;
+using GameProject.Code.Scripts;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Util;
 using GameProject.Code.Scripts.Components.Entity;
@@ -39,10 +40,17 @@ namespace GameProject.Code.Scenes {
         }
 
         private IEnumerator StartLevel() {
-            yield return StartCoroutine(GameManager.Map.GenerateLevel(LevelID.QuarantineLevel)); //replace with levelID variable later
+            while(GameManager.Map.Generated == false) {
+                yield return StartCoroutine(GameManager.Map.GenerateLevel(LevelID.QuarantineLevel)); //replace with levelID variable later
+            }
 
             // Create minimap
             Instantiate(new Prefab_Minimap());
+
+            // Create player health bar
+            Instantiate(new Prefab_PlayerHealthBar());
+            yield return null;
+            PlayerStats.SetHealth(32, 0); //set with character stats later
 
             // Spawn player
             //GameObjects.Add(new Prefab_Player());

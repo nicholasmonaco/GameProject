@@ -21,6 +21,7 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_TestArrowSprite;
         public static Texture2D Sprite_TestSquare;
         public static Texture2D Sprite_Pixel;
+        public static Texture2D Sprite_Invisible;
 
         public static Dictionary<RoomStyle, List<Texture2D>> Sprites_RoomCorners;
 
@@ -33,6 +34,7 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_Bullet_Standard;
 
         public static Texture2D[] Sprite_UI_Reticles;
+        public static Dictionary<HeartContainer, Texture2D> Sprites_HeartContainers;
 
         public static Dictionary<Pickup, Texture2D> Sprite_Pickups;
 
@@ -56,6 +58,7 @@ namespace GameProject.Code.Core {
             Sprite_TestArrowSprite = content.Load<Texture2D>("Textures/Misc/Arrow");
             Sprite_TestSquare = content.Load<Texture2D>("Textures/Misc/Square_01");
             Sprite_Pixel = content.Load<Texture2D>("Textures/Misc/Pixel");
+            Sprite_Invisible = content.Load<Texture2D>("Textures/Misc/Invisible");
 
 
             Sprites_RoomCorners = new Dictionary<RoomStyle, List<Texture2D>>(1);
@@ -95,6 +98,15 @@ namespace GameProject.Code.Core {
 
             Sprite_UI_Reticles = new Texture2D[1];
             Sprite_UI_Reticles[0] = content.Load<Texture2D>("Textures/UI/Reticle_0");
+
+            Sprites_HeartContainers = new Dictionary<HeartContainer, Texture2D>(6);
+            Sprites_HeartContainers.Add(HeartContainer.Invisible, Sprite_Invisible);
+            Sprites_HeartContainers.Add(HeartContainer.Empty, content.Load<Texture2D>("Textures/UI/Heart_Empty"));
+            Sprites_HeartContainers.Add(HeartContainer.Red_Full, content.Load<Texture2D>("Textures/UI/Heart_Whole"));
+            Sprites_HeartContainers.Add(HeartContainer.Red_Half, content.Load<Texture2D>("Textures/UI/Heart_Half"));
+            Sprites_HeartContainers.Add(HeartContainer.Bonus_Full, content.Load<Texture2D>("Textures/UI/BonusHeart_Whole"));
+            Sprites_HeartContainers.Add(HeartContainer.Bonus_Half, content.Load<Texture2D>("Textures/UI/BonusHeart_Half"));
+
 
             Sprite_Pickups = new Dictionary<Pickup, Texture2D>(6);//change when all pickups are sprited
             Sprite_Pickups.Add(Pickup.Heart_Half, content.Load<Texture2D>("Textures/Pickup/Heart_Half"));

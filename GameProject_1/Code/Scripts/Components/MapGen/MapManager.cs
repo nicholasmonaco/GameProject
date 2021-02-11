@@ -23,6 +23,8 @@ namespace GameProject.Code.Scripts.Components {
         public Point CurrentGridPos;
         public bool ChangingRooms = false;
 
+        public bool Generated { get; private set; } = false;
+
         public Point GridPos_StartingRoom { get; private set; }
         public Point GridPos_BossRoom { get; private set; }
         public Point GridPos_ItemRoom { get; private set; }
@@ -36,6 +38,8 @@ namespace GameProject.Code.Scripts.Components {
 
         public IEnumerator GenerateLevel(LevelID level) {
             yield return null;
+
+            Generated = false;
 
             // All levels MUST have:
             //  Empty starting room
@@ -211,8 +215,9 @@ namespace GameProject.Code.Scripts.Components {
             CurrentRoom.RoomType = RoomType.Starting;
 
             List<(RoomType, RoomStyle, DoorType)> neededRooms = new List<(RoomType, RoomStyle, DoorType)>() {
-                (RoomType.Boss, RoomStyle.QuarantineLevel_01, DoorType.Boss), 
-                (RoomType.Item, RoomStyle.Item, DoorType.Item) 
+                (RoomType.Item, RoomStyle.Item, DoorType.Item),
+                (RoomType.Boss, RoomStyle.QuarantineLevel_01, DoorType.Boss)
+                // Boss room should always be last here, as it always will get first dibs.
             };
 
             foreach(Point pos in RoomGrid.Keys) {
@@ -220,22 +225,140 @@ namespace GameProject.Code.Scripts.Components {
                 room.DeleteUnconnectedDoors();
                 //RoomGrid[pos].GenerateRoomLayout();
 
-                if(neededRooms.Count > 0 && room.Doors.Count == 1 && room.RoomType == RoomType.Normal) {
+                if(neededRooms.Count > 0 && room.Doors.Count == 1 && room.RoomType == RoomType.Normal && DoesRoomHaveExactlyOneNeighbor(room.GridPos)) {
                     int index = neededRooms.Count - 1;
                     room.ResetType(neededRooms[index].Item1, neededRooms[index].Item2, neededRooms[index].Item3);
-                    Debug.Log($"Created {neededRooms[index].Item1} room at {pos}");
+                    //Debug.Log($"Created {neededRooms[index].Item1} room at {pos}");
                     neededRooms.RemoveAt(index);
                 }
             }
+
+            // If the needed rooms aren't all set, generate some extras to fix it
+            foreach((RoomType, RoomStyle, DoorType) needData in neededRooms) {
+                //Room targetRoom = FindNormalRoomWithout4Neighbors();
+
+                List<Direction> potentialSpawnDirs;
+                Room targetRoom = FindNormalRoomWithout4Neighbors_Modified(out potentialSpawnDirs);
+
+                if (targetRoom == null) {
+                    yield break; // Exits the coroutine without setting Generated to true, so it will run the coroutine again.
+                }
+
+                //List<Direction> potentialSpawnDirs = GetAvailableNeighborPositions(targetRoom.GridPos);
+                Direction createDirection = potentialSpawnDirs[GameManager.WorldRandom.Next(0, potentialSpawnDirs.Count)];
+
+                Point newPoint = targetRoom.GridPos + createDirection.GetDirectionPoint();
+                Room newRoom = Instantiate<Prefab_Room>(new Vector3(newPoint.X * RoomSize.X, newPoint.Y * RoomSize.Y, 0), transform).GetComponent<Room>();
+                newRoom.GridPos = newPoint;
+                newRoom.GenerateRoom();
+                newRoom.SetDoor(createDirection.InvertDirection(), true);
+                targetRoom.SetDoor(createDirection, true);
+                newRoom.ResetType(needData.Item1, needData.Item2, needData.Item3);
+
+                RoomGrid.Add(newPoint, newRoom);
+            }
+
 
             foreach (Point pos in RoomGrid.Keys) {
                 if(pos != CurrentGridPos) UnloadRoom(RoomGrid[pos]);
             }
 
+            Generated = true;
             Debug.Log("Map generated.");
 
             #endregion
         }
+
+
+
+        private Room FindNormalRoomWithout4Neighbors() {
+            foreach(Room room in RoomGrid.Values) {
+                if (room.RoomType == RoomType.Normal && 
+                    !(RoomGrid.ContainsKey(room.GridPos + Direction.Up.GetDirectionPoint()) &&
+                      RoomGrid.ContainsKey(room.GridPos + Direction.Down.GetDirectionPoint()) &&
+                      RoomGrid.ContainsKey(room.GridPos + Direction.Left.GetDirectionPoint()) &&
+                      RoomGrid.ContainsKey(room.GridPos + Direction.Right.GetDirectionPoint()))) return room;
+            }
+            return null;
+        }
+
+        private Room FindNormalRoomWithout4Neighbors_Modified(out List<Direction> availableSingleNeighborDirections) {
+            availableSingleNeighborDirections = null;
+
+            foreach (Room room in RoomGrid.Values) {
+                // If the room is normal, we can generate off of it
+                if(room.RoomType == RoomType.Normal) {
+
+                    // Does the room have any potential rooms it can spawn that will only be neightboring this room?
+                    availableSingleNeighborDirections = GetAvailableNeighborPositionsWithOneAdjacent(room.GridPos);
+                    // If so, we did it.
+                    if (availableSingleNeighborDirections.Count > 0) return room;
+
+
+                    //bool up = !RoomGrid.ContainsKey(room.GridPos + Direction.Up.GetDirectionPoint()); //There is no neighbor up
+                    //if (up) {
+                        
+                    //}
+
+                    //bool down = !RoomGrid.ContainsKey(room.GridPos + Direction.Down.GetDirectionPoint());
+                    //if (down) {
+                    //    availableSingleNeighborDirections = GetAvailableNeighborPositionsWithOneAdjacent(room.GridPos + Direction.Down.GetDirectionPoint());
+                    //    if (availableSingleNeighborDirections != null) return room;
+                    //}
+
+                    //bool left = !RoomGrid.ContainsKey(room.GridPos + Direction.Left.GetDirectionPoint());
+                    //if (left) {
+                    //    availableSingleNeighborDirections = GetAvailableNeighborPositionsWithOneAdjacent(room.GridPos + Direction.Left.GetDirectionPoint());
+                    //    if (availableSingleNeighborDirections != null) return room;
+                    //}
+
+                    //bool right = !RoomGrid.ContainsKey(room.GridPos + Direction.Right.GetDirectionPoint());
+                    //if (right) {
+                    //    availableSingleNeighborDirections = GetAvailableNeighborPositionsWithOneAdjacent(room.GridPos + Direction.Right.GetDirectionPoint());
+                    //    if (availableSingleNeighborDirections != null) return room;
+                    //}
+                }
+            }
+            return null;
+        }
+
+        private List<Direction> GetAvailableNeighborPositions(Point roomPos) {
+            List<Direction> possibleDirs = new List<Direction>(4) { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
+            List<Direction> emptyDirs = new List<Direction>(3);
+
+            for(int i=0;i<possibleDirs.Count;i++) {
+                if (!RoomGrid.ContainsKey(roomPos + possibleDirs[i].GetDirectionPoint())) {
+                    emptyDirs.Add(possibleDirs[i]);
+                }
+            }
+            return emptyDirs;
+        }
+
+        private List<Direction> GetAvailableNeighborPositionsWithOneAdjacent(Point roomPos) {
+            List<Direction> possibleDirs = new List<Direction>(4) { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
+            List<Direction> emptyDirs = new List<Direction>(3);
+
+            for (int i = 0; i < possibleDirs.Count; i++) {
+                Point potential = roomPos + possibleDirs[i].GetDirectionPoint();
+                if (!RoomGrid.ContainsKey(potential) && DoesRoomHaveExactlyOneNeighbor(potential)) {
+                    emptyDirs.Add(possibleDirs[i]);
+                }
+            }
+            return emptyDirs;
+        }
+
+        private bool DoesRoomHaveExactlyOneNeighbor(Point roomPos) {
+            int neighbors = 0;
+
+            neighbors += RoomGrid.ContainsKey(roomPos + Direction.Up.GetDirectionPoint()) ? 1 : 0;
+            neighbors += RoomGrid.ContainsKey(roomPos + Direction.Down.GetDirectionPoint()) ? 1 : 0;
+            neighbors += RoomGrid.ContainsKey(roomPos + Direction.Left.GetDirectionPoint()) ? 1 : 0;
+            neighbors += RoomGrid.ContainsKey(roomPos + Direction.Right.GetDirectionPoint()) ? 1 : 0;
+
+            return neighbors == 1;
+        }
+
+
 
         public Room LoadRoom(Point gridPoint) {
             Room room = RoomGrid[gridPoint];

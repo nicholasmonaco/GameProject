@@ -9,20 +9,23 @@ namespace GameProject.Code.Scripts.Components {
     public class Canvas : Component {
         public Canvas(GameObject attached) : base(attached) {
             GameManager.MainCanvas = this;
+
+            transform.WorldMatrixUpdateAction += UpdateExtents;
+
+            UpdateExtents();
         }
 
 
+        public Action ExtentsUpdate = () => {};
+        public Vector2 Extents { get; private set; } = Vector2.Zero;
 
-
-        //public override void Start() {
-        //    base.Start();
-        //    transform.Parent = Camera.main.transform;
-        //    transform.LocalPosition = Vector3.Zero;
-        //}
-
-        //public override void Update() {
+        private void UpdateExtents() {
+            Extents = new Vector2(transform.LocalPosition.X + GameManager.ViewOffset.X*2,
+                                  transform.LocalPosition.Y + GameManager.ViewOffset.Y*2);
             
-        //    //Debug.Log($"Canvas position: {transform.Parent.Position}");
-        //}
+            transform.UpdateChildren();
+            ExtentsUpdate();
+        }
+        
     }
 }

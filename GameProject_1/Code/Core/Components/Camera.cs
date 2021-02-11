@@ -22,8 +22,9 @@ namespace GameProject.Code.Core.Components {
         public Matrix ViewMatrix => transform.ViewMatrix;
 
         // At this resolution, the camera has a size of ConstantSize
-        public readonly Vector2 ConstantResolution = new Vector2(480, 320); // Default Monogame resolution: 800x480 px
-        
+        //public static readonly Vector2 ConstantResolution = new Vector2(480, 320); // Default Monogame resolution: 800x480 px
+        public static readonly Vector2 ConstantResolution = new Vector2(465, 305);
+
         public Vector2 CurrentResolution { 
             set {
                 float scaleFactor = value.Y / ConstantResolution.Y;
@@ -54,6 +55,7 @@ namespace GameProject.Code.Core.Components {
         public void ResetResolution() {
             CurrentResolution = GameManager.Resolution.ToVector2();
             transform.ViewChangeAction();
+            transform.UpdateChildren();
         }
 
 
