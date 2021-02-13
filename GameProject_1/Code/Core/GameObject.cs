@@ -217,6 +217,15 @@ namespace GameProject.Code.Core {
         }
 
 
+        public static GameObject Instantiate(GameObject obj) {
+            obj.transform.Parent = null;
+            obj.transform.Position = Vector3.Zero;
+
+            GameManager.CurrentScene.Instantiate(obj);
+            return obj;
+        }
+
+
         public static void Destroy(GameObject g) {
             GameManager.CurrentScene.GameObjects.Remove(g);
 
@@ -228,6 +237,7 @@ namespace GameProject.Code.Core {
                 //Debug.Log("Destroyed " + comp);
                 comp.Destroy();
             }
+            //_components.Clear();
 
             // Okay, this is some cursed programming.
             // For the class, get all of the global variables. Yeah, all of them.
@@ -235,7 +245,16 @@ namespace GameProject.Code.Core {
             PropertyInfo[] props = this.GetType().GetProperties(__bindingFlags);
             foreach (PropertyInfo property in props) {
                 if (!(property.PropertyType).IsValueType) {
-                    property.SetValue(this, null);
+                    //property.SetValue(this, null);
+
+                    MethodInfo[] info = property.GetAccessors(true);
+                    foreach (MethodInfo i in info) {
+                        if (i.ReturnType == typeof(void)) {
+                            // then it has a setter we can manipulate
+                            property.SetValue(this, null);
+                            break;
+                        }
+                    }
                 }
             }
         }

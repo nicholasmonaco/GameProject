@@ -18,6 +18,8 @@ namespace GameProject.Code.Core {
 
         public abstract void ApplyWorldMatrix(Transform worldTransform);
 
+        public abstract void Destroy();
+
 
 
         /// <summary>

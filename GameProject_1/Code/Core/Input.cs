@@ -41,6 +41,8 @@ namespace GameProject.Code.Core {
 
         public static Keys UI_Escape = Keys.Escape;
         public static Keys UI_Tab = Keys.Tab;
+
+        public static Keys Util_Reset = Keys.R;
         // End controls
 
         // Direct input properties
@@ -179,6 +181,15 @@ namespace GameProject.Code.Core {
                 OnTab_Released();
             }
 
+            // Reset
+            localVal = _keyboardState.IsKeyDown(Util_Reset);
+            lastLocalVal = _lastKeyboardState.IsKeyDown(Util_Reset);
+            if (localVal && !lastLocalVal) {
+                OnReset_Down();
+            } else if (!localVal && lastLocalVal) {
+                OnReset_Released();
+            }
+
             // Mouse Left
             localVal = _mouseState.LeftButton == ButtonState.Pressed;
             lastLocalVal = _lastMouseState.LeftButton == ButtonState.Pressed;
@@ -226,6 +237,9 @@ namespace GameProject.Code.Core {
         public static Action OnEscape_Released = _emptyAction;
         public static Action OnTab_Down = _emptyAction;
         public static Action OnTab_Released = _emptyAction;
+
+        public static Action OnReset_Down = _emptyAction;
+        public static Action OnReset_Released = _emptyAction;
 
         public static Action OnMouseLeft_Down = _emptyAction;
         public static Action OnMouseLeft_Released = _emptyAction;

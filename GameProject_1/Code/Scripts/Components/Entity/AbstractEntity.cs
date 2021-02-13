@@ -1,5 +1,6 @@
 ﻿using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Scripts.Util;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,10 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
 
+
+        public static GameObject GetEntityFromID(EntityID id) {
+            //todo
+            return new GameObject();
+        }
     }
 }

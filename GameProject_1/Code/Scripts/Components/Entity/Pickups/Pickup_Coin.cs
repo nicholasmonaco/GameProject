@@ -13,8 +13,10 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
         private int _moneyAmount;
 
-        public override void InitPickup(Pickup type) {
-            base.InitPickup(type);
+        public override void InitPickup(Pickup type, SpriteRenderer pickupRenderer) {
+            base.InitPickup(type, pickupRenderer);
+
+            DeathAction = () => { StartCoroutine(YScaleFade()); };
 
             switch (type) {
                 default:
@@ -30,6 +32,11 @@ namespace GameProject.Code.Scripts.Components.Entity {
             }
         }
 
+        private void CoinDeathAction() {
+            //disappear coin
+            //spawn sparkles
+            //play sfx
+        }
 
 
         protected override bool CanPickup() {

@@ -12,8 +12,8 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
         private int _keyCount;
 
-        public override void InitPickup(Pickup type) {
-            base.InitPickup(type);
+        public override void InitPickup(Pickup type, SpriteRenderer pickupRenderer) {
+            base.InitPickup(type, pickupRenderer);
 
             switch (type) {
                 default:

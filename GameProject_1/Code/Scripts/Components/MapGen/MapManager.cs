@@ -12,18 +12,25 @@ namespace GameProject.Code.Scripts.Components {
     public class MapManager : Component {
         public MapManager(GameObject attached) : base(attached) {
             GameManager.Map = this;
+
+            Input.OnReset_Down += OnResetPressed;
+            Input.OnReset_Released += OnResetReleased;
         }
 
 
         //public static Vector2 RoomSize = new Vector2(512, 216); //idk if this is right, check later
         public static Vector2 RoomSize = new Vector2(468, 312); //idk if this is right, check later
 
-        public Dictionary<Point, Room> RoomGrid;
+        public Dictionary<Point, Room> RoomGrid = null;
         public Room CurrentRoom { get; private set; }
         public Point CurrentGridPos;
         public bool ChangingRooms = false;
 
-        public bool Generated { get; private set; } = false;
+        private bool _resetDown = false;
+        private float _resetHoldTimer = 0;
+        private const float _resetTime = 2.3f;
+
+        public bool Generated { get; set; } = false;
 
         public Point GridPos_StartingRoom { get; private set; }
         public Point GridPos_BossRoom { get; private set; }
@@ -82,7 +89,7 @@ namespace GameProject.Code.Scripts.Components {
 
             #region Main Map Generation
 
-            RoomGrid = new Dictionary<Point, Room>();
+            if(RoomGrid == null) RoomGrid = new Dictionary<Point, Room>();
             bool mapGenned = false;
             bool forceRegen = false;
             int attempts = 1;
@@ -90,7 +97,12 @@ namespace GameProject.Code.Scripts.Components {
             while (!mapGenned) {
                 Debug.Log("Generating level: Attempt " + attempts);
 
+                foreach(Room oldRoom in RoomGrid.Values) {
+                    Debug.Log($"Destroyed room at {oldRoom.GridPos}");
+                    Destroy(oldRoom.gameObject);
+                }
                 RoomGrid.Clear();
+                //^^This is somehow leaving some part of the old map in place. stop it from doing that.
 
                 int targetRoomCount = GameManager.WorldRandom.Next(minRooms, maxRooms + 1);
                 int curRoomCount = 1;
@@ -252,6 +264,7 @@ namespace GameProject.Code.Scripts.Components {
                 newRoom.GridPos = newPoint;
                 newRoom.GenerateRoom();
                 newRoom.SetDoor(createDirection.InvertDirection(), true);
+                newRoom.FillEmptyDoorSlots();
                 targetRoom.SetDoor(createDirection, true);
                 newRoom.ResetType(needData.Item1, needData.Item2, needData.Item3);
 
@@ -260,7 +273,7 @@ namespace GameProject.Code.Scripts.Components {
 
 
             foreach (Point pos in RoomGrid.Keys) {
-                if(pos != CurrentGridPos) UnloadRoom(RoomGrid[pos]);
+                if (pos != CurrentGridPos) UnloadRoom(RoomGrid[pos]);
             }
 
             Generated = true;
@@ -358,6 +371,32 @@ namespace GameProject.Code.Scripts.Components {
             return neighbors == 1;
         }
 
+
+
+
+        public override void Update() {
+            ReloadMap();
+        }
+
+        private void ReloadMap() {
+            if (_resetDown) {
+                _resetHoldTimer += Time.deltaTime;
+                if (_resetHoldTimer >= _resetTime) {
+                    GameManager.CurrentScene.ResetScene();
+                    _resetHoldTimer = 0;
+                }
+            }else if (_resetHoldTimer != 0) {
+                _resetHoldTimer = 0;
+            }
+        }
+
+        private void OnResetPressed() {
+            _resetDown = true;
+        }
+
+        private void OnResetReleased() {
+            _resetDown = false;
+        }
 
 
         public Room LoadRoom(Point gridPoint) {

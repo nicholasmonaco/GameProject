@@ -1,6 +1,7 @@
 ﻿using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 using GameProject.Code.Scripts.Util;
+using GameProject.Code.Scripts.Components.Entity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -27,6 +28,9 @@ namespace GameProject.Code.Scripts.Components {
         //  RevealedOnMinimap
         //  MinimapIcon
 
+        public Point ObstacleTilemapSize = new Point(13, 7);
+        public static Vector2 ObstacleTileSize = new Vector2(26, 26);
+
 
         public Point GridPos;
 
@@ -34,10 +38,13 @@ namespace GameProject.Code.Scripts.Components {
         public int[] CornerTextureIDs;
         public Dictionary<Direction, DoorController> Doors;
         private Dictionary<Direction, GameObject> _doorFillers;
-        public Dictionary<ObstacleID, Vector2[]> ObstaclePositions;
-        //public List<Enemy> Enemies;
-        //public List<Entity> Entities; //this includes pickups that are prespawned
-        //public List<Pickups> Loot;
+
+        public TileMap<ObstacleID> ObstacleTilemap;
+
+        public List<AbstractEnemy> Enemies;
+        public List<AbstractEntity> Entities; //this includes pickups that are prespawned
+        public List<Pickup> Loot;
+
         public bool Entered = false;
         public bool Beaten = true;
         public bool RevealedOnMinimap = false;
@@ -137,6 +144,7 @@ namespace GameProject.Code.Scripts.Components {
                 door.transform.Parent = transform;
                 door.transform.LocalPosition = pos;
                 door.transform.Rotation = rotation;
+                door.Layer = (int)LayerID.Door;
 
                 SpriteRenderer sr = door.AddComponent<SpriteRenderer>();
 
@@ -182,6 +190,108 @@ namespace GameProject.Code.Scripts.Components {
                     Doors.Remove(dir);
                 } 
                 _doorFillers.Add(dir, doorFiller);
+            }
+        }
+
+
+        public void LoadLayout() {
+            //this is where the layout will be loaded and stuff
+
+            //end importing data
+
+            //SetObstacleTiles();
+            //SetEntities();
+
+            if(RoomType == RoomType.Normal) GenerateRandomLoot();
+        }
+
+        public void SetEntities(Dictionary<Point, EntityID> ents) {
+            Entities = new List<AbstractEntity>(ents.Count);
+            foreach (KeyValuePair<Point, EntityID> id in ents) {
+                // If it's an enemy
+                if((int)id.Value >= 301 && (int)id.Value < 500) {
+                    AbstractEnemy enemy = Instantiate(AbstractEnemy.GetEnemyFromID(id.Value)).GetComponent<AbstractEnemy>();
+                    enemy.transform.LocalPosition = (id.Key.ToVector2() * ObstacleTileSize).ToVector3();
+
+                    Enemies.Add(enemy);
+
+                } else { // If it isn't an enemy
+                    AbstractEntity ent = Instantiate(AbstractEntity.GetEntityFromID(id.Value)).GetComponent<AbstractEntity>();
+                    ent.transform.LocalPosition = (id.Key.ToVector2() * ObstacleTileSize).ToVector3();
+
+                    Entities.Add(ent);
+                }
+                
+            }
+        }
+
+
+        public void SetObstacleTiles(ObstacleID[,] obstacleMap) {
+            ObstacleTilemap = gameObject.AddComponent<TileMap<ObstacleID>>();
+            
+            ObstacleTilemap.TileChangeAction = (data, tileRend) => {
+                tileRend.Sprite = GetCorrectObstacleSprite(data);
+            };
+
+            ObstacleTilemap.SetMap(obstacleMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y);
+        }
+
+        private static Texture2D GetCorrectObstacleSprite(ObstacleID id) {
+            if (Resources.Sprites_GlobalObstacles.ContainsKey(id)) {
+                return Resources.Sprites_GlobalObstacles[id];
+            } else {
+                return Resources.Sprites_Obstacles[GameManager.CurLevelID][id];
+            }
+        }
+
+        private void GenerateRandomLoot() {
+            int count = GameManager.WorldRandom.Next(0, 10);
+            if (count <= 2) count = 0;
+            else if (count <= 6) count = 1;
+            else if (count <= 8) count = 2;
+            else if (count <= 9) count = 3;
+
+            Loot = new List<Pickup>(count);
+            for(int i = 0; i < count; i++) {
+                Loot.Add(GetRandomLootPickup());
+            }
+        }
+
+        private Pickup GetRandomLootPickup() {
+            //todo
+            return Pickup.Coin;
+        }
+        
+
+
+
+
+        public void ClearDoors() {
+            foreach(DoorController d in Doors.Values) {
+                Destroy(d.gameObject);
+            }
+            Doors.Clear();
+
+            foreach(GameObject filler in _doorFillers.Values) {
+                Destroy(filler);
+            }
+            _doorFillers.Clear();
+        }
+
+        public override void OnDestroy() {
+            ClearDoors();
+        }
+
+
+
+        public void FillEmptyDoorSlots() {
+            List<Direction> possible = new List<Direction>() { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
+            foreach(Direction d in Doors.Keys) {
+                possible.Remove(d);
+            }
+
+            foreach(Direction d in possible) {
+                SetDoor(d, false);
             }
         }
 

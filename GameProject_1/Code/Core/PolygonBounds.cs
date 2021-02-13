@@ -53,6 +53,13 @@ namespace GameProject.Code.Core {
             }
         }
 
+        public override void Destroy() {
+            ParentCollider = null;
+            _origPoints = null;
+            _points = null;
+            _edges = null;
+        }
+
 
 
         public override void ApplyWorldMatrix(Transform worldTransform) {

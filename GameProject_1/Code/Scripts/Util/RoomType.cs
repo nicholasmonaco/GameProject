@@ -4,20 +4,20 @@ using System.Text;
 
 namespace GameProject.Code.Scripts.Util {
     public enum RoomType {
-        Normal,
+        Normal = 0,
 
-        Starting,
-        Boss,
-        Item,
-        Shop,
-        Secret,
-        Techno,
-        Magic,
+        Starting = 1,
+        Boss = 2,
+        Item = 3,
+        Shop = 4,
+        Secret = 5,
+        Techno = 6,
+        Magic = 7,
 
-        Challenge,
-        SuperSecret,
-        Casino,
-        Decision,
-        MiniBoss
+        Challenge = 8,
+        SuperSecret = 9,
+        Casino = 10,
+        Decision = 11,
+        MiniBoss = 12
     }
 }

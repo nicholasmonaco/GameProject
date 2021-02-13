@@ -41,7 +41,14 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_MinimapBackground;
         public static Dictionary<MinimapIcon, Texture2D> Sprite_MinimapIcons;
 
+        public static Dictionary<ObstacleID, Texture2D> Sprites_GlobalObstacles;
+        public static Dictionary<LevelID, Dictionary<ObstacleID, Texture2D>> Sprites_Obstacles;
+
         public static SpriteFont Font_Debug;
+
+
+        public static Dictionary<Pickup, SoundEffect> Sounds_PickupSpawn;
+        public static Dictionary<Pickup, SoundEffect> Sounds_PickupCollect;
 
 
 
@@ -51,6 +58,22 @@ namespace GameProject.Code.Core {
 
         public static void LoadContent(ContentManager content) {
             LoadTextures(content);
+            //LoadSounds(content);
+        }
+
+        private static void LoadSounds(ContentManager content) {
+            Sounds_PickupSpawn = new Dictionary<Pickup, SoundEffect>();
+            Sounds_PickupSpawn.Add(Pickup.Heart_Whole, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Heart"));
+            Sounds_PickupSpawn.Add(Pickup.Coin, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Coin"));
+            Sounds_PickupSpawn.Add(Pickup.Key, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Key"));
+            Sounds_PickupSpawn.Add(Pickup.Chest_Free, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Chest"));
+
+            Sounds_PickupCollect = new Dictionary<Pickup, SoundEffect>();
+            Sounds_PickupSpawn.Add(Pickup.Heart_Whole, content.Load<SoundEffect>("Sounds/Pickup/Collect/Heart"));
+            Sounds_PickupSpawn.Add(Pickup.Coin, content.Load<SoundEffect>("Sounds/Pickup/Collect/Coin"));
+            Sounds_PickupSpawn.Add(Pickup.Key, content.Load<SoundEffect>("Sounds/Pickup/Collect/Key"));
+            Sounds_PickupSpawn.Add(Pickup.Chest_Free, content.Load<SoundEffect>("Sounds/Pickup/Collect/Chest"));
+            Sounds_PickupSpawn.Add(Pickup.PowerCell, content.Load<SoundEffect>("Sounds/Pickup/Collect/PowerCell"));
         }
 
         private static void LoadTextures(ContentManager content) {
@@ -118,7 +141,7 @@ namespace GameProject.Code.Core {
 
             Sprite_MinimapBackground = content.Load<Texture2D>("Textures/UI/Minimap/Background");
 
-            Sprite_MinimapIcons = new Dictionary<MinimapIcon, Texture2D>(3); //change when all icons are sprited
+            Sprite_MinimapIcons = new Dictionary<MinimapIcon, Texture2D>(5); //change when all icons are sprited
             Sprite_MinimapIcons.Add(MinimapIcon.Current, content.Load<Texture2D>("Textures/UI/Minimap/Minimap_Current"));
             Sprite_MinimapIcons.Add(MinimapIcon.Explored, content.Load<Texture2D>("Textures/UI/Minimap/Minimap_Explored"));
             Sprite_MinimapIcons.Add(MinimapIcon.Unexplored, content.Load<Texture2D>("Textures/UI/Minimap/Minimap_Unexplored"));
@@ -126,12 +149,46 @@ namespace GameProject.Code.Core {
             Sprite_MinimapIcons.Add(MinimapIcon.Boss, content.Load<Texture2D>("Textures/UI/Minimap/Icon_Boss"));
 
 
+            LoadObstacleSprites(content);
+
 
 
             Font_Debug = content.Load<SpriteFont>("Fonts/arial");
 
 
             Debug.Log("Textures loaded.");
+        }
+
+
+        private static void LoadObstacleSprites(ContentManager content) {
+            Sprites_GlobalObstacles = new Dictionary<ObstacleID, Texture2D>(11);
+
+            Sprites_GlobalObstacles.Add(ObstacleID.None, Sprite_Invisible);
+            Sprites_GlobalObstacles.Add(ObstacleID.Hole, Sprite_Invisible);
+            Sprites_GlobalObstacles.Add(ObstacleID.Destructable0, Sprite_Invisible);
+            Sprites_GlobalObstacles.Add(ObstacleID.Destructable1, Sprite_Invisible);
+            Sprites_GlobalObstacles.Add(ObstacleID.Destructable2, Sprite_Invisible);
+            Sprites_GlobalObstacles.Add(ObstacleID.Destructable3, Sprite_Invisible);
+            Sprites_GlobalObstacles.Add(ObstacleID.Destructable4, Sprite_Invisible);
+            Sprites_GlobalObstacles.Add(ObstacleID.Destructable5, Sprite_Invisible);
+            Sprites_GlobalObstacles.Add(ObstacleID.Wall, Sprite_Invisible);
+
+
+
+            Sprites_Obstacles = new Dictionary<LevelID, Dictionary<ObstacleID, Texture2D>>(15);
+
+            Sprites_Obstacles.Add(LevelID.QuarantineLevel, new Dictionary<ObstacleID, Texture2D>(9));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock0, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock0"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock1, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock1"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock2, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock2"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock3, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock3"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock4, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock4"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock5, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock5"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Damage0, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Damage0"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Damage1, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Damage1"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Damage2, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Damage2"));
+
+
         }
     }
 }

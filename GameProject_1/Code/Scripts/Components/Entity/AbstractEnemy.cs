@@ -1,5 +1,7 @@
 ﻿using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Scripts.Util;
+using GameProject.Code.Prefabs.Enemies;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
@@ -45,5 +47,28 @@ namespace GameProject.Code.Scripts.Components.Entity {
         protected abstract IEnumerator DeathAnimation();
 
 
+
+
+        public static GameObject GetEnemyFromID(EntityID id) {
+            switch (id) {
+                default:
+                case EntityID.BuggedDrone:
+                    return new Prefab_DroneBugged();
+                case EntityID.AttackDrone:
+                    return new Prefab_DroneAttack();
+                case EntityID.CaveChaser:
+                    return new Prefab_CaveChaser();
+                case EntityID.CaveChaser_Armed:
+                    return new Prefab_CaveChaserArmed();
+                case EntityID.CaveChaser_Omega:
+                    return new Prefab_CaveChaserOmega();
+                case EntityID.CaveChaser_Buckshot:
+                    return new Prefab_CaveChaserBuckshot();
+                case EntityID.Turret_Guard:
+                    return new Prefab_TurretGuard();
+                case EntityID.Turret_Multi:
+                    return new Prefab_TurretMulti();
+            }
+        }
     }
 }

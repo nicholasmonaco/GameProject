@@ -29,11 +29,15 @@ namespace GameProject.Code.Core.Components {
         }
 
         public override void OnDestroy() {
+            Destroyed = true;
+            Bounds.Destroy();
             GameManager.CurrentScene.Collider2Ds.Remove(this);
             AttachedRigidbody?.Subcolliders.Remove(this);
         }
 
         public override void PreAwake() {
+            if (Destroyed) return;
+
             base.PreAwake();
 
             Entered = new Dictionary<Collider2D, bool>(GameManager.CurrentScene.Collider2Ds.Count);

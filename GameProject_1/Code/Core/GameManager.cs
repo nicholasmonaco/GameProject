@@ -7,6 +7,7 @@ using System.Text;
 using GameProject.Code.Core.Components;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Scripts.Components;
+using GameProject.Code.Scripts.Util;
 
 namespace GameProject.Code.Core {
     
@@ -35,6 +36,8 @@ namespace GameProject.Code.Core {
         public static Transform PlayerTransform => Player.transform;
         public static MapManager Map;
         public static MinimapController Minimap;
+
+        public static LevelID CurLevelID { get; private set; }
 
 
 

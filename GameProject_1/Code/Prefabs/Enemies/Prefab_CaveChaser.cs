@@ -7,11 +7,11 @@ using GameProject.Code.Core.Components;
 using GameProject.Code.Scripts.Components.Entity;
 
 
-namespace GameProject.Code.Prefabs {
-    public class Prefab_Chaser : GameObject {
+namespace GameProject.Code.Prefabs.Enemies {
+    public class Prefab_CaveChaser : GameObject {
 
-        public Prefab_Chaser() : base() {
-            Name = "Chaser";
+        public Prefab_CaveChaser() : base() {
+            Name = "Cave Chaser";
             Layer = (int)LayerID.Enemy;
 
             // Adding components

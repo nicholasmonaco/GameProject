@@ -22,9 +22,9 @@ namespace GameProject.Code.Scenes {
     /// </summary>
     public class GameScene : Scene {
 
-        //public GameScene() : base() {
-            
-        //}
+        private GameObject _minimap;
+
+
 
         public override void Init() {
             base.Init();
@@ -40,12 +40,13 @@ namespace GameProject.Code.Scenes {
         }
 
         private IEnumerator StartLevel() {
-            while(GameManager.Map.Generated == false) {
+            while (GameManager.Map.Generated == false) {
                 yield return StartCoroutine(GameManager.Map.GenerateLevel(LevelID.QuarantineLevel)); //replace with levelID variable later
             }
 
             // Create minimap
-            Instantiate(new Prefab_Minimap());
+            _minimap = new Prefab_Minimap();
+            Instantiate(_minimap);
 
             // Create player health bar
             Instantiate(new Prefab_PlayerHealthBar());
@@ -59,6 +60,39 @@ namespace GameProject.Code.Scenes {
             // Create reticle
             //GameObjects.Add(new Prefab_Reticle());
             Instantiate(new Prefab_Reticle());
+
+            Instantiate(new Prefab_PickupGeneric(Pickup.Coin));
+        }
+
+
+        public override void ResetScene() {
+            StartCoroutine(ResetLevel());
+        }
+
+        private IEnumerator ResetLevel() {
+            yield return new WaitForEndOfFrame();
+
+            GameObject.Destroy(_minimap);
+            GameObject.Destroy(GameManager.Player.gameObject);
+
+            GameManager.Map.Generated = false;
+            while (GameManager.Map.Generated == false) {
+                yield return StartCoroutine(GameManager.Map.GenerateLevel(LevelID.QuarantineLevel)); //replace with levelID variable later
+            }
+
+            // Create minimap
+            _minimap = new Prefab_Minimap();
+            Instantiate(_minimap);
+
+            PlayerStats.SetHealth(32, 0); //set with character stats later
+
+            // Spawn player
+            Instantiate(new Prefab_Player());
+
+            Camera.main.transform.Position = GameManager.Map.RoomGrid[GameManager.Map.GridPos_StartingRoom].transform.Position;
+
+            GameManager.Map.LoadRoom(GameManager.Map.GridPos_StartingRoom);
+            //GameManager.Map.CurrentGridPos = GameManager.Map.GridPos_StartingRoom;
         }
 
 

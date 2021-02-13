@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject.Code.Scripts.Components.Entity {
     public abstract class AbstractPickup : Component {
@@ -15,10 +16,10 @@ namespace GameProject.Code.Scripts.Components.Entity {
         protected SpriteRenderer _pickupRenderer;
 
 
-        public virtual void InitPickup(Pickup type) {
+        public virtual void InitPickup(Pickup type, SpriteRenderer pickupRenderer) {
             _pickupType = type;
 
-            _pickupRenderer = GetComponent<SpriteRenderer>();
+            _pickupRenderer = pickupRenderer;
             _pickupRenderer.Sprite = Resources.Sprite_Pickups[_pickupType];
 
             DeathAction = () => { StartCoroutine(YScaleFade()); };
@@ -30,6 +31,9 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         protected IEnumerator YScaleFade() {
+            GetComponent<Collider2D>().Destroy();
+            GetComponent<Rigidbody2D>().Velocity = Vector2.Zero;
+            
             float dur_Total = 0.3f;
             float dur = dur_Total;
             Vector2 origScale = _pickupRenderer.SpriteScale;
@@ -37,7 +41,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
             while(dur >= 0) {
                 dur -= Time.deltaTime;
-                _pickupRenderer.SpriteScale = Vector2.Lerp(origScale, yZero, dur / dur_Total);
+                _pickupRenderer.SpriteScale = Vector2.Lerp(yZero, origScale, dur / dur_Total);
                 yield return null;
             }
 
@@ -49,6 +53,14 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
         protected Action DeathAction = () => { };
 
+
+
+        public override void OnCollisionEnter2D(Collider2D other) {
+            if (other.gameObject.Layer == (int)LayerID.Player && CanPickup()) {
+                OnPickup();
+                DeathAction();
+            }
+        }
 
         public override void OnCollisionStay2D(Collider2D other) {
             if(other.gameObject.Layer == (int)LayerID.Player && CanPickup()) {

@@ -156,5 +156,11 @@ namespace GameProject.Code.Scripts.Components {
                     return nextRoom.TransformPoint(new Vector3(-168, 0, 0)); // Left door
             }
         }
+
+
+        public override void OnDestroy() {
+            base.OnDestroy();
+            Debug.Log("Destroyed door");
+        }
     }
 }

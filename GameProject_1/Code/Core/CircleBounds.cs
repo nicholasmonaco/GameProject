@@ -33,7 +33,19 @@ namespace GameProject.Code.Core {
             Center = Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2();
             RadiusScale = worldTransform.Scale.ToVector2();
 
-            if(Debug.ShowColliders) (ParentCollider as CircleCollider2D).WorldMatrixChanged = true;
+            if (Debug.ShowColliders) {
+                if (ParentCollider != null)
+                    (ParentCollider as CircleCollider2D).WorldMatrixChanged = true;
+            }
+        }
+
+        public override void Destroy() {
+            ParentCollider = null;
+
+            _origRadius = 0;
+            Radius = 0;
+            RadiusScale = Vector2.Zero;
+            // Note: none of this should be needed, but it may as well be implemented as a failsafe
         }
 
 

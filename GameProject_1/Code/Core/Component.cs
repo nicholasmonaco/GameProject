@@ -23,6 +23,8 @@ namespace GameProject.Code.Core {
         public bool _everAwaked;
         public bool _everStarted;
 
+        protected bool Destroyed = false;
+
 
         public Component(GameObject attached) {
             gameObject = attached;
@@ -93,6 +95,9 @@ namespace GameProject.Code.Core {
             return gameObject.GetComponent<T>();
         }
 
+        public static GameObject Instantiate(GameObject obj) {
+            return GameObject.Instantiate(obj);
+        }
 
         public static T Instantiate<T>(Vector3 position, Transform parent) where T : GameObject {
             return GameObject.Instantiate<T>(position, parent);
@@ -110,6 +115,7 @@ namespace GameProject.Code.Core {
 
         public void Destroy() {
             OnDestroy();
+            Destroyed = true;
             gameObject.RemoveComponent(this);
             Dispose();
         }

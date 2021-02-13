@@ -54,6 +54,7 @@ namespace GameProject.Code.Core.Components {
                 foreach (Collider2D collider in GameManager.CurrentScene.Collider2Ds) {
                     //if (collider == localCollider) continue; // This doesn't account for multiple colliders. relpaced with below
                     if (Subcolliders.Contains(collider)) continue;
+                    if (!collider.gameObject.Enabled) continue;
 
                     bool entered = false;
                     if (!localCollider.Entered.ContainsKey(collider)) localCollider.Entered.Add(collider, false);

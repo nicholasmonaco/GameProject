@@ -87,6 +87,8 @@ namespace GameProject.Code.Scripts.Components {
             Bullet_Standard bullet = Instantiate<Prefab_Bullet>().GetComponent<Bullet_Standard>();
             bullet.transform.Position = transform.Position; //can customize this later
             bullet.InitBullet(aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
+
+            PlayerStats.TakeDamage(3);
         }
 
         //public override void Draw(SpriteBatch sb) {

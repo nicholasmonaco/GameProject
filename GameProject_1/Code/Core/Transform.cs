@@ -277,8 +277,11 @@ namespace GameProject.Code.Core {
 
 
         public override void OnDestroy() {
-            foreach(Transform t in _children) {
-                GameObject.Destroy(t.gameObject);
+            //foreach(Transform t in _children) {
+            //    GameObject.Destroy(t.gameObject);
+            //}
+            while(_children.Count > 0) {
+                GameObject.Destroy(_children[0].transform.gameObject);
             }
         }
 

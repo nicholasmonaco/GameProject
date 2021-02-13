@@ -185,11 +185,8 @@ namespace GameProject.Code.Scripts {
                 // Take damage
                 for (int i = 0; i < realChange; i++) {
                     BonusHearts.RemoveAt(BonusHearts.Count - 1);
-                    Debug.Log("removing bonus half heart");
                 }
             }
-
-            Debug.Log("enter bonuys rem ");
 
             UpdateHealth();
         }

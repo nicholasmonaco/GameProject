@@ -35,6 +35,8 @@ namespace GameProject.Code.Scripts.Components.Bullet {
 
                 if (_curPiercingRemain == 0)
                     Die();
+            }else if (collision.gameObject.Layer == (int)LayerID.Door) {
+                Die();
             }
         }
     }
