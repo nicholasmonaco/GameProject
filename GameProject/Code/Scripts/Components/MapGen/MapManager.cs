@@ -185,11 +185,15 @@ namespace GameProject.Code.Scripts.Components {
                     // In that direction, create a new room that has (at least) the door of the opposite direction
                     Point newPoint = lastGridPointBase + dirAdditive;
                     if (RoomGrid.ContainsKey(newPoint)) {
-                        validDoors.Remove(newDir);
-                        Debug.Log($"MAP GENERATION ERROR SOURCE | {validDoors.Count}");
-                        //this is where the crash is coming from.
-                        if(validDoors.Count < 2) {
-                            refix = true;
+                        if(validDoors.Count <= 1) {
+                            forceRegen = true;
+                        } else {
+                            validDoors.Remove(newDir);
+                            Debug.Log($"MAP GENERATION ERROR SOURCE | {validDoors.Count}");
+                            //this is where the crash is coming from.
+                            if (validDoors.Count < 2) {
+                                refix = true;
+                            }
                         }
                         continue;
                     }

@@ -38,10 +38,10 @@ namespace GameProject {
             // TODO: Add your initialization logic here
             GameManager.SetMainGame(this);
             int seed = new System.Random().Next();
-            GameManager.WorldRandom = new System.Random(392449006); //Move this later to work with seed
+            GameManager.WorldRandom = new System.Random(seed); //Move this later to work with seed
             Debug.Log($"WorldRandom seed: {seed}");
 
-            Window.Title = "Baton Rouge";
+            Window.Title = "Quake Break";
 
             Input.Start();
             Input.OnFullscreenToggle = () => {
