@@ -1,0 +1,153 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "MonoGame.Framework.Content.Pipeline.Portable/3.7.1.189": {
+        "type": "package",
+        "dependencies": {
+          "MonoGame.Framework.Portable": "3.7.1.189"
+        },
+        "compile": {
+          "lib/portable-net45+win8+wpa81/MonoGame.Framework.Content.Pipeline.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wpa81/MonoGame.Framework.Content.Pipeline.dll": {}
+        }
+      },
+      "MonoGame.Framework.Portable/3.7.1.189": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+win8+wpa81/MonoGame.Framework.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wpa81/MonoGame.Framework.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MonoGame.Framework.Content.Pipeline.Portable/3.7.1.189": {
+      "sha512": "2kjHKS8w0PPeIROZmLSGpd8vgS7DCCkmt/c2B9JuoDu9WyjziENch/lxMViGCbE/wHLrfBa5xG5OunU4DK8crA==",
+      "type": "package",
+      "path": "monogame.framework.content.pipeline.portable/3.7.1.189",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/portable-net45+win8+wpa81/MonoGame.Framework.Content.Pipeline.dll",
+        "lib/portable-net45+win8+wpa81/MonoGame.Framework.Content.Pipeline.xml",
+        "monogame.framework.content.pipeline.portable.3.7.1.189.nupkg.sha512",
+        "monogame.framework.content.pipeline.portable.nuspec"
+      ]
+    },
+    "MonoGame.Framework.Portable/3.7.1.189": {
+      "sha512": "Q5ARWZtCtJa8aD5zeeMmEkAwnguEq6aZqeIh9RdAi9RhaYJxoGc0lYka4sZaq2hGQAP7KFsPe4U9uhK/6c37vg==",
+      "type": "package",
+      "path": "monogame.framework.portable/3.7.1.189",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/portable-net45+win8+wpa81/MonoGame.Framework.dll",
+        "lib/portable-net45+win8+wpa81/MonoGame.Framework.xml",
+        "monogame.framework.portable.3.7.1.189.nupkg.sha512",
+        "monogame.framework.portable.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "MonoGame.Framework.Content.Pipeline.Portable >= 3.7.1.189"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Nick\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
+      "projectName": "CustomContentPipeline",
+      "projectPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
+      "packagesPath": "C:\\Users\\Nick\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Nick\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "dependencies": {
+          "MonoGame.Framework.Content.Pipeline.Portable": {
+            "target": "Package",
+            "version": "[3.7.1.189, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MonoGame.Framework.Content.Pipeline.Portable 3.7.1.189' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "MonoGame.Framework.Content.Pipeline.Portable",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MonoGame.Framework.Portable 3.7.1.189' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "MonoGame.Framework.Portable",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "dgSpecHash": "fkD0R8nlQnTHE8bvYfvPy8ME+5RTlMnvv7MSe5DSKh0ieocbeDW3d9ng58Kh6Gf+p9FSPQ5+kR0UrHCLllUx6Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nick\\.nuget\\packages\\monogame.framework.content.pipeline.portable\\3.7.1.189\\monogame.framework.content.pipeline.portable.3.7.1.189.nupkg.sha512",
+    "C:\\Users\\Nick\\.nuget\\packages\\monogame.framework.portable\\3.7.1.189\\monogame.framework.portable.3.7.1.189.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MonoGame.Framework.Content.Pipeline.Portable 3.7.1.189' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "MonoGame.Framework.Content.Pipeline.Portable",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MonoGame.Framework.Portable 3.7.1.189' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "MonoGame.Framework.Portable",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
+}

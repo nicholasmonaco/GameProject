@@ -1,0 +1,9 @@
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\obj\Debug\netcoreapp3.1\CustomContentPipeline.csprojAssemblyReference.cache
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\obj\Debug\netcoreapp3.1\CustomContentPipeline.AssemblyInfoInputs.cache
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\obj\Debug\netcoreapp3.1\CustomContentPipeline.AssemblyInfo.cs
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\obj\Debug\netcoreapp3.1\CustomContentPipeline.csproj.CoreCompileInputs.cache
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\bin\Debug\netcoreapp3.1\CustomContentPipeline.deps.json
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\bin\Debug\netcoreapp3.1\CustomContentPipeline.dll
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\bin\Debug\netcoreapp3.1\CustomContentPipeline.pdb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\obj\Debug\netcoreapp3.1\CustomContentPipeline.dll
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\CustomContentPipeline\obj\Debug\netcoreapp3.1\CustomContentPipeline.pdb

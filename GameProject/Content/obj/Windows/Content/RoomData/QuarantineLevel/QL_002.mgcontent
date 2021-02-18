@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject_1/Content/RoomData/QuarantineLevel/QL_002.rni</SourceFile>
+  <SourceTime>2021-02-16T13:47:59.4726534-06:00</SourceTime>
+  <DestFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject_1/Content/bin/Windows/Content/RoomData/QuarantineLevel/QL_002.xnb</DestFile>
+  <DestTime>2021-02-16T14:06:44.5648303-06:00</DestTime>
+  <Importer>RoomDataImporter</Importer>
+  <ImporterTime>2021-02-16T14:06:10.7216974-06:00</ImporterTime>
+  <Processor>RoomDataProcessor</Processor>
+  <ProcessorTime>2021-02-16T14:06:10.7216974-06:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
