@@ -37,6 +37,17 @@ namespace GameProject.Code.Scripts.Components.Bullet {
                     Die();
             }else if (collision.gameObject.Layer == (int)LayerID.Door) {
                 Die();
+            }else if(collision.gameObject.Layer == (int)LayerID.Obstacle) {
+                //check if tileid at collider position is physical
+                if (Room.ObstacleSolid(GameManager.Map.CurrentRoom.GetObstacleAtPos(collision.Bounds.Center))) {
+                    Die();
+                }
+            }
+        }
+
+        public override void OnCollisionEnter2D(Collider2D other) {
+            if (other.gameObject.Layer == (int)LayerID.Obstacle) {
+                Die();
             }
         }
     }

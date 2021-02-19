@@ -147,6 +147,9 @@ namespace GameProject.Code.Core {
                     RoomData room;
                     if(ValidRoomTypes[type] == true) {
                         room = RoomContent.Load<RoomData>($"Content/RoomData/QuarantineLevel/{type}/{i.ToString("D3")}");
+                        if (i == 12) {
+                            Debug.Log($"up: {room.Door_Up}  down: {room.Door_Down}  left: {room.Door_Left}   right: {room.Door_Right}");
+                        }
                     } else {
                         room = RoomContent.Load<RoomData>($"Content/RoomData/All/{type}/{i.ToString("D3")}");
                     }
@@ -292,8 +295,8 @@ namespace GameProject.Code.Core {
 
             Sprites_Obstacles.Add(LevelID.QuarantineLevel, new Dictionary<ObstacleID, Texture2D>(9));
             Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock0, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock0"));
-            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock1, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock0"));
-            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock2, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock0"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock1, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock1"));
+            Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock2, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock2"));
             Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock3, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock0"));
             Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock4, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock0"));
             Sprites_Obstacles[LevelID.QuarantineLevel].Add(ObstacleID.Rock5, content.Load<Texture2D>("Textures/Level/Obstacles/QuarantineLevel/Rock0"));

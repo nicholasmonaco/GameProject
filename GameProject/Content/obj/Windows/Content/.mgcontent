@@ -112,6 +112,8 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Obstacles/QuarantineLevel/Damage0.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Obstacles/QuarantineLevel/Hole.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Obstacles/QuarantineLevel/Rock0.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Obstacles/QuarantineLevel/Rock1.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Obstacles/QuarantineLevel/Rock2.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Obstacles/QuarantineLevel/Wall0.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Wall_1-01.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Wall_1-02.png</File>
@@ -143,6 +145,8 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Reticle_0.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

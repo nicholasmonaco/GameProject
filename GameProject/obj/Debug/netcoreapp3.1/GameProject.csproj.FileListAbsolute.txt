@@ -793,3 +793,5 @@ C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\obj\D
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\obj\Debug\netcoreapp3.1\GameProject.dll
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\obj\Debug\netcoreapp3.1\GameProject.pdb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\obj\Debug\netcoreapp3.1\GameProject.genruntimeconfig.cache
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Level\Obstacles\QuarantineLevel\Rock1.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Level\Obstacles\QuarantineLevel\Rock2.xnb

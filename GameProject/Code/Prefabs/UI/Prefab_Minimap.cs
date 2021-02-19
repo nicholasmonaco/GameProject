@@ -34,13 +34,13 @@ namespace GameProject.Code.Prefabs {
             s.DrawLayer = DrawLayer.ID["HUD"];
             s.OrderInLayer = 56;
 
-            GameObject background = Instantiate<GameObject>(transform.Position, transform);
-            background.transform.LocalPosition = Vector3.Zero;
-            //background.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
-            s = background.AddComponent<SpriteRenderer>();
-            s.Sprite = Resources.Sprite_MinimapBackground;
-            s.DrawLayer = DrawLayer.ID["HUD"];
-            s.OrderInLayer = 50;
+            //GameObject background = Instantiate<GameObject>(transform.Position, transform);
+            //background.transform.LocalPosition = Vector3.Zero;
+            ////  //background.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
+            //s = background.AddComponent<SpriteRenderer>();
+            //s.Sprite = Resources.Sprite_MinimapBackground;
+            //s.DrawLayer = DrawLayer.ID["HUD"];
+            //s.OrderInLayer = 50;
 
         }
 

@@ -12,6 +12,8 @@ namespace GameProject.Code.Prefabs {
         public Prefab_PickupGeneric(Pickup pickupType) : base() {
             AbstractPickup pickupComp;
 
+            Name = "Pickup";
+
             SpriteRenderer rend = AddComponent<SpriteRenderer>();
             rend.DrawLayer = DrawLayer.ID["Pickups"];
             rend.OrderInLayer = 10;

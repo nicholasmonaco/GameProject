@@ -33,7 +33,7 @@ namespace GameProject.Code.Scenes {
             GameObjects.Add(new Prefab_MainCamera());
             Instantiate(new Prefab_Canvas());
 
-            GameObject levelMapGO = GameObjects.AddReturn(new GameObject());
+            GameObject levelMapGO = Instantiate(new GameObject());
             MapManager map = levelMapGO.AddComponent<MapManager>();
 
             StartCoroutine(StartLevel());
@@ -51,7 +51,7 @@ namespace GameProject.Code.Scenes {
             // Create player health bar
             Instantiate(new Prefab_PlayerHealthBar());
             yield return null;
-            PlayerStats.SetHealth(32, 0); //set with character stats later
+            PlayerStats.SetHealth(6, 0); //set with character stats later
 
             // Spawn player
             //GameObjects.Add(new Prefab_Player());
@@ -61,6 +61,8 @@ namespace GameProject.Code.Scenes {
             //GameObjects.Add(new Prefab_Reticle());
             Instantiate(new Prefab_Reticle());
 
+
+            //debug
             Instantiate(new Prefab_PickupGeneric(Pickup.Coin));
         }
 
@@ -84,7 +86,7 @@ namespace GameProject.Code.Scenes {
             _minimap = new Prefab_Minimap();
             Instantiate(_minimap);
 
-            PlayerStats.SetHealth(32, 0); //set with character stats later
+            PlayerStats.SetHealth(6, 0); //set with character stats later
 
             // Spawn player
             Instantiate(new Prefab_Player());
@@ -93,6 +95,8 @@ namespace GameProject.Code.Scenes {
 
             GameManager.Map.LoadRoom(GameManager.Map.GridPos_StartingRoom);
             //GameManager.Map.CurrentGridPos = GameManager.Map.GridPos_StartingRoom;
+
+
         }
 
 

@@ -169,13 +169,17 @@ namespace GameProject.Code.Core {
         //}
 
 
-        public void Instantiate(GameObject obj) {
+        public GameObject Instantiate(GameObject obj) {
             _instantiateList += () => {
                 GameManager.CurrentScene.GameObjects.Add(obj);
-                obj.Awake();
-                if (obj.Enabled) obj.OnEnable();
-                obj.Start();
+                if (obj.Enabled) {
+                    obj.Awake();
+                    obj.OnEnable();
+                    obj.Start();
+                }
             };
+
+            return obj;
         }
 
         public virtual void ResetScene() { }

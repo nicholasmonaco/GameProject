@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject_1/Content/Textures/Bullet/PhotonShot.png</SourceFile>
-  <SourceTime>2021-02-05T12:29:40.7992538-06:00</SourceTime>
-  <DestFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject_1/Content/bin/Windows/Textures/Bullet/PhotonShot.xnb</DestFile>
-  <DestTime>2021-02-16T23:17:34.6504781-06:00</DestTime>
+  <SourceFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Bullet/PhotonShot.png</SourceFile>
+  <SourceTime>2021-02-19T04:22:44.817448-06:00</SourceTime>
+  <DestFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/bin/Windows/Textures/Bullet/PhotonShot.xnb</DestFile>
+  <DestTime>2021-02-19T05:07:02.5232745-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T16:17:54-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

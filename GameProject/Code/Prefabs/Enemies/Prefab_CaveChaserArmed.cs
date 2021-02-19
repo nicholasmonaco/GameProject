@@ -8,7 +8,7 @@ namespace GameProject.Code.Prefabs.Enemies {
     public class Prefab_CaveChaserArmed : GameObject {
 
         public Prefab_CaveChaserArmed() : base() {
-
+            Name = "Armed Cave Chaser";
         }
 
     }

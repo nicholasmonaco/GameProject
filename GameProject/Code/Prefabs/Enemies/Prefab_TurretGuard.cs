@@ -8,7 +8,7 @@ namespace GameProject.Code.Prefabs.Enemies {
     public class Prefab_TurretGuard : GameObject {
 
         public Prefab_TurretGuard() : base() {
-
+            Name = "Guard Turret";
         }
 
     }

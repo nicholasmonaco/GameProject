@@ -158,9 +158,9 @@ namespace GameProject.Code.Scripts.Components {
         }
 
 
-        public override void OnDestroy() {
-            base.OnDestroy();
-            Debug.Log("Destroyed door");
-        }
+        //public override void OnDestroy() {
+        //    base.OnDestroy();
+        //    Debug.Log("Destroyed door");
+        //}
     }
 }

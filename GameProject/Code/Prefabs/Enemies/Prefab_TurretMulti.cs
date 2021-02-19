@@ -8,7 +8,7 @@ namespace GameProject.Code.Prefabs.Enemies {
     public class Prefab_TurretMulti : GameObject {
 
         public Prefab_TurretMulti() : base() {
-
+            Name = "Multi-Turret";
         }
 
     }

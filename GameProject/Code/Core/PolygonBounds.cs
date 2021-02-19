@@ -67,6 +67,9 @@ namespace GameProject.Code.Core {
                 _points[i] = Vector3.Transform(_origPoints[i].ToVector3(), worldTransform.WorldMatrix).ToVector2();
             }
 
+            if (Center == new Vector2(-1572, -714) && Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2() == new Vector2(-2976, -1338)) {
+                Debug.Log("PreNow.");
+            }
             Center = Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2();
             ComputeEdges();
         }

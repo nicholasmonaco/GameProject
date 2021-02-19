@@ -29,10 +29,10 @@ namespace CustomContentPipeline {
 
                 // Door Data
                 string line = input.Lines[2].Replace("\n", "").Replace("\r", "");
-                output.Door_Down = line[0] == '1';
-                output.Door_Left = line[1] == '1';
-                output.Door_Right = line[2] == '1';
-                output.Door_Up = line[3] == '1';
+                output.Door_Up = line[0] == '1';
+                output.Door_Down = line[1] == '1';
+                output.Door_Left = line[2] == '1';
+                output.Door_Right = line[3] == '1';
 
                 // LevelID Data
                 line = input.Lines[3];

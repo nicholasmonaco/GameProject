@@ -46,11 +46,11 @@ namespace GameProject.Code.Core.Components {
             Size = new Vector2(Width, Height);
         }
 
-        public RectCollider2D(GameObject attached, SpriteRenderer sr) : this(attached, 
+        public RectCollider2D(GameObject attached, SpriteRenderer sr) : this(sr.gameObject, 
                                                                              sr.Sprite.Width * sr.SpriteScale.X, 
                                                                              sr.Sprite.Height * sr.SpriteScale.Y,
-                                                                             attached.transform.Position.X + sr.SpriteOffset.X,
-                                                                             attached.transform.Position.Y + sr.SpriteOffset.Y) { }
+                                                                             sr.transform.LocalPosition.X + sr.SpriteOffset.X,
+                                                                             sr.transform.LocalPosition.Y + sr.SpriteOffset.Y) { }
 
         public RectCollider2D(GameObject attached, float Width, float Height) : this(attached, Width, Height, 0, 0) { }
         public RectCollider2D(GameObject attached, Vector2 size, Vector2 offset) : this(attached, size.X, size.Y, offset.X, offset.Y){ }
@@ -64,6 +64,17 @@ namespace GameProject.Code.Core.Components {
             if (!Debug.ShowColliders) return;
             for (int i = 0; i < PolyBounds._points.Length - 1; i++) {
                 DrawLine(sb, PolyBounds._points[i], PolyBounds._points[i + 1]);
+            }
+        }
+
+
+        public override void Update() {
+            Scripts.Components.Room rr = transform.GetComponent<Scripts.Components.Room>();
+
+            if (rr != null && rr.GridPos == new Point(-3,-2)) {
+                if (rr.ObstacleTilemap.ColliderMap[0, 0] != this) return;
+                Vector2 colliderAtzz = rr.ObstacleTilemap.ColliderMap[0, 0].Bounds.Center;
+                Debug.Log($"0,0 collider at {rr.GridPos} is {colliderAtzz}");
             }
         }
     }

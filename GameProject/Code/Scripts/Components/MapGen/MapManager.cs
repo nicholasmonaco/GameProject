@@ -12,6 +12,7 @@ namespace GameProject.Code.Scripts.Components {
     public class MapManager : Component {
         public MapManager(GameObject attached) : base(attached) {
             GameManager.Map = this;
+            gameObject.Name = "Map Manager Container";
 
             Input.OnReset_Down += OnResetPressed;
             Input.OnReset_Released += OnResetReleased;
@@ -28,7 +29,7 @@ namespace GameProject.Code.Scripts.Components {
 
         private bool _resetDown = false;
         private float _resetHoldTimer = 0;
-        private const float _resetTime = 2.3f;
+        private const float _resetTime = 1.5f;
 
         public bool Generated { get; set; } = false;
 
@@ -97,6 +98,9 @@ namespace GameProject.Code.Scripts.Components {
             bool mapGenned = false;
             bool forceRegen = false;
             int attempts = 1;
+
+            yield return null;
+            yield return null;
 
             while (!mapGenned) {
                 Debug.Log("Generating level: Attempt " + attempts);
@@ -202,6 +206,7 @@ namespace GameProject.Code.Scripts.Components {
 
                     Room newRoom = Instantiate<Prefab_Room>(new Vector3(newPoint.X * RoomSize.X, newPoint.Y * RoomSize.Y, 0), transform).GetComponent<Room>();
                     newRoom.GridPos = newPoint;
+                    newRoom.gameObject.Name = $"Room ({newPoint.X}, {newPoint.Y})";
                     newRoom.RoomType = RoomType.Normal;
                     newRoom.GenerateRoom();
                     //baseRoom.SetDoor(newDir, true);
@@ -271,6 +276,7 @@ namespace GameProject.Code.Scripts.Components {
                 Point newPoint = targetRoom.GridPos + createDirection.GetDirectionPoint();
                 Room newRoom = Instantiate<Prefab_Room>(new Vector3(newPoint.X * RoomSize.X, newPoint.Y * RoomSize.Y, 0), transform).GetComponent<Room>();
                 newRoom.GridPos = newPoint;
+                newRoom.gameObject.Name = $"Room ({newPoint.X}, {newPoint.Y})";
                 newRoom.GenerateRoom();
                 newRoom.SetDoor(createDirection.InvertDirection(), true);
                 newRoom.FillEmptyDoorSlots();
@@ -280,9 +286,16 @@ namespace GameProject.Code.Scripts.Components {
                 RoomGrid.Add(newPoint, newRoom);
             }
 
+            yield return null;
 
             foreach (Point pos in RoomGrid.Keys) {
                 RoomGrid[pos].LoadLayout();
+            }
+
+            yield return new WaitForEndOfFrame();
+
+            foreach (Point pos in RoomGrid.Keys) {
+                RoomGrid[pos].SetMapAction();
 
                 if (pos != CurrentGridPos) UnloadRoom(RoomGrid[pos]);
             }
@@ -293,6 +306,7 @@ namespace GameProject.Code.Scripts.Components {
             #endregion
         }
 
+        //so the magical disappearing colliders arent in mapmanager
 
 
         private Room FindNormalRoomWithout4Neighbors() {

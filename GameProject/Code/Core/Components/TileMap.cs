@@ -48,6 +48,13 @@ namespace GameProject.Code.Core.Components {
             _map[y, x].ChangeData(newData);
         }
 
+        public T GetTile(int x, int y) {
+            return _map[x, y].Data;
+        }
+
+        public T GetTile(Point p) {
+            return GetTile(p.X, p.Y);
+        }
 
 
         public override void OnDestroy() {
@@ -64,5 +71,7 @@ namespace GameProject.Code.Core.Components {
             TileChangeAction = (tile, parentMap) => { };
         }
 
+
+        
     }
 }

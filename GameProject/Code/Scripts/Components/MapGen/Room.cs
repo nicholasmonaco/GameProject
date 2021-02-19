@@ -64,30 +64,34 @@ namespace GameProject.Code.Scripts.Components {
             for (int x = -1; x < 2; x += 2) {
                 for (int y = -1; y < 2; y += 2) {
                     GameObject wallCorner = Instantiate<GameObject>();
+                    wallCorner.Name = "WallCorner";
                     wallCorner.transform.Parent = transform;
                     wallCorner.transform.LocalPosition = new Vector3(x * 117, y * 78, 0);
-                    wallCorner.transform.Scale = new Vector3(-x, y, 0);
+                    //wallCorner.transform.Scale = new Vector3(-x, y, 0);
                     wallCorner.Layer = (int)LayerID.EdgeWall;
 
                     SpriteRenderer wallCornerRend = wallCorner.AddComponent<SpriteRenderer>();
                     wallCornerRend.Sprite = GetRandomCornerTexture(RoomStyle.QuarantineLevel_01);
                     wallCornerRend.DrawLayer = DrawLayer.ID["Background"];
                     wallCornerRend.OrderInLayer = 21;
+                    wallCornerRend.SpriteScale = new Vector2(-x, y);
 
-                    Vector2[] cornerPolygonPoints = new Vector2[] { new Vector2(-110, 70),
-                                                                    new Vector2(97, 70),
-                                                                    new Vector2(97, 55),
-                                                                    new Vector2(100, 28),
-                                                                    new Vector2(-67, 28) };
-                    wallCorner._components.Add(new PolygonCollider2D(wallCorner, cornerPolygonPoints, false));
+                    //Vector2[] cornerPolygonPoints = new Vector2[] { new Vector2(-110, 70),
+                    //                                                new Vector2(97, 70),
+                    //                                                new Vector2(97, 55),
+                    //                                                new Vector2(100, 28),
+                    //                                                new Vector2(-67, 28) };
+                    //wallCorner._components.Add(new PolygonCollider2D(wallCorner, cornerPolygonPoints, false));
 
-                    cornerPolygonPoints = new Vector2[] { new Vector2(-110, 70),
-                                                          new Vector2(-67, 28),
-                                                          new Vector2(-67, -61),
-                                                          new Vector2(-92, -58),
-                                                          new Vector2(-110, -58) };
-                    wallCorner._components.Add(new PolygonCollider2D(wallCorner, cornerPolygonPoints, false));
+                    //cornerPolygonPoints = new Vector2[] { new Vector2(-110, 70),
+                    //                                      new Vector2(-67, 28),
+                    //                                      new Vector2(-67, -61),
+                    //                                      new Vector2(-92, -58),
+                    //                                      new Vector2(-110, -58) };
+                    //wallCorner._components.Add(new PolygonCollider2D(wallCorner, cornerPolygonPoints, false));
 
+                    RectCollider2D cornerColl_1 = wallCorner.AddComponent<RectCollider2D>(234 * 0.87f, 40, 0, 46 * y);
+                    RectCollider2D cornerColl_2 = wallCorner.AddComponent<RectCollider2D>(35, 94, 83 * x, -20*y);
                 }
             }
 
@@ -142,7 +146,8 @@ namespace GameProject.Code.Scripts.Components {
                 if (Doors.ContainsKey(dir)) return;
 
                 // Generate door if relevant
-                GameObject door = Instantiate<GameObject>();
+                GameObject door = Instantiate<GameObject>(Vector3.Zero, transform);
+                door.Name = "Door";
                 door.transform.Parent = transform;
                 door.transform.LocalPosition = pos;
                 door.transform.Rotation = rotation;
@@ -177,7 +182,8 @@ namespace GameProject.Code.Scripts.Components {
             } else {
                 if (_doorFillers.ContainsKey(dir)) return;
                 
-                GameObject doorFiller = Instantiate<GameObject>();
+                GameObject doorFiller = Instantiate<GameObject>(Vector3.Zero, transform);
+                doorFiller.Name = "Door Filler";
                 doorFiller.transform.Parent = transform;
                 doorFiller.transform.LocalPosition = pos;
                 doorFiller.transform.Rotation = rotation;
@@ -207,6 +213,7 @@ namespace GameProject.Code.Scripts.Components {
             // If no room is found
             if (data.RoomID == -99999) return;
 
+            
             SetObstacleTiles(data.ObstacleData);
             SetEntities(data.EntityData);
 
@@ -290,6 +297,8 @@ namespace GameProject.Code.Scripts.Components {
         public void SetObstacleTiles(int[,] rawObstacleMap) {
             // Note: If for some reason we use tilemaps somewhere else, this is the way to do it.
 
+            gameObject.Layer = (int)LayerID.Obstacle; //this is probably a bad way to do this
+
             ObstacleTilemap = gameObject.AddComponent<TileMap<ObstacleID>>();
             
             ObstacleTilemap.TileChangeAction = (tile, parentMap) => {
@@ -301,30 +310,72 @@ namespace GameProject.Code.Scripts.Components {
                 }
 
                 //need to change this later to give it other properties
-                if (ObstacleCollidable(tile.Data)) {
-                    //Collider2D newTileCollider = parentMap.gameObject.AddComponent<RectCollider2D>(ObstacleTilemapSize.X, ObstacleTilemapSize.Y, tile.Offset.X, tile.Offset.Y);
-                    Collider2D newTileCollider = parentMap.gameObject.AddComponent<RectCollider2D>(tile.TileRenderer);
+                if (ObstacleCollidable(tile.Data)) {                    
+                    //Collider2D newTileCollider = parentMap.gameObject.AddComponent<RectCollider2D>(tile.TileRenderer);
+
+                    Collider2D newTileCollider = gameObject.AddComponent<RectCollider2D>(
+                        tile.TileRenderer.Sprite.Width * tile.TileRenderer.SpriteScale.X,
+                        tile.TileRenderer.Sprite.Height * tile.TileRenderer.SpriteScale.Y,
+                        parentMap.transform.LocalPosition.X + tile.TileRenderer.SpriteOffset.X,
+                        parentMap.transform.LocalPosition.Y + tile.TileRenderer.SpriteOffset.Y
+                    );
+
 
                     //maybe add a method here to see what we need to add to it
                     parentMap.ColliderMap[tile.TilemapPos.X, tile.TilemapPos.Y] = newTileCollider;
-                    Debug.Log($"added tile collider at {newTileCollider.Bounds.Center}");
+
+                }else if (ObstacleDamaging(tile.Data)) {
+                    Collider2D newTileCollider = gameObject.AddComponent<RectCollider2D>(
+                        tile.TileRenderer.Sprite.Width * tile.TileRenderer.SpriteScale.X,
+                        tile.TileRenderer.Sprite.Height * tile.TileRenderer.SpriteScale.Y,
+                        parentMap.transform.LocalPosition.X + tile.TileRenderer.SpriteOffset.X,
+                        parentMap.transform.LocalPosition.Y + tile.TileRenderer.SpriteOffset.Y
+                    );
+
+                    newTileCollider.IsTrigger = true;
+
+                    newTileCollider.OnTriggerStay2D_Direct += PlayerController.DamagePlayer;
+
+                    parentMap.ColliderMap[tile.TilemapPos.X, tile.TilemapPos.Y] = newTileCollider;
                 }
             };
 
             ObstacleID[,] realMap = new ObstacleID[13, 7];
             for(int y = 0; y < 7; y++) {
                 for(int x = 0; x < 13; x++) {
-                    realMap[x, y] = GetRealObstacleID(rawObstacleMap[x, y]);
+                    realMap[x, y] = GetRealObstacleID(rawObstacleMap[x, 6-y]);
                 }
             }
 
             Vector2 mapOffset = new Vector2(13, 7) * -13;
-            ObstacleTilemap.SetMap(realMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y, new Vector2(26, 28), Vector2.One, mapOffset);
+
+            SetMapAction = () => {
+                ObstacleTilemap.SetMap(realMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y, new Vector2(26, 28), Vector2.One, mapOffset);
+                SetMapAction = () => { };
+            };
         }
+
+        public Action SetMapAction = () => { };
 
         private static bool ObstacleCollidable(ObstacleID id) {
             return (int)id >= 1 && (int)id <= 31;
         }
+
+        private static bool ObstacleDamaging(ObstacleID id) {
+            return (int)id >= 41 && (int)id <= 43;
+        }
+
+        public static bool ObstacleSolid(ObstacleID id) {
+            return (int)id >= 11 && (int)id <= 31;
+        }
+
+        public ObstacleID GetObstacleAtPos(Vector2 position) {
+            Vector2 mapOffset = new Vector2(13, 7) * -13;
+            Vector2 tilepoint = (position - transform.Position.ToVector2() - mapOffset) / new Vector2(28, 30);
+            Point p = tilepoint.ToPoint();
+            return ObstacleTilemap.GetTile(p);
+        }
+
 
         private static Texture2D GetCorrectObstacleSprite(ObstacleID id) {
             if (Resources.Sprites_GlobalObstacles.ContainsKey(id)) {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -14,6 +15,7 @@ namespace GameProject.Code.Scripts.Components {
 
         // Components
         private Rigidbody2D _playerRB;
+        private SpriteRenderer _playerSprite;
         // End components
 
         // Public values
@@ -29,6 +31,8 @@ namespace GameProject.Code.Scripts.Components {
         private Vector2 _moveVec = Vector2.Zero;
         private float _shootDelayTimer = 0;
         private bool _shooting = false;
+
+        private bool _iFraming = false;
         // End private values
 
         public PlayerController(GameObject attached) : base(attached) { }
@@ -39,6 +43,8 @@ namespace GameProject.Code.Scripts.Components {
 
             _playerRB = GetComponent<Rigidbody2D>();
             _playerRB.Drag = 5f;
+
+            _playerSprite = GetComponent<SpriteRenderer>();
 
             // Input
             Input.OnShoot_Down += OnShootDown;
@@ -89,9 +95,49 @@ namespace GameProject.Code.Scripts.Components {
             bullet.InitBullet(aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
         }
 
+
+        public void HurtPlayer() {
+            if (!_iFraming) {
+                PlayerStats.TakeDamage();
+                _iFraming = true;
+                StartCoroutine(IFrames());
+            }
+        }
+
+        private IEnumerator IFrames() {
+            float durTimer = 1.2f; //can be variable later
+            const float flashDur = 0.2f;
+            float flashTimer = 0;
+            bool invis = false;
+            
+            while(durTimer >= 0) {
+                if(flashTimer <= 0) {
+                    invis = !invis;
+                    flashTimer = flashDur;
+                    _playerSprite.Color = invis ? Color.Transparent : Color.White;
+                }
+
+                yield return new WaitForFixedUpdate();
+                durTimer -= Time.fixedDeltaTime;
+                flashTimer -= Time.fixedDeltaTime;
+            }
+
+            _playerSprite.Color = Color.White;
+
+            _iFraming = false;
+        }
+
+
+        public static void DamagePlayer(Collider2D other) {
+            if(other.gameObject.Layer == (int)LayerID.Player) {
+                GameManager.Player.HurtPlayer();
+            }
+        }
+
+
         //public override void Draw(SpriteBatch sb) {
         //    base.Draw(sb);
-        //    sb.DrawString(Resources.Font_Debug, $"mousepos: {Input.MouseWorldPosition}", new Vector2(0, 0), Color.Red, 0, Vector2.Zero, -0.5f, SpriteEffects.None, 1);
+        //    sb.DrawString(Resources.Font_Debug, $"mousepos: {Input.MouseWorldPosition}", transform.Position.ToVector2(), Color.Red, 0, Vector2.Zero, -0.15f, SpriteEffects.FlipHorizontally, 1);
         //}
 
 

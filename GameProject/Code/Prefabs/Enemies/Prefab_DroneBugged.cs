@@ -8,7 +8,7 @@ namespace GameProject.Code.Prefabs.Enemies {
     public class Prefab_DroneBugged : GameObject {
     
         public Prefab_DroneBugged() : base() {
-
+            Name = "Bugged Drone";
         }
     
     }
