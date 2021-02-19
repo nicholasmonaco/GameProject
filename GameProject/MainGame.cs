@@ -16,7 +16,7 @@ namespace GameProject {
         //public static readonly int TargetFPS = 60; // This is already true due to the default Monogame settings
 
         private float _fixedUpdateMeasurer = 0;
-        private const int _initialSceneID = 1;
+        private const int _initialSceneID = 0; //0 is menu, 1 is game
 
         public Scene[] SceneList;
 

@@ -8,6 +8,7 @@ using GameProject.Code.Core.Components;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Util;
+using GameProject.Code.Scenes;
 
 namespace GameProject.Code.Core {
     
@@ -18,7 +19,7 @@ namespace GameProject.Code.Core {
 
         // Overarching game stuff
         private static MainGame _mainGame;
-        private static int _curSceneID;
+        private static int _curSceneID = -1;
         public static Scene CurrentScene => _mainGame.SceneList[_curSceneID];
 
         // Camera stuff
@@ -51,13 +52,20 @@ namespace GameProject.Code.Core {
         public static void SwitchScene(int newSceneID) {
             if (_curSceneID == newSceneID) return;
 
-            if (CurrentScene != null) {
+            if (_curSceneID != -1 && CurrentScene != null) {
                 Scene.UnloadScene(CurrentScene);
             }
 
             _curSceneID = newSceneID;
 
             Scene.LoadScene(CurrentScene, _mainGame.Content);
+        }
+
+
+        public static void Die() {
+            if(CurrentScene is GameScene scene) {
+                scene.Die();
+            }
         }
     }
 }

@@ -35,7 +35,12 @@ namespace GameProject.Code.Scripts.Components {
         private bool _iFraming = false;
         // End private values
 
-        public PlayerController(GameObject attached) : base(attached) { }
+        public PlayerController(GameObject attached) : base(attached) {
+            PlayerStats.DeathAction = () => {
+                GameManager.Die();
+                PlayerStats.DeathAction = () => { };
+            };
+        }
 
 
         public override void PreAwake() {
@@ -106,7 +111,7 @@ namespace GameProject.Code.Scripts.Components {
 
         private IEnumerator IFrames() {
             float durTimer = 1.2f; //can be variable later
-            const float flashDur = 0.2f;
+            const float flashDur = 0.1f;
             float flashTimer = 0;
             bool invis = false;
             

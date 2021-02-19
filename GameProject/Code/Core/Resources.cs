@@ -46,6 +46,16 @@ namespace GameProject.Code.Core {
 
         public static Dictionary<ObstacleID, Texture2D> Sprites_GlobalObstacles;
         public static Dictionary<LevelID, Dictionary<ObstacleID, Texture2D>> Sprites_Obstacles;
+
+
+        public static Texture2D Sprite_Vignette;
+        public static Texture2D Sprite_DeathMessage;
+
+        public static Texture2D Sprite_MM_Background;
+        public static Texture2D Sprite_MM_Ground;
+        public static Texture2D Sprite_MM_Title;
+        public static Texture2D Sprite_MM_Prompt;
+
         #endregion
 
         #region Font Resources
@@ -267,6 +277,7 @@ namespace GameProject.Code.Core {
 
             LoadObstacleSprites(content);
 
+            LoadMainMenuSprites(content);
 
 
             Font_Debug = content.Load<SpriteFont>("Fonts/arial");
@@ -275,6 +286,15 @@ namespace GameProject.Code.Core {
             Debug.Log("Textures loaded.");
         }
 
+        private static void LoadMainMenuSprites(ContentManager content) {
+            Sprite_Vignette = content.Load<Texture2D>("Textures/UI/Misc/Vignette");
+            Sprite_DeathMessage = content.Load<Texture2D>("Textures/UI/Misc/DeathMessage");
+
+            Sprite_MM_Background = content.Load<Texture2D>("Textures/UI/MainMenu/Sky");
+            Sprite_MM_Ground = content.Load<Texture2D>("Textures/UI/MainMenu/Ground");
+            Sprite_MM_Title = content.Load<Texture2D>("Textures/UI/MainMenu/Title_Backed");
+            Sprite_MM_Prompt = content.Load<Texture2D>("Textures/UI/MainMenu/Start-Prompt_Space");
+        }
 
         private static void LoadObstacleSprites(ContentManager content) {
             Sprites_GlobalObstacles = new Dictionary<ObstacleID, Texture2D>(11);

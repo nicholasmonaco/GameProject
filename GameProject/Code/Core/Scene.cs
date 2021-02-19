@@ -22,6 +22,8 @@ namespace GameProject.Code.Core {
 
         private Action _instantiateList = () => { };
 
+        protected bool _updating = true;
+
 
 
         public Scene() { }
@@ -59,13 +61,15 @@ namespace GameProject.Code.Core {
         }
 
         public virtual void Update() {
-            // Instantiate new GameObjects
-            _instantiateList();
-            _instantiateList = () => { };
+            if (_updating) {
+                // Instantiate new GameObjects
+                _instantiateList();
+                _instantiateList = () => { };
 
-            // Handle GameObjects
-            foreach (GameObject g in GameObjects) {
-                if (g.Enabled && g._everAwaked) g.Update();
+                // Handle GameObjects
+                foreach (GameObject g in GameObjects) {
+                    if (g.Enabled && g._everAwaked) g.Update();
+                }
             }
 
             // Handle coroutines
@@ -85,6 +89,8 @@ namespace GameProject.Code.Core {
         }
 
         public virtual void FixedUpdate() {
+            if (!_updating) return;
+
             // Handle GameObjects
             foreach (GameObject g in GameObjects) {
                 if (g.Enabled && g._everAwaked) g.FixedUpdate();
@@ -92,9 +98,11 @@ namespace GameProject.Code.Core {
         }
 
         public virtual void LateUpdate() {
-            // Handle GameObjects
-            foreach (GameObject g in GameObjects) {
-                if (g.Enabled && g._everAwaked) g.LateUpdate();
+            if (_updating) {
+                // Handle GameObjects
+                foreach (GameObject g in GameObjects) {
+                    if (g.Enabled && g._everAwaked) g.LateUpdate();
+                }
             }
 
             // Handle coroutines
@@ -121,24 +129,26 @@ namespace GameProject.Code.Core {
 
 
         public void PhysicsUpdate() {
-            // Do internal physics updates here
-            Action _triggerActions = () => { };
-            Action _collisionActions = () => { };
+            if (_updating) {
+                // Do internal physics updates here
+                Action _triggerActions = () => { };
+                Action _collisionActions = () => { };
 
-            foreach (GameObject go in GameObjects) {
-                if (!go.Enabled) continue;
-                //search for rigidbody in children
-                if(go.rigidbody2D != null) {
-                    go.rigidbody2D._PhysicsUpdate();
-                    // Now, queue up trigger and collision events
-                    _triggerActions += go.rigidbody2D.CallTriggerEvents;
-                    _collisionActions += go.rigidbody2D.CallCollisionEvents;
+                foreach (GameObject go in GameObjects) {
+                    if (!go.Enabled) continue;
+                    //search for rigidbody in children
+                    if (go.rigidbody2D != null) {
+                        go.rigidbody2D._PhysicsUpdate();
+                        // Now, queue up trigger and collision events
+                        _triggerActions += go.rigidbody2D.CallTriggerEvents;
+                        _collisionActions += go.rigidbody2D.CallCollisionEvents;
+                    }
                 }
-            }
 
-            _triggerActions();
-            _collisionActions();
-            // End internal physics updates
+                _triggerActions();
+                _collisionActions();
+                // End internal physics updates
+            }
 
             // Handle coroutines
             Action removeQueue = () => { };

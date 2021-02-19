@@ -26,6 +26,8 @@ namespace GameProject.Code.Scripts.Components {
             transform.UpdateChildren();
             ExtentsUpdate();
         }
-        
+
+
+
     }
 }

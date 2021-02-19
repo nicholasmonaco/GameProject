@@ -136,6 +136,15 @@ namespace GameProject.Code.Core {
                 OnShoot_Released();
             }
 
+            localVal = _keyboardState.IsKeyDown(Act_Shoot);
+            lastLocalVal = _lastKeyboardState.IsKeyDown(Act_Shoot);
+            if (localVal && !lastLocalVal) {
+                OnShoot_Down();
+            } else if (!localVal && lastLocalVal) {
+                OnShoot_Released();
+            }
+
+
             // Interact
             localVal = _keyboardState.IsKeyDown(Act_Interact);
             lastLocalVal = _lastKeyboardState.IsKeyDown(Act_Interact);
