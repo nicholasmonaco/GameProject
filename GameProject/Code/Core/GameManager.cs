@@ -33,6 +33,7 @@ namespace GameProject.Code.Core {
         public static Camera MainCamera;
         public static Canvas MainCanvas;
         public static Random WorldRandom;
+        public static Random DeltaRandom;
         public static PlayerController Player;
         public static Transform PlayerTransform => Player.transform;
         public static MapManager Map;

@@ -39,6 +39,7 @@ namespace GameProject {
             GameManager.SetMainGame(this);
             int seed = new System.Random().Next();
             GameManager.WorldRandom = new System.Random(seed); //Move this later to work with seed
+            GameManager.DeltaRandom = new System.Random();
             Debug.Log($"WorldRandom seed: {seed}");
 
             Window.Title = "Quake Break";

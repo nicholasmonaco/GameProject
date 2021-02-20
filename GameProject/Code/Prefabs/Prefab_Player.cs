@@ -15,13 +15,13 @@ namespace GameProject.Code.Prefabs {
 
             // Adding components
             //RectCollider2D collider = AddComponent<RectCollider2D>(26, 26); //Change this to be a circle collider later maybe?
-            CircleCollider2D collider = AddComponent<CircleCollider2D>(13);
+            CircleCollider2D collider = AddComponent<CircleCollider2D>(10);
 
             AddComponent<Rigidbody2D>();
 
             SpriteRenderer sr = AddComponent<SpriteRenderer>(Resources.Sprite_Pixel);
-            sr.SpriteScale = collider.Size;
-            sr.Color = Color.Blue;
+            //sr.SpriteScale = collider.Size;
+            //sr.Color = Color.Blue;
             sr.DrawLayer = DrawLayer.ID["Player"];
             sr.OrderInLayer = 20;
 

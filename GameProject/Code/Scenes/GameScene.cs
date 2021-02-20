@@ -15,6 +15,7 @@ using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Components.UI;
 using GameProject.Code.Scripts.Util;
 using GameProject.Code.Scripts.Components.Entity;
+using Microsoft.Xna.Framework.Media;
 
 namespace GameProject.Code.Scenes {
     
@@ -74,6 +75,10 @@ namespace GameProject.Code.Scenes {
 
             _updating = true;
 
+            // Start music
+            MediaPlayer.Play(Resources.Music_QuarantineLevel);
+            MediaPlayer.IsRepeating = true;
+
             // Create minimap
             _minimap = new Prefab_Minimap();
             Instantiate(_minimap);
@@ -109,6 +114,10 @@ namespace GameProject.Code.Scenes {
             yield return new WaitForEndOfFrame();
 
             _updating = true; // This could probably be moved further down
+
+            // Reset music
+            MediaPlayer.Play(Resources.Music_QuarantineLevel);
+            MediaPlayer.IsRepeating = true;
 
             GameObject.Destroy(_minimap);
             GameObject.Destroy(GameManager.Player.gameObject);
@@ -150,6 +159,11 @@ namespace GameProject.Code.Scenes {
 
             //play player death animation
 
+            // Stop music
+            MediaPlayer.Stop();
+
+            //play death sound
+            Resources.Sound_Death.Play(0.2f, 0, 0);
 
             // fade in gray panel
             _deathPanel.SetColor(Color.Black);

@@ -9,9 +9,15 @@ using GameProject.Code.Prefabs;
 using GameProject.Code.Scripts;
 using GameProject.Code.Scripts.Components.Bullet;
 using Microsoft.Xna.Framework.Graphics;
+using GameProject.Code.Scripts.Util;
 
 namespace GameProject.Code.Scripts.Components {
     public class PlayerController : Component {
+
+        // Constants
+        private const int _vertFrames = 7;
+        // End constants
+
 
         // Components
         private Rigidbody2D _playerRB;
@@ -33,10 +39,19 @@ namespace GameProject.Code.Scripts.Components {
         private bool _shooting = false;
 
         private bool _iFraming = false;
+
+        private Direction _curDir = Direction.Down;
+        private int _animFrame = 0;
+        private float _animTimer = 0;
+
+        private bool _dead = false;
         // End private values
 
         public PlayerController(GameObject attached) : base(attached) {
+            _dead = false;
+
             PlayerStats.DeathAction = () => {
+                _dead = true;
                 GameManager.Die();
                 PlayerStats.DeathAction = () => { };
             };
@@ -57,6 +72,8 @@ namespace GameProject.Code.Scripts.Components {
             // End input
 
             GameManager.Player = this;
+
+            StartCoroutine(MoveAnim());
         }
 
 
@@ -64,8 +81,54 @@ namespace GameProject.Code.Scripts.Components {
         public override void Update() {
             _moveVec = Input.MovementDirection;
 
+            FixDirAnim();
+
             Shoot();
         }
+
+        private void FixDirAnim() {
+            bool refix = false;
+
+            if(_moveVec.Y > 0 && _curDir != Direction.Up) {
+                _curDir = Direction.Up;
+                refix = true;
+            } else if(_moveVec.Y < 0 && _curDir != Direction.Down) {
+                _curDir = Direction.Down;
+                refix = true;
+            } else if(_moveVec.Y == 0 && _curDir != Direction.None) {
+                _curDir = Direction.None;
+                refix = true;
+            }
+
+
+            if (refix) {
+                _animFrame = 0;
+                _animTimer = 0;
+            }
+
+        }
+
+        private IEnumerator MoveAnim() {
+            while (true) {
+                _animTimer -= Time.deltaTime;
+
+                if(_animTimer <= 0) {
+                    if (_curDir == Direction.None) {
+                        _playerSprite.Sprite = Resources.Sprites_PlayerMove[Direction.Down][0];
+                    } else {
+                        _playerSprite.Sprite = Resources.Sprites_PlayerMove[_curDir][_animFrame];
+                    }
+
+                    _animTimer = 0.25f;
+                    _animFrame++;
+                    if (_animFrame >= _vertFrames) _animFrame = 0;
+                }
+
+                yield return null;
+            }
+        }
+
+
 
         public override void FixedUpdate() {
             if (FreezeMovement) {
@@ -104,6 +167,8 @@ namespace GameProject.Code.Scripts.Components {
         public void HurtPlayer() {
             if (!_iFraming) {
                 PlayerStats.TakeDamage();
+                
+                Resources.Sound_PlayerHurt.Play(0.2f, 0, 0);
                 _iFraming = true;
                 StartCoroutine(IFrames());
             }
@@ -115,7 +180,7 @@ namespace GameProject.Code.Scripts.Components {
             float flashTimer = 0;
             bool invis = false;
             
-            while(durTimer >= 0) {
+            while(durTimer >= 0 && !_dead) {
                 if(flashTimer <= 0) {
                     invis = !invis;
                     flashTimer = flashDur;

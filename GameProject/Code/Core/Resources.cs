@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
 using GameProject.Code.Scripts.Components.Entity;
 using GameProject.Code.Scripts.Components;
@@ -48,6 +49,8 @@ namespace GameProject.Code.Core {
         public static Dictionary<LevelID, Dictionary<ObstacleID, Texture2D>> Sprites_Obstacles;
 
 
+        public static Dictionary<Direction, List<Texture2D>> Sprites_PlayerMove;
+
         public static Texture2D Sprite_Vignette;
         public static Texture2D Sprite_DeathMessage;
 
@@ -63,8 +66,17 @@ namespace GameProject.Code.Core {
         #endregion
 
         #region Sound Resources
+        public static SoundEffect Sound_PlayerHurt;
+        public static SoundEffect Sound_Death;
+
+        public static SoundEffect Sound_CaveChaser;
+
         public static Dictionary<Pickup, SoundEffect> Sounds_PickupSpawn;
         public static Dictionary<Pickup, SoundEffect> Sounds_PickupCollect;
+        #endregion
+
+        #region Music Resources
+        public static Song Music_QuarantineLevel;
         #endregion
 
         #region RoomData Resources
@@ -102,11 +114,11 @@ namespace GameProject.Code.Core {
 
         public static void LoadContent(ContentManager content) {
             LoadTextures(content);
-            //LoadSounds(content);
-            //LoadRooms(content);
+
+            LoadMusic(content);
+            LoadSounds(content);
 
             RoomContent = new ContentManager(content.ServiceProvider);
-
 
             InitRooms();
         }
@@ -188,19 +200,31 @@ namespace GameProject.Code.Core {
 
 
         private static void LoadSounds(ContentManager content) {
-            Sounds_PickupSpawn = new Dictionary<Pickup, SoundEffect>();
-            Sounds_PickupSpawn.Add(Pickup.Heart_Whole, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Heart"));
-            Sounds_PickupSpawn.Add(Pickup.Coin, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Coin"));
-            Sounds_PickupSpawn.Add(Pickup.Key, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Key"));
-            Sounds_PickupSpawn.Add(Pickup.Chest_Free, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Chest"));
+            Sound_PlayerHurt = content.Load<SoundEffect>("Sounds/PlayerHurt");
+            Sound_Death = content.Load<SoundEffect>("Sounds/Death");
 
-            Sounds_PickupCollect = new Dictionary<Pickup, SoundEffect>();
-            Sounds_PickupSpawn.Add(Pickup.Heart_Whole, content.Load<SoundEffect>("Sounds/Pickup/Collect/Heart"));
-            Sounds_PickupSpawn.Add(Pickup.Coin, content.Load<SoundEffect>("Sounds/Pickup/Collect/Coin"));
-            Sounds_PickupSpawn.Add(Pickup.Key, content.Load<SoundEffect>("Sounds/Pickup/Collect/Key"));
-            Sounds_PickupSpawn.Add(Pickup.Chest_Free, content.Load<SoundEffect>("Sounds/Pickup/Collect/Chest"));
-            Sounds_PickupSpawn.Add(Pickup.PowerCell, content.Load<SoundEffect>("Sounds/Pickup/Collect/PowerCell"));
+
+            Sound_CaveChaser = content.Load<SoundEffect>("Sounds/CaveChaser");
+
+
+            //Sounds_PickupSpawn = new Dictionary<Pickup, SoundEffect>();
+            //Sounds_PickupSpawn.Add(Pickup.Heart_Whole, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Heart"));
+            //Sounds_PickupSpawn.Add(Pickup.Coin, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Coin"));
+            //Sounds_PickupSpawn.Add(Pickup.Key, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Key"));
+            //Sounds_PickupSpawn.Add(Pickup.Chest_Free, content.Load<SoundEffect>("Sounds/Pickup/Spawn/Chest"));
+
+            //Sounds_PickupCollect = new Dictionary<Pickup, SoundEffect>();
+            //Sounds_PickupSpawn.Add(Pickup.Heart_Whole, content.Load<SoundEffect>("Sounds/Pickup/Collect/Heart"));
+            //Sounds_PickupSpawn.Add(Pickup.Coin, content.Load<SoundEffect>("Sounds/Pickup/Collect/Coin"));
+            //Sounds_PickupSpawn.Add(Pickup.Key, content.Load<SoundEffect>("Sounds/Pickup/Collect/Key"));
+            //Sounds_PickupSpawn.Add(Pickup.Chest_Free, content.Load<SoundEffect>("Sounds/Pickup/Collect/Chest"));
+            //Sounds_PickupSpawn.Add(Pickup.PowerCell, content.Load<SoundEffect>("Sounds/Pickup/Collect/PowerCell"));
         }
+
+        private static void LoadMusic(ContentManager content) {
+            Music_QuarantineLevel = content.Load<Song>("Music/QuarantineLevel");
+        }
+
 
         private static void LoadTextures(ContentManager content) {
             Sprite_TestSprite = content.Load<Texture2D>("Textures/Misc/Ball");
@@ -278,6 +302,31 @@ namespace GameProject.Code.Core {
             LoadObstacleSprites(content);
 
             LoadMainMenuSprites(content);
+
+            //player
+            Sprites_PlayerMove = new Dictionary<Direction, List<Texture2D>>(4);
+
+            List<Texture2D> upTex = new List<Texture2D>(7);
+            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_0"));
+            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_1"));
+            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_2"));
+            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_3"));
+            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_0"));
+            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_4"));
+            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_5"));
+
+            List<Texture2D> downTex = new List<Texture2D>(7);
+            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_0"));
+            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_1"));
+            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_2"));
+            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_3"));
+            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_0"));
+            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_4"));
+            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_5"));
+
+            Sprites_PlayerMove.Add(Direction.Up, upTex);
+            Sprites_PlayerMove.Add(Direction.Down, downTex);
+            //end player
 
 
             Font_Debug = content.Load<SpriteFont>("Fonts/arial");

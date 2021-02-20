@@ -15,7 +15,7 @@ namespace GameProject.Code.Prefabs.Enemies {
             Layer = (int)LayerID.Enemy;
 
             // Adding components
-            RectCollider2D collider = AddComponent<RectCollider2D>(26, 26); //Change this to be a circle collider later maybe?
+            CircleCollider2D collider = AddComponent<CircleCollider2D>(11); //Change this to be a circle collider later maybe?
 
             rigidbody2D = AddComponent<Rigidbody2D>();
 
@@ -25,7 +25,7 @@ namespace GameProject.Code.Prefabs.Enemies {
             sr.DrawLayer = DrawLayer.ID["Enemies"];
             sr.OrderInLayer = 15;
 
-            transform.Position = new Vector3(80, 0, 0);
+            //transform.Position = new Vector3(80, 0, 0);
 
             AddComponent<Enemy_Chaser>();
         }

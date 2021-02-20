@@ -60,6 +60,8 @@ namespace GameProject.Code.Scripts.Components {
             _doorFillers = new Dictionary<Direction, GameObject>(4);
             RoomType = RoomType.Normal;
 
+            Enemies = new List<AbstractEnemy>();
+
             // Make base room stuff
             for (int x = -1; x < 2; x += 2) {
                 for (int y = -1; y < 2; y += 2) {
@@ -215,7 +217,8 @@ namespace GameProject.Code.Scripts.Components {
 
             
             SetObstacleTiles(data.ObstacleData);
-            SetEntities(data.EntityData);
+
+            SetMapAction += () => { SetEntities(data.EntityData); };
 
             if(RoomType == RoomType.Normal) GenerateRandomLoot();
         }
@@ -268,12 +271,14 @@ namespace GameProject.Code.Scripts.Components {
                     // If it's an enemy
                     if (entID >= 301 && entID < 500) {
                         AbstractEnemy enemy = Instantiate(AbstractEnemy.GetEnemyFromID(ent)).GetComponent<AbstractEnemy>();
+                        enemy.transform.Parent = transform;
                         enemy.transform.LocalPosition = (new Vector2(x, y) * ObstacleTileSize).ToVector3(); //these will probably need a +2 on each
 
                         Enemies.Add(enemy);
 
                     } else { // If it isn't an enemy
                         AbstractEntity entity = Instantiate(AbstractEntity.GetEntityFromID(ent)).GetComponent<AbstractEntity>();
+                        entity.transform.Parent = transform;
                         entity.transform.LocalPosition = (new Vector2(x, y) * ObstacleTileSize).ToVector3();
 
                         Entities.Add(entity);
@@ -286,6 +291,13 @@ namespace GameProject.Code.Scripts.Components {
         private static EntityID GetRealEntityID(int rawID) {
             // Do this after the entities actually exist
             switch (rawID) {
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                case 26:
+                case 27:
+                    return EntityID.CaveChaser;
                 default:
                     return EntityID.None;
                 //case 
@@ -349,7 +361,7 @@ namespace GameProject.Code.Scripts.Components {
 
             Vector2 mapOffset = new Vector2(13, 7) * -13;
 
-            SetMapAction = () => {
+            SetMapAction += () => {
                 ObstacleTilemap.SetMap(realMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y, new Vector2(26, 28), Vector2.One, mapOffset);
                 SetMapAction = () => { };
             };
