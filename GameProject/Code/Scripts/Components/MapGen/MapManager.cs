@@ -427,6 +427,12 @@ namespace GameProject.Code.Scripts.Components {
         public Room LoadRoom(Point gridPoint) {
             Room room = RoomGrid[gridPoint];
             room.gameObject.Enabled = true;
+
+            room.Entered = true;
+            room.RevealedOnMinimap = true; //unless it shouldnt be
+
+            
+
             return room;
         }
 

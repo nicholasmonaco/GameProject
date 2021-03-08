@@ -29,7 +29,7 @@ namespace GameProject.Code.Core.Components {
             for(int y = 0; y < ySize; y++) {
                 for(int x = 0; x < xSize; x++) {
                     SpriteRenderer tileRend = gameObject.AddComponent<SpriteRenderer>();
-                    tileRend.DrawLayer = DrawLayer.ID["WorldStructs"];
+                    tileRend.DrawLayer = DrawLayer.ID[DrawLayers.WorldStructs];
                     tileRend.OrderInLayer = 10;
                     _map[x, y] = new Tile<T>(dataMap[x, y], tileRend, new Point(x, y), this);
                     _map[x, y].DataChangeAction += TileChangeAction;

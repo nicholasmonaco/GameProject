@@ -6,9 +6,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Scripts.Components.Entity;
 
 namespace GameProject.Code.Scripts.Components.Bullet {
     public abstract class AbstractBullet : Component {
+
+        protected delegate void CollisionReport(Collider2D other, ref bool met);
+        protected CollisionReport ColliderAction;
 
         public Rigidbody2D BulletRB;
         protected Collider2D BulletCollider;
@@ -18,6 +22,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
         protected float _lifeTimer;
         protected float _damage = 0;
         protected float _speed = 0;
+        protected int _curPiercingRemain = 0;
 
         public Action<float> _extraUpdateAction = (curLifeDuration) => { };
         public Action _extraDeathAction = () => { };
@@ -32,14 +37,22 @@ namespace GameProject.Code.Scripts.Components.Bullet {
             BulletRenderer = spriteRend;
         }
 
-        public void InitBullet(Vector2 dir, float speed, float damage, float lifetime) {
+        public void InitBullet(bool good, Vector2 dir, float speed, float damage, float lifetime) {
             BulletRB.Velocity = dir * speed;
             _lifeTimer_Max = lifetime;
             _lifeTimer = _lifeTimer_Max;
             _damage = damage;
             _speed = speed;
 
-            
+            ColliderAction = DefaultCollisionLogic;
+
+            if (good) {
+                _curPiercingRemain = PlayerStats.PiercingCount;
+                ColliderAction += NaturalCollisionLogic_Good;
+            } else {
+                _curPiercingRemain = 0;
+                ColliderAction += NaturalCollisionLogic_Evil;
+            }
         }
 
 
@@ -62,6 +75,10 @@ namespace GameProject.Code.Scripts.Components.Bullet {
         public void SetSprite(Texture2D sprite, float rotation) {
             SetSprite(sprite);
             BulletRenderer.transform.Rotation = rotation;
+        }
+
+        public void SetColor(Color newColor) {
+            BulletRenderer.Color = newColor;
         }
 
         public void TurnEvil() {
@@ -115,12 +132,68 @@ namespace GameProject.Code.Scripts.Components.Bullet {
             }
         }
 
-        protected bool DefaultCollisionLogic(Collider2D collision) {
+        protected void DefaultCollisionLogic(Collider2D collision, ref bool met) {
             if (collision.gameObject.Layer == (int)LayerID.EdgeWall) {
                 Die();
-                return true;
+                met = true;
+            } else if (collision.gameObject.Layer == (int)LayerID.Door) {
+                Die();
+                met = true;
+            } else if (collision.gameObject.Layer == (int)LayerID.Obstacle) {
+                //check if tileid at collider position is physical
+                if (Room.ObstacleSolid(GameManager.Map.CurrentRoom.GetObstacleAtPos(collision.Bounds.Center))) {
+                    Die();
+                    met = true;
+                }
             }
-            return false;
         }
+
+        protected void NaturalCollisionLogic_Good(Collider2D other, ref bool met) {
+            if (met) return;
+
+            if (other.gameObject.Layer == (int)LayerID.Enemy) {
+                AbstractEnemy enemy = other.AttachedRigidbody.GetComponent<AbstractEnemy>();
+                enemy.Health -= _damage;
+                //enemy.ApplyKnockback(BulletRB.velocity.normalized * _knockbackForce / Game.Manager.PlayerStats.ShotCount);
+
+                if (_curPiercingRemain == 0) {
+                    Die();
+                    met = true;
+                }
+            }
+        }
+
+        protected void NaturalCollisionLogic_Evil(Collider2D other, ref bool met) {
+            if (met) return;
+
+            if (other.gameObject.Layer == (int)LayerID.Player) {
+                GameManager.Player.HurtPlayer();
+
+                if (_curPiercingRemain == 0) {
+                    Die();
+                    met = true;
+                }
+            }
+        }
+
+
+
+
+        public override void OnTriggerEnter2D(Collider2D collision) {
+            bool met = false;
+            ColliderAction(collision, ref met);
+        }
+
+        public override void OnCollisionEnter2D(Collider2D other) {
+            if (other.gameObject.Layer == (int)LayerID.Obstacle) {
+                Die();
+            }
+        }
+
+
+
+        // Static methods
+
+
     }
 }

@@ -17,7 +17,7 @@ namespace GameProject.Code.Scripts.Components.UI {
             _panelRenderer = gameObject.AddComponent<SpriteRenderer>();
             _panelRenderer.Sprite = Resources.Sprite_Pixel;
             _panelRenderer.SpriteScale = GameManager.Resolution.ToVector2();
-            _panelRenderer.DrawLayer = DrawLayer.ID["TotalOverlay"];
+            _panelRenderer.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
             _panelRenderer.OrderInLayer = 20;
         }
 

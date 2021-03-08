@@ -5,8 +5,13 @@
   <Config />
   <SourceFiles>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Fonts/arial.spritefont</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Fonts/Base_Inner.spritefont</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Fonts/Base_Outer.spritefont</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Music/MagmaChambers.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Music/QuarantineLevel.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Music/QuarantineZone.wav</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Music/Store.wav</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Music/Store2.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/RoomData/All/Item/000.rni</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/RoomData/QuarantineLevel/Normal/000.rni</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/RoomData/QuarantineLevel/Normal/001.rni</File>
@@ -104,6 +109,15 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Sounds/PlayerHurt.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Sounds/soda2.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Bullet/PhotonShot.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Enemies/Drone_Attack/Idle/Drone_Attack-0.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Enemies/Drone_Attack/Idle/Drone_Attack-1.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Enemies/Drone_Attack/Idle/Drone_Attack-2.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Enemies/Drone_Attack/Idle/Drone_Attack-3.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Enemies/Drone_Bugged/Idle/Drone_Bugged-0.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Enemies/Drone_Bugged/Idle/Drone_Bugged-1.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Enemies/Drone_Bugged/Idle/Drone_Bugged-2.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Enemies/Drone_Bugged/Idle/Drone_Bugged-3.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Misc/ItemPedastal.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Player/Down_0.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Player/Down_1.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Player/Down_2.png</File>
@@ -116,12 +130,35 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Player/Up_3.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Player/Up_4.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Entities/Player/Up_5.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/4LeafClover.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/Adreneline.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/Cake.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/CapacitorII.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/CrestOfResistance.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/DemonicEmbrace.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/DiamondPrism.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/EnglishBreakfast.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/FocusLens.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/HabeneroHotSauce.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/MagnetVector.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/MutationPlus.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/RationBar.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/SingularityFoce.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/SniperScope.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/Unknown.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Items/VitaminH.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_0.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_1.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_2.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_3.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_4.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_5.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_00.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_01.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_02.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_03.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_04.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_05.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Door_Boss.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Door_Inside.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Door/Door_Item.png</File>
@@ -149,11 +186,13 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Pickup/EnergyCell.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Pickup/Heart_Half.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Pickup/Heart_Whole.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Bomb.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/BonusHeart_Half.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/BonusHeart_Whole.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Heart_Empty.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Heart_Half.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Heart_Whole.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Key.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/MainMenu/Ground.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/MainMenu/Sky.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/MainMenu/Start-Prompt_Enter.png</File>
@@ -168,9 +207,50 @@
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Minimap/Minimap_Unexplored.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Misc/DeathMessage.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Misc/Vignette.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Money.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/UI/Reticle_0.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

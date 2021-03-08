@@ -52,8 +52,8 @@ namespace GameProject.Code.Scripts.Util {
         CaveChaser_Omega = 303,         // Chaser that is slower but has more health
         CaveChaser_Buckshot = 304,      // Chaser that stops periodically to shoot a spread of bullets at the player
 
-        BuggedDrone = 305,              // Hovers in place
-        AttackDrone = 306,              // Bugged drone that flies towards the player
+        Drone_Bugged = 305,             // Hovers in place
+        Drone_Attack = 306,             // Bugged drone that flies towards the player
         
         Turret_Guard = 307,             // Stays still and shoots at the player
         Turret_Multi = 308,             // Shoots bursts of 3 bullets at the player

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Textures/Level/Obstacles/QuarantineLevel/Rock1.png</SourceFile>
-  <SourceTime>2021-02-18T23:29:24.4075967-06:00</SourceTime>
+  <SourceTime>2021-02-24T11:16:38.2534951-06:00</SourceTime>
   <DestFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/bin/Windows/Textures/Level/Obstacles/QuarantineLevel/Rock1.xnb</DestFile>
-  <DestTime>2021-02-19T05:07:02.8649841-06:00</DestTime>
+  <DestTime>2021-02-25T16:43:38.3863811-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T16:17:54-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

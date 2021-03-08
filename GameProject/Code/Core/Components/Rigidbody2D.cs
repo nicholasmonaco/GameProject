@@ -14,7 +14,9 @@ namespace GameProject.Code.Core.Components {
 
         public List<Collider2D> Subcolliders;
         public Collider2D MainCollider => Subcolliders[0];
-        
+
+        public RigidbodyType Type = RigidbodyType.Dynamic;
+
         public Vector2 Velocity = Vector2.Zero;
         public float Drag = 0;
 
@@ -51,10 +53,10 @@ namespace GameProject.Code.Core.Components {
             Vector2 pushbackVec = Vector2.Zero;
 
             foreach (Collider2D localCollider in Subcolliders) {
+                if (localCollider.Enabled == false) continue;
                 foreach (Collider2D collider in GameManager.CurrentScene.Collider2Ds) {
-                    //if (collider == localCollider) continue; // This doesn't account for multiple colliders. relpaced with below
+                    if (collider.Enabled == false) continue;
                     if (Subcolliders.Contains(collider)) continue;
-                    if (!collider.gameObject.Enabled) continue;
 
                     bool entered = false;
                     if (!localCollider.Entered.ContainsKey(collider)) localCollider.Entered.Add(collider, false);
@@ -63,7 +65,6 @@ namespace GameProject.Code.Core.Components {
                     Vector2 otherVelocity = collider.AttachedRigidbody == null ? Vector2.Zero : collider.AttachedRigidbody.Velocity;
 
                     // Use a switch depending on what type of shape match up it is
-                    //CollisionResult2D result = PolygonBounds.DetectPolygonCollision(localCollider.Bounds, collider.Bounds, Velocity, otherVelocity);
                     CollisionResult2D result;
 
                     AbstractBounds localBounds = localCollider.Bounds;
@@ -213,13 +214,13 @@ namespace GameProject.Code.Core.Components {
                 
             }
 
-            Vector2 origVelNoPushback_N = Vector2.Normalize(Velocity);
+            Vector2 origVelNoPushback_N = Velocity.Norm();
 
             //Debug.Log($"{gameObject.Name} | Velocity 1: {Velocity}");
 
             if (willCollide && nonTriggerCollision) {
                 _position += Velocity * Time.fixedDeltaTime + pushbackVec;
-                Velocity += pushbackVec / Time.fixedDeltaTime;
+                if(Type == RigidbodyType.Dynamic) Velocity += pushbackVec / Time.fixedDeltaTime;
             } else {
                 _position += Velocity * Time.fixedDeltaTime;
             }
@@ -229,9 +230,9 @@ namespace GameProject.Code.Core.Components {
 
             //if (Velocity != Vector2.Zero) Velocity += -origVelNoPushback_N * Drag;
 
-            if (Drag != 0 && Velocity != Vector2.Zero && !float.IsNaN(origVelNoPushback_N.X)) {
+            if (Drag != 0 && Velocity != Vector2.Zero && !float.IsNaN(origVelNoPushback_N.X)) { //i think this NaN bug is fixed now
                 Vector2 checker = Velocity + (-origVelNoPushback_N * Drag);
-                if (Vector2.Normalize(checker) == -Vector2.Normalize(Velocity)) Velocity = Vector2.Zero;
+                if (checker.Norm() == -Velocity.Norm()) Velocity = Vector2.Zero;
                 else Velocity = checker;
             }
 
@@ -280,5 +281,11 @@ namespace GameProject.Code.Core.Components {
                 collider.OnTriggerExit2D_Direct += OnTriggerExit2D_Direct;
             }
         }
+    }
+
+    public enum RigidbodyType {
+        Dynamic,        // Interacts with the world automatically
+        Kinematic,      // Only is interactable through scripts
+        Static          // Doesn't move
     }
 }

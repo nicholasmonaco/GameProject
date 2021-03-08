@@ -49,7 +49,7 @@ namespace GameProject.Code.Core {
             //vec dir = b.position - a.position
 
             for(int i = 0; i < _edges.Length; i++) {
-                _edges[i] = Vector2.Normalize(_points[i + 1] - _points[i]);
+                _edges[i] = (_points[i + 1] - _points[i]).Norm();
             }
         }
 
@@ -67,11 +67,27 @@ namespace GameProject.Code.Core {
                 _points[i] = Vector3.Transform(_origPoints[i].ToVector3(), worldTransform.WorldMatrix).ToVector2();
             }
 
-            if (Center == new Vector2(-1572, -714) && Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2() == new Vector2(-2976, -1338)) {
-                Debug.Log("PreNow.");
-            }
             Center = Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2();
             ComputeEdges();
+
+            ResolveCorners();
+        }
+
+        public override void ResolveCorners() {
+            Vector2 bottomLeftRectPoint = new Vector2(MathF.Round(_points[0].X), MathF.Round(_points[0].Y));
+            Vector2 topRightRectPoint = bottomLeftRectPoint;
+            for (int i = 1; i < _points.Length - 1; i++) {
+                Vector2 point = new Vector2(MathF.Round(_points[i].X), MathF.Round(_points[i].Y));
+
+                if (point.X <= bottomLeftRectPoint.X && point.Y <= bottomLeftRectPoint.Y) {
+                    bottomLeftRectPoint = point;
+                } else if (point.X >= topRightRectPoint.X && point.Y >= topRightRectPoint.Y) {
+                    topRightRectPoint = point;
+                }
+            }
+
+            bottomLeft = bottomLeftRectPoint;
+            topRight = topRightRectPoint;
         }
 
 

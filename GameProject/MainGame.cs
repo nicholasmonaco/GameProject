@@ -32,6 +32,9 @@ namespace GameProject {
             _graphics.PreferredBackBufferWidth = (int)Camera.ConstantResolution.X * 2;
             _graphics.PreferredBackBufferHeight = (int)Camera.ConstantResolution.Y * 2;
             _graphics.ApplyChanges();
+
+
+            Debug.Start();
         }
 
         protected override void Initialize() {

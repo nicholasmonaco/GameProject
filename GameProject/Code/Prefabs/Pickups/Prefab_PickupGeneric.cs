@@ -15,7 +15,7 @@ namespace GameProject.Code.Prefabs {
             Name = "Pickup";
 
             SpriteRenderer rend = AddComponent<SpriteRenderer>();
-            rend.DrawLayer = DrawLayer.ID["Pickups"];
+            rend.DrawLayer = DrawLayer.ID[DrawLayers.Pickups];
             rend.OrderInLayer = 10;
 
             Rigidbody2D pickupRB = AddComponent<Rigidbody2D>();

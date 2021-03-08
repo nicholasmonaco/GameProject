@@ -5,29 +5,32 @@ using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 using GameProject.Code.Scripts.Components.Entity;
+using GameProject.Code.Scripts.Util;
 
 
 namespace GameProject.Code.Prefabs.Enemies {
     public class Prefab_CaveChaser : GameObject {
 
         public Prefab_CaveChaser() : base() {
-            Name = "Cave Chaser";
             Layer = (int)LayerID.Enemy;
 
             // Adding components
-            CircleCollider2D collider = AddComponent<CircleCollider2D>(11); //Change this to be a circle collider later maybe?
+            CircleCollider2D collider = AddComponent<CircleCollider2D>(9); //Change this to be a circle collider later maybe?
 
             rigidbody2D = AddComponent<Rigidbody2D>();
 
             SpriteRenderer sr = AddComponent<SpriteRenderer>(Resources.Sprite_Pixel);
             sr.SpriteScale = collider.Size;
             sr.Color = Color.Red;
-            sr.DrawLayer = DrawLayer.ID["Enemies"];
+            sr.DrawLayer = DrawLayer.ID[DrawLayers.Enemies];
             sr.OrderInLayer = 15;
 
-            //transform.Position = new Vector3(80, 0, 0);
+            SetSpecificData();
+        }
 
-            AddComponent<Enemy_Chaser>();
+        protected virtual void SetSpecificData() {
+            Name = "Cave Chaser";
+            AddComponent<Enemy_CaveChaser>(EntityID.CaveChaser);
         }
 
     }

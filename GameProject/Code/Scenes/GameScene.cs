@@ -15,7 +15,7 @@ using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Components.UI;
 using GameProject.Code.Scripts.Util;
 using GameProject.Code.Scripts.Components.Entity;
-using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject.Code.Scenes {
     
@@ -49,17 +49,64 @@ namespace GameProject.Code.Scenes {
             _deathMsgRenderer.transform.Parent = GameManager.MainCanvas.transform;
             _deathMsgRenderer.Sprite = Resources.Sprite_DeathMessage;
             _deathMsgRenderer.Color = Color.Transparent;
-            _deathMsgRenderer.DrawLayer = DrawLayer.ID["TotalOverlay"];
+            _deathMsgRenderer.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
             _deathMsgRenderer.OrderInLayer = 40;
 
             _respawnPrompt = Instantiate(new GameObject()).AddComponent<SpriteRenderer>();
             _respawnPrompt.transform.Parent = GameManager.MainCanvas.transform;
             _respawnPrompt.Sprite = Resources.Sprite_MM_Prompt;
             _respawnPrompt.Color = Color.Transparent;
-            _respawnPrompt.DrawLayer = DrawLayer.ID["TotalOverlay"];
+            _respawnPrompt.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
             _respawnPrompt.OrderInLayer = 39;
 
             Instantiate(new Prefab_Vignette());
+
+            InventoryTracker inventory = GameManager.MainCanvas.gameObject.AddComponent<InventoryTracker>();
+
+
+            for(int i = 0; i < 3; i++) {
+                TextRenderer counter = Instantiate(new GameObject()).AddComponent<TextRenderer>(GameFont.Base, "000");
+                counter.transform.Parent = GameManager.MainCanvas.transform;
+                counter.transform.LocalScale *= 0.75f;
+                counter.transform.LocalPosition = new Vector3(0, 0, 0);
+                counter.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
+                counter.transform.LocalPosition = new Vector3(-GameManager.MainCanvas.Extents.X + 20,
+                                                              GameManager.MainCanvas.Extents.Y - 45 - i * 15,
+                                                              0);
+
+                int dist = i;
+                GameManager.MainCanvas.ExtentsUpdate += () => {
+                    counter.transform.LocalPosition = new Vector3(-GameManager.MainCanvas.Extents.X + 20,
+                                                                  GameManager.MainCanvas.Extents.Y - 45 - dist * 15,
+                                                                  0);
+                };
+
+                SpriteRenderer iconRend = counter.gameObject.AddComponent<SpriteRenderer>();
+                iconRend.SpriteOffset = new Vector2(-7, 0.5f);
+                iconRend.SpriteScale = new Vector2(4 / 3f);
+                iconRend.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
+
+                switch (i) {
+                    case 0:
+                        inventory.MoneyRenderer = counter;
+                        iconRend.Sprite = Resources.Sprite_UI_Money;
+                        break;
+                    case 1:
+                        inventory.KeyRenderer = counter;
+                        iconRend.Sprite = Resources.Sprite_UI_Keys;
+                        break;
+                    case 2:
+                        inventory.BombRenderer = counter;
+                        iconRend.Sprite = Resources.Sprite_UI_Bombs;
+                        break;
+                }
+                
+            }
+
+
+            PlayerStats.Money = 0;
+            PlayerStats.Keys = 0;
+            PlayerStats.Bombs = 0;
 
 
             GameObject levelMapGO = Instantiate(new GameObject());
@@ -75,9 +122,8 @@ namespace GameProject.Code.Scenes {
 
             _updating = true;
 
-            // Start music
-            MediaPlayer.Play(Resources.Music_QuarantineLevel);
-            MediaPlayer.IsRepeating = true;
+            // Start music 
+            GameManager.SetFloorSong(LevelID.QuarantineLevel); //use logic for this later
 
             // Create minimap
             _minimap = new Prefab_Minimap();
@@ -116,8 +162,9 @@ namespace GameProject.Code.Scenes {
             _updating = true; // This could probably be moved further down
 
             // Reset music
-            MediaPlayer.Play(Resources.Music_QuarantineLevel);
-            MediaPlayer.IsRepeating = true;
+            GameManager.SetFloorSong(LevelID.QuarantineLevel); //use logic for this later
+            GameManager.DeactivateRoomSong();
+            
 
             GameObject.Destroy(_minimap);
             GameObject.Destroy(GameManager.Player.gameObject);
@@ -134,6 +181,9 @@ namespace GameProject.Code.Scenes {
             Instantiate(_minimap);
 
             PlayerStats.SetHealth(6, 0); //set with character stats later
+            PlayerStats.Money = 0;
+            PlayerStats.Keys = 0;
+            PlayerStats.Bombs = 0;
 
             // Spawn player
             Instantiate(new Prefab_Player());
@@ -160,7 +210,8 @@ namespace GameProject.Code.Scenes {
             //play player death animation
 
             // Stop music
-            MediaPlayer.Stop();
+            GameManager.StopFloorSong();
+            GameManager.DeactivateRoomSong();
 
             //play death sound
             Resources.Sound_Death.Play(0.2f, 0, 0);

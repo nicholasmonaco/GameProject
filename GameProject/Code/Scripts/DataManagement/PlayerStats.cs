@@ -257,8 +257,31 @@ namespace GameProject.Code.Scripts {
 
 
         // Other values
-        public static int Money = 0;
-        public static int Keys = 0;
+        private static int _money = 0;
+        private static int _keys = 0;
+        private static int _bombs = 0;
+
+        public static int Money { 
+            get => _money;
+            set {
+                _money = Math.Clamp(value, 0, 999);
+                GameManager.Inventory?.UpdateMoneyText();
+            }
+        }
+        public static int Keys {
+            get => _keys;
+            set {
+                _keys = Math.Clamp(value, 0, 999);
+                GameManager.Inventory?.UpdateKeyText();
+            }
+        }
+        public static int Bombs {
+            get => _bombs;
+            set {
+                _bombs = Math.Clamp(value, 0, 999);
+                GameManager.Inventory?.UpdateBombText();
+            }
+        }
     }
 
 

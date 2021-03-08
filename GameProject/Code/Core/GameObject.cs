@@ -37,6 +37,8 @@ namespace GameProject.Code.Core {
                     if (!_everAwaked) Awake();
                     OnEnable();
                     if (!_everStarted) Start();
+                } else {
+                    OnDisable();
                 }
 
                 foreach (Transform t in transform._children) {
@@ -75,6 +77,7 @@ namespace GameProject.Code.Core {
         public T AddComponent<T>() where T : Component {
             T newComp = Activator.CreateInstance(typeof(T), this) as T;
             _components.Add(newComp);
+
             return newComp;
         }
 
@@ -85,6 +88,7 @@ namespace GameProject.Code.Core {
 
             T newComp = Activator.CreateInstance(typeof(T), p) as T;
             _components.Add(newComp);
+
             return newComp;
         }
 
@@ -144,6 +148,7 @@ namespace GameProject.Code.Core {
         public void Start() {
             foreach (Component c in _components) {
                 c.Start();
+                c._everStarted = true;
             }
 
             _everStarted = true;
@@ -155,9 +160,15 @@ namespace GameProject.Code.Core {
             }
         }
 
+        public void OnDisable() {
+            foreach (Component c in _components) {
+                c.OnDisable();
+            }
+        }
+
         public void Update() {
             foreach (Component c in _components) {
-                if(c._everAwaked) c.Update();
+                if (c.Enabled && c._everAwaked) c.Update();
             }
 
             //if (_destroyList != _emptyList) {
@@ -168,7 +179,7 @@ namespace GameProject.Code.Core {
 
         public void LateUpdate() {
             foreach (Component c in _components) {
-                if(c._everAwaked) c.LateUpdate();
+                if (c.Enabled && c._everAwaked) c.LateUpdate();
             }
 
             //if (!_destroyList.Method.Equals(_emptyList)) {
@@ -179,7 +190,7 @@ namespace GameProject.Code.Core {
 
         public void FixedUpdate() {
             foreach (Component c in _components) {
-                if(c._everAwaked) c.FixedUpdate();
+                if (c.Enabled && c._everAwaked) c.FixedUpdate();
             }
 
             //if (!_destroyList.Method.Equals(_emptyList)) {
@@ -192,6 +203,7 @@ namespace GameProject.Code.Core {
 
         public void Draw(SpriteBatch sb) {
             foreach(Component c in _components) {
+                if (!c.Enabled) continue;
                 c.Draw(sb);
             }
         }

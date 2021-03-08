@@ -11,22 +11,39 @@ namespace GameProject.Code.Core {
 
         // This should only go up to 49
 
-        public static Dictionary<string, int> ID = new Dictionary<string, int>() {
-            { "Default", 0 },
-            { "Background", 1 },
-            { "WorldStructs", 2 },
-            { "Pickups", 3 },
-            { "Enemies", 4 },
-            { "Boss", 5 },
-            { "Entities", 6 },
-            { "Player", 7 },
-            { "Projectiles", 8 },
-            { "OverlayFX", 9 },
-            { "AboveAll", 10 },
-            { "HUD", 11 },
-            { "OverHUD", 12 },
-            { "TotalOverlay", 13 }
+        public static Dictionary<DrawLayers, int> ID = new Dictionary<DrawLayers, int>() {
+            { DrawLayers.Default, 0 },
+            { DrawLayers.Background, 1 },
+            { DrawLayers.WorldStructs, 2 },
+            { DrawLayers.Pickups, 3 },
+            { DrawLayers.Enemies, 4 },
+            { DrawLayers.Boss, 5 },
+            { DrawLayers.Entities, 6 },
+            { DrawLayers.Player, 7 },
+            { DrawLayers.Projectiles, 8 },
+            { DrawLayers.OverlayFX, 9 },
+            { DrawLayers.AboveAll, 10 },
+            { DrawLayers.HUD, 11 },
+            { DrawLayers.OverHUD, 12 },
+            { DrawLayers.TotalOverlay, 13 }
         };
 
+    }
+
+    public enum DrawLayers {
+        Default,
+        Background,
+        WorldStructs,
+        Pickups,
+        Enemies,
+        Boss,
+        Entities,
+        Player,
+        Projectiles,
+        OverlayFX,
+        AboveAll,
+        HUD,
+        OverHUD,
+        TotalOverlay
     }
 }

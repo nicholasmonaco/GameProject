@@ -8,8 +8,14 @@ using System.Text;
 
 namespace GameProject.Code.Scripts.Components.Entity {
     public abstract class AbstractEntity : Component {
-        public AbstractEntity(GameObject attached) : base(attached) { }
+        public AbstractEntity(GameObject attached, EntityID id) : base(attached) {
+            ID = id;
+        }
 
+        public EntityID ID { get; protected set; } = EntityID.None;
+
+        protected bool _dead = false;
+        public Action OnDeathFlag = () => { };
 
 
 
@@ -17,5 +23,6 @@ namespace GameProject.Code.Scripts.Components.Entity {
             //todo
             return new GameObject();
         }
+
     }
 }

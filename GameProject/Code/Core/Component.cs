@@ -20,10 +20,30 @@ namespace GameProject.Code.Core {
         public GameObject gameObject;
         public Transform transform;
 
-        public bool _everAwaked;
-        public bool _everStarted;
+        public bool _everAwaked = false;
+        public bool _everStarted = false;
 
         protected bool Destroyed = false;
+
+        private bool _enabled = true;
+        //public bool Enabled => gameObject.Enabled && _enabled;
+        public bool Enabled {
+            get => gameObject.Enabled && _enabled;
+            set {
+                _enabled = value;
+
+                if (value) {
+                    if (!_everAwaked) {
+                        PreAwake();
+                        Awake(); 
+                    }
+                    OnEnable();
+                    if (!_everStarted) Start();
+                } else {
+                    OnDisable();
+                }
+            }
+        }
 
 
         public Component(GameObject attached) {
@@ -73,6 +93,8 @@ namespace GameProject.Code.Core {
         public virtual void Start() { }
 
         public virtual void OnEnable() { }
+
+        public virtual void OnDisable() { }
 
         public virtual void Update() { }
 

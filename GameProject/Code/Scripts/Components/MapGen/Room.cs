@@ -2,11 +2,14 @@
 using GameProject.Code.Core.Components;
 using GameProject.Code.Scripts.Util;
 using GameProject.Code.Scripts.Components.Entity;
+using GameProject.Code.Prefabs;
 using GameProject.Code.Pipeline;
+using GameProject.Code.Prefabs.MapGen;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 
 namespace GameProject.Code.Scripts.Components {
@@ -47,8 +50,9 @@ namespace GameProject.Code.Scripts.Components {
         public List<Pickup> Loot;
 
         public bool Entered = false;
-        public bool Beaten = true;
+        public bool Beaten = false;
         public bool RevealedOnMinimap = false;
+
         public RoomType RoomType = RoomType.Normal;
         public RoomStyle RoomStyle = RoomStyle.QuarantineLevel_01;
 
@@ -74,7 +78,7 @@ namespace GameProject.Code.Scripts.Components {
 
                     SpriteRenderer wallCornerRend = wallCorner.AddComponent<SpriteRenderer>();
                     wallCornerRend.Sprite = GetRandomCornerTexture(RoomStyle.QuarantineLevel_01);
-                    wallCornerRend.DrawLayer = DrawLayer.ID["Background"];
+                    wallCornerRend.DrawLayer = DrawLayer.ID[DrawLayers.Background];
                     wallCornerRend.OrderInLayer = 21;
                     wallCornerRend.SpriteScale = new Vector2(-x, y);
 
@@ -96,6 +100,8 @@ namespace GameProject.Code.Scripts.Components {
                     RectCollider2D cornerColl_2 = wallCorner.AddComponent<RectCollider2D>(35, 94, 83 * x, -20*y);
                 }
             }
+
+            
 
         }
 
@@ -148,38 +154,14 @@ namespace GameProject.Code.Scripts.Components {
                 if (Doors.ContainsKey(dir)) return;
 
                 // Generate door if relevant
-                GameObject door = Instantiate<GameObject>(Vector3.Zero, transform);
-                door.Name = "Door";
-                door.transform.Parent = transform;
-                door.transform.LocalPosition = pos;
-                door.transform.Rotation = rotation;
-                door.Layer = (int)LayerID.Door;
-
-                SpriteRenderer sr = door.AddComponent<SpriteRenderer>();
-
-                sr.Sprite = Resources.Sprites_DoorFrames[DoorType.Normal];
-                sr.DrawLayer = DrawLayer.ID["WorldStructs"];
-                sr.OrderInLayer = 25;
-                
-
-                SpriteRenderer isr = door.AddComponent<SpriteRenderer>();
-                isr.Sprite = Resources.Sprite_Door_Inside;
-                isr.DrawLayer = DrawLayer.ID["WorldStructs"];
-                isr.OrderInLayer = 20;
-
-                Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(10, -22), new Vector2(-10, -22) };
-                PolygonCollider2D pc = door._components.AddReturn(new PolygonCollider2D(door, doorBounds, false)) as PolygonCollider2D;
-                pc.IsTrigger = true;
-
-                DoorController dc = door.AddComponent<DoorController>();
-                dc.DoorDirection = dir;
-                dc.DoorRenderer = sr; // Frame Renderer
+                DoorController door = Instantiate<Prefab_Door>(Vector3.Zero, transform).GetComponent<DoorController>();
+                door.InitDoor(pos, rotation, dir);
 
                 if (_doorFillers.ContainsKey(dir)) {
                     Destroy(_doorFillers[dir]);
                     _doorFillers.Remove(dir);
                 }
-                Doors.Add(dir, dc);
+                Doors.Add(dir, door);
 
             } else {
                 if (_doorFillers.ContainsKey(dir)) return;
@@ -190,9 +172,10 @@ namespace GameProject.Code.Scripts.Components {
                 doorFiller.transform.LocalPosition = pos;
                 doorFiller.transform.Rotation = rotation;
 
-                Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(11, -22), new Vector2(-11, -22) };
-                PolygonCollider2D pc = doorFiller._components.AddReturn(new PolygonCollider2D(doorFiller, doorBounds, false)) as PolygonCollider2D;
-                pc.IsTrigger = false;
+                //Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(11, -22), new Vector2(-11, -22) };
+                //PolygonCollider2D pc = doorFiller._components.AddReturn(new PolygonCollider2D(doorFiller, doorBounds, false)) as PolygonCollider2D;
+                RectCollider2D fillerCollider = doorFiller.AddComponent<RectCollider2D>(30, 35, 0, -6.5f);
+                fillerCollider.IsTrigger = false;
                 doorFiller.Layer = (int)LayerID.EdgeWall;
 
                 if (Doors.ContainsKey(dir)) {
@@ -211,6 +194,8 @@ namespace GameProject.Code.Scripts.Components {
                                               Doors.ContainsKey(Direction.Down),
                                               Doors.ContainsKey(Direction.Left),
                                               Doors.ContainsKey(Direction.Right));
+
+            if (RoomType == RoomType.Item) GenerateItem();
 
             // If no room is found
             if (data.RoomID == -99999) return;
@@ -259,6 +244,37 @@ namespace GameProject.Code.Scripts.Components {
             
         }
 
+        public void CheckClear() {
+            if(Beaten == false && Enemies.Count == 0) {
+                Beaten = true;
+                StartCoroutine(Clear_C());
+            }
+        }
+
+        private IEnumerator Clear_C() {
+            yield return new WaitForSeconds(0.5f);
+
+            //drop loot
+            if(Loot != null && Loot.Count > 0) {
+                foreach (Pickup p in Loot) {
+                    GameObject pickup = Instantiate(new Prefab_PickupGeneric(p));
+                    pickup.transform.Parent = transform;
+                    pickup.transform.LocalPosition = Vector3.Zero; //change this later to find the nearest clear spot(s) from the center of the room
+                }
+            }
+
+            //open doors
+            foreach(DoorController door in Doors.Values) {
+                door.OpenDoor();
+            }
+        }
+
+        public void CloseDoors() {
+            foreach (DoorController door in Doors.Values) {
+                door.CloseDoor();
+            }
+        }
+
 
         public void SetEntities(int[,] rawEntityMap) {
             for (int y = 0; y < 7; y++) {
@@ -268,18 +284,26 @@ namespace GameProject.Code.Scripts.Components {
 
                     if (ent == EntityID.None) continue;
 
+                    Vector2 offset = new Vector2(13f, 7f) * -13;
+
                     // If it's an enemy
                     if (entID >= 301 && entID < 500) {
                         AbstractEnemy enemy = Instantiate(AbstractEnemy.GetEnemyFromID(ent)).GetComponent<AbstractEnemy>();
                         enemy.transform.Parent = transform;
-                        enemy.transform.LocalPosition = (new Vector2(x, y) * ObstacleTileSize).ToVector3(); //these will probably need a +2 on each
+                        //enemy.transform.LocalPosition = (new Vector2(x, y) * (ObstacleTileSize + Vector2.One) + offset).ToVector3(); //these will probably need a +2 on each
+                        enemy.transform.LocalPosition = ((new Vector2(x, y) * (new Vector2(26, 28) + new Vector2(2))) + Vector2.One + offset).ToVector3();
+
+                        enemy.OnDeathFlag = () => {
+                            Enemies.Remove(enemy);
+                        };
+                        enemy.OnDeathFlag += CheckClear;
 
                         Enemies.Add(enemy);
 
                     } else { // If it isn't an enemy
                         AbstractEntity entity = Instantiate(AbstractEntity.GetEntityFromID(ent)).GetComponent<AbstractEntity>();
                         entity.transform.Parent = transform;
-                        entity.transform.LocalPosition = (new Vector2(x, y) * ObstacleTileSize).ToVector3();
+                        entity.transform.LocalPosition = ((new Vector2(x, y) * (new Vector2(26, 28) + new Vector2(2))) + Vector2.One + offset).ToVector3();
 
                         Entities.Add(entity);
                     }
@@ -292,12 +316,21 @@ namespace GameProject.Code.Scripts.Components {
             // Do this after the entities actually exist
             switch (rawID) {
                 case 20:
+                    return EntityID.CaveChaser;
                 case 21:
+                    return EntityID.CaveChaser_Armed;
                 case 22:
+                    return EntityID.CaveChaser_Buckshot;
                 case 23:
+                    return EntityID.CaveChaser_Omega;
+                case 24:
+                    return EntityID.Drone_Attack;
+                case 25:
+                    return EntityID.Drone_Bugged;
                 case 26:
                 case 27:
                     return EntityID.CaveChaser;
+                case 0:
                 default:
                     return EntityID.None;
                 //case 
@@ -322,7 +355,7 @@ namespace GameProject.Code.Scripts.Components {
                 }
 
                 //need to change this later to give it other properties
-                if (ObstacleCollidable(tile.Data)) {                    
+                if (ObstacleCollidable(tile.Data)) {
                     //Collider2D newTileCollider = parentMap.gameObject.AddComponent<RectCollider2D>(tile.TileRenderer);
 
                     Collider2D newTileCollider = gameObject.AddComponent<RectCollider2D>(
@@ -332,17 +365,16 @@ namespace GameProject.Code.Scripts.Components {
                         parentMap.transform.LocalPosition.Y + tile.TileRenderer.SpriteOffset.Y
                     );
 
+                    newTileCollider.Bounds.ResolveCorners();
+
 
                     //maybe add a method here to see what we need to add to it
                     parentMap.ColliderMap[tile.TilemapPos.X, tile.TilemapPos.Y] = newTileCollider;
 
                 }else if (ObstacleDamaging(tile.Data)) {
-                    Collider2D newTileCollider = gameObject.AddComponent<RectCollider2D>(
-                        tile.TileRenderer.Sprite.Width * tile.TileRenderer.SpriteScale.X,
-                        tile.TileRenderer.Sprite.Height * tile.TileRenderer.SpriteScale.Y,
-                        parentMap.transform.LocalPosition.X + tile.TileRenderer.SpriteOffset.X,
-                        parentMap.transform.LocalPosition.Y + tile.TileRenderer.SpriteOffset.Y
-                    );
+                    Vector2 pos = new Vector2(parentMap.transform.LocalPosition.X + tile.TileRenderer.SpriteOffset.X,
+                                              parentMap.transform.LocalPosition.Y + tile.TileRenderer.SpriteOffset.Y);
+                    Collider2D newTileCollider = gameObject.AddComponent<CircleCollider2D>(pos, 9.85f);
 
                     newTileCollider.IsTrigger = true;
 
@@ -417,14 +449,20 @@ namespace GameProject.Code.Scripts.Components {
 
 
         private void GenerateRandomLoot() {
-            int count = GameManager.WorldRandom.Next(0, 10);
-            if (count <= 2) count = 0;
-            else if (count <= 6) count = 1;
-            else if (count <= 8) count = 2;
-            else if (count <= 9) count = 3;
+            float lootRNG = GameManager.WorldRandom.NextValue(0, 100);
+            int lootCount;
+            if (lootRNG <= 70 && lootRNG > 30) {
+                lootCount = 1;
+            } else if (lootRNG > 10) {
+                lootCount = 2;
+            } else if (lootRNG > 1) {
+                lootCount = 3;
+            } else {
+                lootCount = 4;
+            }
 
-            Loot = new List<Pickup>(count);
-            for(int i = 0; i < count; i++) {
+            Loot = new List<Pickup>(lootCount);
+            for(int i = 0; i < lootCount; i++) {
                 Loot.Add(GetRandomLootPickup());
             }
         }
@@ -433,6 +471,18 @@ namespace GameProject.Code.Scripts.Components {
             //todo
             return Pickup.Coin;
         }
+
+        private void GenerateItem() {
+            GameObject itemObj = Instantiate(new Prefab_WorldItem(WorldItem.GetRandomItem(ItemPool.Item)));
+            itemObj.transform.Parent = transform;
+            itemObj.transform.LocalPosition = Vector3.Zero;
+
+            //WorldItem item = Instantiate(itemObj).GetComponent<WorldItem>();
+
+            Debug.Log($"Spawning item at {GridPos}");
+        }
+
+        
         
 
 

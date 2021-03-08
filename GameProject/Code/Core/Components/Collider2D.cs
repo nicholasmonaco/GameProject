@@ -88,6 +88,21 @@ namespace GameProject.Code.Core.Components {
                     0.9f);
         }
 
+        protected static void DrawLine(SpriteBatch sb, Vector2 start, Vector2 end, Color color) {
+            Vector2 edge = end - start;
+            float angle = (float)MathF.Atan2(edge.Y, edge.X);
+
+            sb.Draw(Resources.Sprite_Pixel,
+                    start,
+                    null,
+                    color,
+                    angle,
+                    Vector2.Zero,
+                    new Vector2(edge.Length(), 0.5f).FlipY(),
+                    SpriteEffects.None,
+                    0.9f);
+        }
+
 
 
         public Action<Collider2D> OnCollisionEnter2D_Direct = (other) => {};
@@ -97,4 +112,6 @@ namespace GameProject.Code.Core.Components {
         public Action<Collider2D> OnTriggerStay2D_Direct = (other) => { };
         public Action<Collider2D> OnTriggerExit2D_Direct = (other) => { };
     }
+
+    
 }

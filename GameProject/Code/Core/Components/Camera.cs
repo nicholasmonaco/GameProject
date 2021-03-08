@@ -43,6 +43,8 @@ namespace GameProject.Code.Core.Components {
 
             ProjectionMatrix = Matrix.CreateOrthographicOffCenter(0, GameManager.Viewport.Width, GameManager.Viewport.Height, 0, NearZ, FarZ);
 
+            //Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GameManager.Viewport.Width / GameManager.Viewport.Height, 0, 1000);
+
             // Now that the projection matrix exists, we need to modify it so that 0,0 is at the center of the screen and +y is up, not down.
             //ProjectionMatrix = Matrix.CreateTranslation(GameManager.Resolution.X, GameManager.Resolution.Y, 0) * ProjectionMatrix;
 

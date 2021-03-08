@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
@@ -31,6 +32,7 @@ namespace GameProject.Code.Core {
 
         public static Texture2D Sprite_Door_Inside;
         public static Dictionary<DoorType, Texture2D> Sprites_DoorFrames;
+        public static List<Texture2D> Sprites_DoorCloseFrames;
 
         public static List<Texture2D> Sprites_BossDoorEyeAnim;
 
@@ -38,6 +40,9 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_Bullet_Standard;
 
         public static Texture2D[] Sprite_UI_Reticles;
+        public static Texture2D Sprite_UI_Money;
+        public static Texture2D Sprite_UI_Keys;
+        public static Texture2D Sprite_UI_Bombs;
         public static Dictionary<HeartContainer, Texture2D> Sprites_HeartContainers;
 
         public static Dictionary<Pickup, Texture2D> Sprite_Pickups;
@@ -48,6 +53,9 @@ namespace GameProject.Code.Core {
         public static Dictionary<ObstacleID, Texture2D> Sprites_GlobalObstacles;
         public static Dictionary<LevelID, Dictionary<ObstacleID, Texture2D>> Sprites_Obstacles;
 
+        public static Texture2D Sprite_ItemPedastal;
+        public static Texture2D Sprite_Item_Unknown;
+        public static Dictionary<ItemID, Texture2D> Sprites_Items;
 
         public static Dictionary<Direction, List<Texture2D>> Sprites_PlayerMove;
 
@@ -59,10 +67,14 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_MM_Title;
         public static Texture2D Sprite_MM_Prompt;
 
+        public static Dictionary<EntityID, Dictionary<EnemyAnimationAction, List<Texture2D>>> Sprites_EnemyAnimations;
+
         #endregion
 
         #region Font Resources
         public static SpriteFont Font_Debug;
+        public static SpriteFont Font_Base_Inner;
+        public static SpriteFont Font_Base_Outer;
         #endregion
 
         #region Sound Resources
@@ -76,7 +88,10 @@ namespace GameProject.Code.Core {
         #endregion
 
         #region Music Resources
-        public static Song Music_QuarantineLevel;
+        public static SoundEffect Music_Store;
+
+        public static SoundEffect Music_QuarantineLevel;
+
         #endregion
 
         #region RoomData Resources
@@ -222,7 +237,10 @@ namespace GameProject.Code.Core {
         }
 
         private static void LoadMusic(ContentManager content) {
-            Music_QuarantineLevel = content.Load<Song>("Music/QuarantineLevel");
+            Music_Store = content.Load<SoundEffect>("Music/Store");
+
+            Music_QuarantineLevel = content.Load<SoundEffect>("Music/QuarantineLevel");
+            //Music_MagmaChambers = content.Load<SoundEffect>("Music/MagmaChambers");
         }
 
 
@@ -257,6 +275,13 @@ namespace GameProject.Code.Core {
             Sprites_DoorFrames.Add(DoorType.Boss, content.Load<Texture2D>("Textures/Level/Door/Door_Boss"));
             Sprites_DoorFrames.Add(DoorType.Normal, content.Load<Texture2D>("Textures/Level/Door/Door_QuarantineZone_Base"));
 
+            Sprites_DoorCloseFrames = new List<Texture2D>(6);
+            Sprites_DoorCloseFrames.Add(content.Load<Texture2D>("Textures/Level/Door/Close/Close_00"));
+            Sprites_DoorCloseFrames.Add(content.Load<Texture2D>("Textures/Level/Door/Close/Close_01"));
+            Sprites_DoorCloseFrames.Add(content.Load<Texture2D>("Textures/Level/Door/Close/Close_02"));
+            Sprites_DoorCloseFrames.Add(content.Load<Texture2D>("Textures/Level/Door/Close/Close_03"));
+            Sprites_DoorCloseFrames.Add(content.Load<Texture2D>("Textures/Level/Door/Close/Close_04"));
+            Sprites_DoorCloseFrames.Add(content.Load<Texture2D>("Textures/Level/Door/Close/Close_05"));
 
             Sprites_BossDoorEyeAnim = new List<Texture2D>(6);
             Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_0"));
@@ -271,6 +296,10 @@ namespace GameProject.Code.Core {
 
             Sprite_UI_Reticles = new Texture2D[1];
             Sprite_UI_Reticles[0] = content.Load<Texture2D>("Textures/UI/Reticle_0");
+
+            Sprite_UI_Money = content.Load<Texture2D>("Textures/UI/Money");
+            Sprite_UI_Keys = content.Load<Texture2D>("Textures/UI/Key");
+            Sprite_UI_Bombs = content.Load<Texture2D>("Textures/UI/Bomb");
 
             Sprites_HeartContainers = new Dictionary<HeartContainer, Texture2D>(6);
             Sprites_HeartContainers.Add(HeartContainer.Invisible, Sprite_Invisible);
@@ -298,10 +327,15 @@ namespace GameProject.Code.Core {
             Sprite_MinimapIcons.Add(MinimapIcon.Item, content.Load<Texture2D>("Textures/UI/Minimap/Icon_Item"));
             Sprite_MinimapIcons.Add(MinimapIcon.Boss, content.Load<Texture2D>("Textures/UI/Minimap/Icon_Boss"));
 
+            //item
+            Sprite_ItemPedastal = content.Load<Texture2D>("Textures/Entities/Misc/ItemPedastal");
+            LoadItemSprites(content);
 
             LoadObstacleSprites(content);
 
             LoadMainMenuSprites(content);
+
+            LoadEnemySprites(content);
 
             //player
             Sprites_PlayerMove = new Dictionary<Direction, List<Texture2D>>(4);
@@ -330,6 +364,8 @@ namespace GameProject.Code.Core {
 
 
             Font_Debug = content.Load<SpriteFont>("Fonts/arial");
+            Font_Base_Inner = content.Load<SpriteFont>("Fonts/Base_Inner");
+            Font_Base_Outer = content.Load<SpriteFont>("Fonts/Base_Outer");
 
 
             Debug.Log("Textures loaded.");
@@ -375,5 +411,47 @@ namespace GameProject.Code.Core {
 
 
         }
+
+        private static void LoadEnemySprites(ContentManager content) {
+            Sprites_EnemyAnimations = new Dictionary<EntityID, Dictionary<EnemyAnimationAction, List<Texture2D>>>();
+
+            for(int i = 301; i < 600; i++) {
+                string contentlesspath = "Textures/Entities/Enemies/" + ((EntityID)i).ToString() + "/";
+                string path = content.RootDirectory + "/" + contentlesspath;
+
+                if (!new DirectoryInfo(path).Exists) continue;
+
+                Sprites_EnemyAnimations[(EntityID)i] = new Dictionary<EnemyAnimationAction, List<Texture2D>>();
+
+                for (int j = 0; j <= 5; j++) {
+                    string contentlessAnimPath = contentlesspath + "/" + ((EnemyAnimationAction)j).ToString();
+                    string animPath = path + "/" + ((EnemyAnimationAction)j).ToString();
+                    
+                    DirectoryInfo dir = new DirectoryInfo(animPath);
+                    if (!dir.Exists) continue;
+
+                    FileInfo[] files = dir.GetFiles("*.*");
+                    List<Texture2D> textures = new List<Texture2D>(files.Length);
+                    foreach(FileInfo file in files) {
+                        string name = Path.GetFileNameWithoutExtension(file.Name);
+
+                        textures.Add(content.Load<Texture2D>(contentlessAnimPath + "/" + name));
+                    }
+
+                    Sprites_EnemyAnimations[(EntityID)i][(EnemyAnimationAction)j] = textures;
+                }
+            }
+        }
+
+
+        private static void LoadItemSprites(ContentManager content) {
+            Sprite_Item_Unknown = content.Load<Texture2D>("Textures/Items/Unknown");
+
+            Sprites_Items = new Dictionary<ItemID, Texture2D>();
+
+            Sprites_Items.Add(ItemID.VitaminH, content.Load<Texture2D>($"Textures/Items/{ItemID.VitaminH.ToString()}"));
+        }
+
+
     }
 }

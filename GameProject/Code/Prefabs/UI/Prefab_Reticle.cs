@@ -15,7 +15,7 @@ namespace GameProject.Code.Prefabs {
 
             SpriteRenderer sr = AddComponent<SpriteRenderer>();
             sr.Sprite = Resources.Sprite_UI_Reticles[0];
-            sr.DrawLayer = DrawLayer.ID["HUD"];
+            sr.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             sr.OrderInLayer = 75;
             sr.SpriteScale = new Vector2(0.8f, 0.8f);
 

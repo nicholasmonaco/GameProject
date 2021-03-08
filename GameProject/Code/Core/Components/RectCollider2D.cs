@@ -65,17 +65,9 @@ namespace GameProject.Code.Core.Components {
             for (int i = 0; i < PolyBounds._points.Length - 1; i++) {
                 DrawLine(sb, PolyBounds._points[i], PolyBounds._points[i + 1]);
             }
+
+            DrawLine(sb, PolyBounds.bottomLeft, PolyBounds.topRight, Color.Red);
         }
 
-
-        public override void Update() {
-            Scripts.Components.Room rr = transform.GetComponent<Scripts.Components.Room>();
-
-            if (rr != null && rr.GridPos == new Point(-3,-2)) {
-                if (rr.ObstacleTilemap.ColliderMap[0, 0] != this) return;
-                Vector2 colliderAtzz = rr.ObstacleTilemap.ColliderMap[0, 0].Bounds.Center;
-                Debug.Log($"0,0 collider at {rr.GridPos} is {colliderAtzz}");
-            }
-        }
     }
 }

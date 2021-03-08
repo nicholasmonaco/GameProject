@@ -8,9 +8,20 @@ using System.Text;
 
 namespace GameProject.Code.Core.Components {
     public class TextRenderer : Component {
-        public string Text;
-        public SpriteFont Font;
+        private string _text = "";
+        public string Text {
+            get => _text;
+            set {
+                _text = value;
+                _textDrawPos = new Vector2(_font.MeasureString(value).X / 2f, _font.MeasureString(value).Y / 2f);
+            }
+        }
+
+        private Vector2 _textDrawPos;
+        private SpriteFont _font;
+        private SpriteFont _secondaryFont;
         public Color Color = Color.White;
+        public Color SecondaryColor = Color.Black;
         public Vector2 SpriteScale = Vector2.One;
 
         public int DrawLayer {
@@ -33,28 +44,54 @@ namespace GameProject.Code.Core.Components {
         private int _orderInLayer = 0;
         private float _realDrawOrder = 0;
 
+        private Action<SpriteBatch> _drawAction = (sb) => { };
+
+
+        public void SetFont(GameFont font) {
+            switch (font) {
+                default:
+                case GameFont.Base:
+                    _font = Resources.Font_Base_Outer;
+                    _secondaryFont = Resources.Font_Base_Inner;
+                    _drawAction = (sb) => {
+                        DrawMethod(sb, _font, Color);
+                        DrawMethod(sb, _secondaryFont, SecondaryColor);
+                    };
+                    break;
+            }
+        }
+
 
         public TextRenderer(GameObject attached) : base(attached) { }
 
-        public TextRenderer(GameObject attached, SpriteFont font, string text) : base(attached) {
-            Font = font;
+        public TextRenderer(GameObject attached, GameFont font, string text) : base(attached) {
+            SetFont(font);
             Text = text;
         }
 
 
         public override void Draw(SpriteBatch sb) {
-            sb.DrawString(Font, 
-                    Text,
-                    transform.Position.ToVector2(),
-                    Color,
-                    transform.Rotation_Rads,
-                    new Vector2(Font.MeasureString(Text).X / 2f, Font.MeasureString(Text).Y / 2f),
-                    transform.Scale.ToVector2().FlipY() * SpriteScale,
-                    SpriteEffects.None,
-                    _realDrawOrder);
+            _drawAction(sb);
 
         }
 
-        public Point SpriteSize => (Font.MeasureString(Text) * transform.Scale.ToVector2()).ToPoint();
+        private void DrawMethod(SpriteBatch sb, SpriteFont font, Color color) {
+            sb.DrawString(font,
+                          Text,
+                          transform.Position.ToVector2() + new Vector2(SpriteSize.X/2f, 0),
+                          color,
+                          transform.Rotation_Rads,
+                          _textDrawPos,
+                          transform.Scale.ToVector2().FlipY() * SpriteScale,
+                          SpriteEffects.None,
+                          _realDrawOrder);
+        }
+
+        public Point SpriteSize => (_font.MeasureString(Text) * transform.Scale.ToVector2()).ToPoint();
+    }
+
+    public enum GameFont {
+        Base = 1,
+        Styled = 1
     }
 }

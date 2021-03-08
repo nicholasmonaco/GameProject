@@ -20,6 +20,7 @@ namespace GameProject.Code.Core.Components {
             Bounds = new CircleBounds(Vector2.Zero, Vector2.Zero, 1);
 
             Bounds.ParentCollider = this;
+            WorldMatrixChanged = true;
         }
 
         public CircleCollider2D(GameObject attached, Vector2 center, Vector2 offset, float radius) : base(attached) {
@@ -27,6 +28,7 @@ namespace GameProject.Code.Core.Components {
 
             Bounds.ParentCollider = this;
             Size = new Vector2(radius, radius) * 2;
+            WorldMatrixChanged = true;
         }
 
         public CircleCollider2D(GameObject attached, Vector2 center, float radius) : this(attached, center, Vector2.Zero, radius) { }
@@ -58,7 +60,7 @@ namespace GameProject.Code.Core.Components {
                 WorldMatrixChanged = false;
             }
 
-
+            if (_debugPoints == null) return;
             for (int i = 0; i < _debugPoints.Length - 1; i++) {
                 DrawLine(sb, _debugPoints[i], _debugPoints[i + 1]);
             }

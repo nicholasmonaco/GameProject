@@ -18,7 +18,7 @@ namespace GameProject.Code.Prefabs {
 
             SpriteRenderer sr = AddComponent<SpriteRenderer>();
             sr.Sprite = Resources.Sprite_Vignette;
-            sr.DrawLayer = DrawLayer.ID["AboveAll"];
+            sr.DrawLayer = DrawLayer.ID[DrawLayers.AboveAll];
             sr.OrderInLayer = 10;
             sr.Color = new Color(1, 1, 1, 0.75f);
 

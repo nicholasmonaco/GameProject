@@ -12,6 +12,12 @@ namespace GameProject.Code.Core {
         public Vector2 OrigCenter = Vector2.Zero;
         public Vector2 Center = Vector2.Zero;
 
+        //debug
+        public Vector2 bottomLeft;
+        public Vector2 topRight;
+        //
+
+
         public Collider2D ParentCollider;
 
         public BoundsType BoundsType { get; set; }
@@ -19,6 +25,7 @@ namespace GameProject.Code.Core {
 
 
         public abstract void ApplyWorldMatrix(Transform worldTransform);
+        public virtual void ResolveCorners() { }
 
         public abstract void Destroy();
 
@@ -31,8 +38,10 @@ namespace GameProject.Code.Core {
 
 
             // Step 1: Check if currently intersecting
-            Vector2 bottomLeftRectPoint = rect._points[3];
-            Vector2 topRightRectPoint = rect._points[1];
+            //this is what we need to change - it has to find these automatically, not by index, as matrix transformations change these
+            Vector2 bottomLeftRectPoint = rect.bottomLeft;
+            Vector2 topRightRectPoint = rect.topRight;
+
 
             Vector2 nearest = Vector2.Clamp(cir.Center, bottomLeftRectPoint, topRightRectPoint);
             Vector2 difference = nearest - cir.Center;

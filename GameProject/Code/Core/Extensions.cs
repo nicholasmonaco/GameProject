@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using GameProject.Code.Scripts.Util;
 
 namespace GameProject.Code.Core {
@@ -140,5 +141,39 @@ namespace GameProject.Code.Core {
             }
         }
 
+
+        public static Vector2 Norm(this Vector2 vector) {
+            if (vector == Vector2.Zero)
+                return Vector2.Zero;
+            else {
+                return Vector2.Normalize(vector);
+            }
+        }
+
+        public static Vector3 Norm(this Vector3 vector) {
+            if (vector == Vector3.Zero)
+                return Vector3.Zero;
+            else {
+                return Vector3.Normalize(vector);
+            }
+        }
+
+        /// <summary>
+        /// Rotates the direction angle clockwise(?) in a direction.
+        /// </summary>
+        /// <param name="angle">The angle to rotate, in degrees</param>
+        /// <returns>The rotated direction vector.</returns>
+        public static Vector2 RotateDirection(this Vector2 vector, float angle) {
+            float cos = MathF.Cos(angle);
+            float sin = MathF.Sin(angle);
+            return new Vector2(cos * vector.X - sin * vector.Y,
+                               sin * vector.X + cos * vector.Y).Norm();
+        }
+
+
+
+        public static void Play(this SoundEffect sound, float volume) {
+            sound.Play(volume * GameManager.MasterVolume * GameManager.SoundVolume, 0, 0);
+        }
     }
 }

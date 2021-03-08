@@ -20,7 +20,7 @@ namespace GameProject.Code.Prefabs {
             SpriteRenderer sr = AddComponent<SpriteRenderer>();
             sr.Sprite = Resources.Sprite_Bullet_Standard;
             sr.Color = Color.Magenta; //base this off of items and stuff
-            sr.DrawLayer = DrawLayer.ID["Projectiles"];
+            sr.DrawLayer = DrawLayer.ID[DrawLayers.Projectiles];
             sr.OrderInLayer = 100;
             sr.SpriteScale = new Vector2(0.65f, 0.65f);
 

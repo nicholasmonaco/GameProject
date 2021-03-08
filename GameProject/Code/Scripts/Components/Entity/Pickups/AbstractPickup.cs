@@ -51,6 +51,24 @@ namespace GameProject.Code.Scripts.Components.Entity {
             Destroy(this);
         }
 
+        protected IEnumerator YScaleFadeIn() {
+            GetComponent<Rigidbody2D>().Velocity = Vector2.Zero;
+
+            float dur_Total = 0.3f;
+            float dur = dur_Total;
+            Vector2 origScale = _pickupRenderer.SpriteScale;
+            Vector2 yZero = new Vector2(origScale.X, 0);
+
+            while (dur >= 0) {
+                dur -= Time.deltaTime;
+                _pickupRenderer.SpriteScale = Vector2.Lerp(origScale, yZero, dur / dur_Total);
+                yield return null;
+            }
+
+            _pickupRenderer.SpriteScale = origScale;
+            yield return new WaitForEndOfFrame();
+        }
+
         protected Action DeathAction = () => { };
 
 
@@ -79,6 +97,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         PowerCell,
         Coin,
         Coin_5,
+        Bomb,
 
         Chest_Free,
         Chest_Free_Opened,
@@ -87,6 +106,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
         Heart_Double,
         Key_Double,
-        Coin_Double
+        Coin_Double,
+        Bomb_Double
     }
 }

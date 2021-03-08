@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Sounds/CaveChaser.wav</SourceFile>
-  <SourceTime>2021-02-19T15:29:48.3805489-06:00</SourceTime>
+  <SourceTime>2021-02-20T00:04:43.9165154-06:00</SourceTime>
   <DestFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/bin/Windows/Content/Sounds/CaveChaser.xnb</DestFile>
-  <DestTime>2021-02-19T23:18:17.1570654-06:00</DestTime>
+  <DestTime>2021-02-20T02:11:53.8220345-06:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2020-08-10T16:17:54-05:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

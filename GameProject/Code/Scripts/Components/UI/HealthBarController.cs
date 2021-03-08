@@ -24,7 +24,7 @@ namespace GameProject.Code.Scripts.Components {
                     heart.transform.LocalPosition = (HeartSize * new Vector2(x, -y)).ToVector3();
 
                     SpriteRenderer rend = heart.AddComponent<SpriteRenderer>();
-                    rend.DrawLayer = DrawLayer.ID["HUD"];
+                    rend.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
                     rend.OrderInLayer = 60;
 
                     UI_Heart data = heart.AddComponent<UI_Heart>();

@@ -160,7 +160,7 @@ namespace GameProject.Code.Scripts.Components {
             
             Bullet_Standard bullet = Instantiate<Prefab_Bullet>().GetComponent<Bullet_Standard>();
             bullet.transform.Position = transform.Position; //can customize this later
-            bullet.InitBullet(aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
+            bullet.InitBullet(true, aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
         }
 
 
@@ -218,7 +218,6 @@ namespace GameProject.Code.Scripts.Components {
         private void OnShootUp() {
             _shooting = false;
         }
-
 
     }
 }

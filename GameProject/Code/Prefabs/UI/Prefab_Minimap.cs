@@ -31,7 +31,7 @@ namespace GameProject.Code.Prefabs {
             //curRoomHighlighter.transform.LocalScale *= new Vector3(0.85f, 0.85f, 1);
             SpriteRenderer s = curRoomHighlighter.AddComponent<SpriteRenderer>();
             s.Sprite = Resources.Sprite_MinimapIcons[MinimapIcon.Current];
-            s.DrawLayer = DrawLayer.ID["HUD"];
+            s.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             s.OrderInLayer = 56;
 
             //GameObject background = Instantiate<GameObject>(transform.Position, transform);

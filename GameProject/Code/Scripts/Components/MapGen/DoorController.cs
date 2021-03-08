@@ -17,9 +17,25 @@ namespace GameProject.Code.Scripts.Components {
 
         public Direction DoorDirection;
         private DoorType _doorType = DoorType.Normal;
+        public SpriteRenderer FrameRenderer;
         public SpriteRenderer DoorRenderer;
         private SpriteRenderer _secondaryRenderer;
 
+        public Collider2D DoorCollider { private get; set; }
+        public Collider2D FillerCollider { private get; set; }
+
+
+        private DoorState _curState = DoorState.Open;
+        private bool _closed = false;
+
+
+
+        public void InitDoor(Vector3 localPos, float rotation, Direction doorDirection) {
+            transform.LocalPosition = localPos;
+            transform.Rotation = rotation;
+
+            DoorDirection = doorDirection;
+        }
 
         public void SwitchDoorType(DoorType newType) {
             switch (_doorType) {
@@ -31,7 +47,7 @@ namespace GameProject.Code.Scripts.Components {
             }
 
             _doorType = newType;
-            DoorRenderer.Sprite = Resources.Sprites_DoorFrames[newType];
+            FrameRenderer.Sprite = Resources.Sprites_DoorFrames[newType];
 
             switch (newType) {
                 default:
@@ -39,7 +55,7 @@ namespace GameProject.Code.Scripts.Components {
                 case DoorType.Boss:
                     GameObject eyes = Instantiate<GameObject>(transform.Position, transform);
                     _secondaryRenderer = eyes.AddComponent<SpriteRenderer>();
-                    _secondaryRenderer.DrawLayer = DoorRenderer.DrawLayer;
+                    _secondaryRenderer.DrawLayer = FrameRenderer.DrawLayer;
                     _secondaryRenderer.OrderInLayer = 27;
                     eyes.transform.Rotation = transform.Rotation;
                     eyes.transform.LocalPosition += (DoorDirection.GetDirectionPoint().ToVector2() * new Vector2(12, 12)).ToVector3();
@@ -55,11 +71,66 @@ namespace GameProject.Code.Scripts.Components {
         }
 
 
+        public void OpenDoor() {
+            if (_curState != DoorState.Closed) return;
+
+            StartCoroutine(Open_C());            
+        }
+
+        public void CloseDoor() {
+            if (_curState != DoorState.Open) return;
+
+            StartCoroutine(Close_C());
+        }
+
+        private IEnumerator Open_C() {
+            //play opening animation
+            float frameDur = 0.05f;
+
+            for(int i = 1; i < Resources.Sprites_DoorCloseFrames.Count; i++) {
+                yield return new WaitForSeconds(frameDur);
+                DoorRenderer.Sprite = Resources.Sprites_DoorCloseFrames[i];
+            }
+
+            yield return new WaitForSeconds(frameDur);
+            DoorRenderer.Sprite = Resources.Sprite_Invisible;
+
+
+            //enable real door collider
+            DoorCollider.Enabled = true;
+            //disable blocking collider
+            FillerCollider.Enabled = false;
+
+            _curState = DoorState.Open;
+        }
+
+        private IEnumerator Close_C() {
+            //disable real door collider
+            DoorCollider.Enabled = false;
+            //enable blocking collider
+            FillerCollider.Enabled = true;
+
+            _curState = DoorState.Closed;
+
+
+            //play closing animation
+            float frameDur = 0.05f;
+
+            for (int i = Resources.Sprites_DoorCloseFrames.Count - 1; i >= 0; i--) {
+                yield return new WaitForSeconds(frameDur);
+                DoorRenderer.Sprite = Resources.Sprites_DoorCloseFrames[i];
+            }
+        }
+
+
+
         public override void OnTriggerStay2D(Collider2D other) {
             if(other.gameObject.Layer == (int)LayerID.Player && !GameManager.Map.ChangingRooms) {
                 StartCoroutine(RoomTransition(DoorDirection, CameraMoveStyle.Slide));
             }
         }
+
+        
 
         private IEnumerator RoomTransition(Direction doorDirection, CameraMoveStyle camMoveStyle) {
             GameManager.Map.ChangingRooms = true;
@@ -83,6 +154,8 @@ namespace GameProject.Code.Scripts.Components {
 
             // load entered room
             Room nextRoom = GameManager.Map.LoadRoom(GameManager.Map.CurrentGridPos + additive);
+
+            RoomType lastRoomType = GameManager.Map.CurrentRoom.RoomType;
 
             // stop player movement
             GameManager.Player.FreezeMovement = true;
@@ -124,9 +197,23 @@ namespace GameProject.Code.Scripts.Components {
                     break;
             }
 
+            // switch music (if applicable)
+            if(nextRoom.RoomType != lastRoomType) { //replace this with a more intuitive version later
+                if (nextRoom.RoomType == RoomType.Item) {
+                    GameManager.ActivateRoomSong(Resources.Music_Store);
+                } else {
+                    GameManager.DeactivateRoomSong();
+                }
+            }
 
             // unload last room
             GameManager.Map.UnloadCurrentRoom();
+
+            // close doors of next room
+            nextRoom.CheckClear();
+            if (nextRoom.Beaten == false) {
+                nextRoom.CloseDoors();
+            }
 
             // set real current room position
             GameManager.Map.SetCurrentRoomInDirection(additive);
@@ -162,5 +249,17 @@ namespace GameProject.Code.Scripts.Components {
         //    base.OnDestroy();
         //    Debug.Log("Destroyed door");
         //}
+    }
+
+    public enum DoorState {
+        Closed,
+        Open,
+        Locked,
+        Locked_Double,
+        Bricked,
+        Bricked_Double,
+        MoneyLock,
+        Hidden,
+        Destroyed
     }
 }

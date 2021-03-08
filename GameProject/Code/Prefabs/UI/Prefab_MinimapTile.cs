@@ -12,11 +12,11 @@ namespace GameProject.Code.Prefabs {
             Name = "MinimapTile";
 
             SpriteRenderer baseIcon = AddComponent<SpriteRenderer>();
-            baseIcon.DrawLayer = DrawLayer.ID["HUD"];
+            baseIcon.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             baseIcon.OrderInLayer = 55;
 
             SpriteRenderer overlayIcon = AddComponent<SpriteRenderer>();
-            overlayIcon.DrawLayer = DrawLayer.ID["HUD"];
+            overlayIcon.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             overlayIcon.OrderInLayer = 57;
 
             MinimapTile tile = AddComponent<MinimapTile>();
