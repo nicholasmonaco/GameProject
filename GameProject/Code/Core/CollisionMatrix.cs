@@ -14,12 +14,12 @@ namespace GameProject.Code.Core {
 
 
         public static void SetLayerIgnore(bool ignore, LayerID layer, LayerID otherLayer) {
-            if (ignore) { // Set
-                _collisionMatrix[_indexDict[layer]] |= otherLayer;
-                _collisionMatrix[_indexDict[otherLayer]] |= layer;
-            } else { // Unset
+            if (ignore) { // Unset
                 _collisionMatrix[_indexDict[layer]] &= ~otherLayer;
                 _collisionMatrix[_indexDict[otherLayer]] &= ~layer;
+            } else { // Set
+                _collisionMatrix[_indexDict[layer]] |= otherLayer;
+                _collisionMatrix[_indexDict[otherLayer]] |= layer;
             }
         }
 
