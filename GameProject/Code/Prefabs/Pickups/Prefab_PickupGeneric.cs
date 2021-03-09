@@ -22,9 +22,7 @@ namespace GameProject.Code.Prefabs {
             pickupRB.Drag = 5;
 
             CircleCollider2D coll = AddComponent<CircleCollider2D>(3.5f);
-
-            //DEBUG
-            transform.LocalPosition += new Microsoft.Xna.Framework.Vector3(60, 0, 0);
+            coll.Enabled = false;
 
 
             switch (pickupType) {

@@ -25,7 +25,10 @@ namespace GameProject.Code.Core.Components {
 
 
         public Collider2D(GameObject attached) : base(attached) {
+            Entered = new Dictionary<Collider2D, bool>(GameManager.CurrentScene.Collider2Ds.Count);
+
             GameManager.CurrentScene.Collider2Ds.Add(this);
+            attached.collider2Ds.Add(this);
         }
 
         public override void OnDestroy() {
@@ -33,6 +36,7 @@ namespace GameProject.Code.Core.Components {
             Bounds.Destroy();
             GameManager.CurrentScene.Collider2Ds.Remove(this);
             AttachedRigidbody?.Subcolliders.Remove(this);
+            gameObject.collider2Ds.Remove(this);
         }
 
         public override void PreAwake() {
@@ -40,7 +44,7 @@ namespace GameProject.Code.Core.Components {
 
             base.PreAwake();
 
-            Entered = new Dictionary<Collider2D, bool>(GameManager.CurrentScene.Collider2Ds.Count);
+            //Entered = new Dictionary<Collider2D, bool>(GameManager.CurrentScene.Collider2Ds.Count);
 
             FindAttachedRigidbody();
 

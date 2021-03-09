@@ -40,6 +40,7 @@ namespace GameProject {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             GameManager.SetMainGame(this);
+            GameManager.SetLayerRules();
             int seed = new System.Random().Next();
             GameManager.WorldRandom = new System.Random(seed); //Move this later to work with seed
             GameManager.DeltaRandom = new System.Random();

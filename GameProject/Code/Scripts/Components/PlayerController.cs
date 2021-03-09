@@ -199,16 +199,16 @@ namespace GameProject.Code.Scripts.Components {
 
 
         public static void DamagePlayer(Collider2D other) {
-            if(other.gameObject.Layer == (int)LayerID.Player) {
+            if(other.gameObject.Layer == LayerID.Player) {
                 GameManager.Player.HurtPlayer();
             }
         }
 
 
-        //public override void Draw(SpriteBatch sb) {
-        //    base.Draw(sb);
-        //    sb.DrawString(Resources.Font_Debug, $"mousepos: {Input.MouseWorldPosition}", transform.Position.ToVector2(), Color.Red, 0, Vector2.Zero, -0.15f, SpriteEffects.FlipHorizontally, 1);
-        //}
+        public override void Draw(SpriteBatch sb) {
+            base.Draw(sb);
+            sb.DrawString(Resources.Font_Debug, $"playerpos: {transform.Position}", Input.MouseWorldPosition, Color.Red, 0, Vector2.Zero, -0.15f, SpriteEffects.FlipHorizontally, 1);
+        }
 
 
         private void OnShootDown() {

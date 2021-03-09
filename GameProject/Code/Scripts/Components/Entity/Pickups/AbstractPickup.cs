@@ -22,7 +22,9 @@ namespace GameProject.Code.Scripts.Components.Entity {
             _pickupRenderer = pickupRenderer;
             _pickupRenderer.Sprite = Resources.Sprite_Pickups[_pickupType];
 
-            DeathAction = () => { StartCoroutine(YScaleFade()); };
+            DeathAction = () => { StartCoroutine(YScaleFadeOut()); };
+
+            StartCoroutine(YScaleFadeIn());
         }
 
 
@@ -30,7 +32,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         protected abstract void OnPickup();
 
 
-        protected IEnumerator YScaleFade() {
+        protected IEnumerator YScaleFadeOut() {
             GetComponent<Collider2D>().Destroy();
             GetComponent<Rigidbody2D>().Velocity = Vector2.Zero;
             
@@ -52,7 +54,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         }
 
         protected IEnumerator YScaleFadeIn() {
-            GetComponent<Rigidbody2D>().Velocity = Vector2.Zero;
+            
 
             float dur_Total = 0.3f;
             float dur = dur_Total;
@@ -66,6 +68,9 @@ namespace GameProject.Code.Scripts.Components.Entity {
             }
 
             _pickupRenderer.SpriteScale = origScale;
+            GetComponent<Collider2D>().Enabled = true;
+            //GetComponent<Rigidbody2D>().Enabled = true;
+            //GetComponent<Rigidbody2D>().Velocity = Vector2.Zero;
             yield return new WaitForEndOfFrame();
         }
 
@@ -74,14 +79,14 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         public override void OnCollisionEnter2D(Collider2D other) {
-            if (other.gameObject.Layer == (int)LayerID.Player && CanPickup()) {
+            if (other.gameObject.Layer == LayerID.Player && CanPickup()) {
                 OnPickup();
                 DeathAction();
             }
         }
 
         public override void OnCollisionStay2D(Collider2D other) {
-            if(other.gameObject.Layer == (int)LayerID.Player && CanPickup()) {
+            if(other.gameObject.Layer == LayerID.Player && CanPickup()) {
                 OnPickup();
                 DeathAction();
             }

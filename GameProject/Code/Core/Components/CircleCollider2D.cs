@@ -23,14 +23,17 @@ namespace GameProject.Code.Core.Components {
             WorldMatrixChanged = true;
         }
 
-        public CircleCollider2D(GameObject attached, Vector2 center, Vector2 offset, float radius) : base(attached) {
-            Bounds = new CircleBounds(center, offset, radius);
+        public CircleCollider2D(GameObject attached, Vector2 center, Vector2 offset, float radius, bool useWorldMatrix) : base(attached) {
+            Bounds = new CircleBounds(center, offset, radius, useWorldMatrix);
 
             Bounds.ParentCollider = this;
             Size = new Vector2(radius, radius) * 2;
             WorldMatrixChanged = true;
         }
 
+        public CircleCollider2D(GameObject attached, Vector2 center, Vector2 offset, float radius) : this(attached, center, offset, radius, true) { }
+
+        public CircleCollider2D(GameObject attached, Vector2 center, float radius, bool useWorldMatrix) : this(attached, center, Vector2.Zero, radius, useWorldMatrix) { }
         public CircleCollider2D(GameObject attached, Vector2 center, float radius) : this(attached, center, Vector2.Zero, radius) { }
         public CircleCollider2D(GameObject attached, float radius) : this(attached, Vector2.Zero, Vector2.Zero, radius) { }
 

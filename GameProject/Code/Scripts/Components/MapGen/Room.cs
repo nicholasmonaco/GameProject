@@ -74,7 +74,7 @@ namespace GameProject.Code.Scripts.Components {
                     wallCorner.transform.Parent = transform;
                     wallCorner.transform.LocalPosition = new Vector3(x * 117, y * 78, 0);
                     //wallCorner.transform.Scale = new Vector3(-x, y, 0);
-                    wallCorner.Layer = (int)LayerID.EdgeWall;
+                    wallCorner.Layer = LayerID.EdgeWall;
 
                     SpriteRenderer wallCornerRend = wallCorner.AddComponent<SpriteRenderer>();
                     wallCornerRend.Sprite = GetRandomCornerTexture(RoomStyle.QuarantineLevel_01);
@@ -176,7 +176,7 @@ namespace GameProject.Code.Scripts.Components {
                 //PolygonCollider2D pc = doorFiller._components.AddReturn(new PolygonCollider2D(doorFiller, doorBounds, false)) as PolygonCollider2D;
                 RectCollider2D fillerCollider = doorFiller.AddComponent<RectCollider2D>(30, 35, 0, -6.5f);
                 fillerCollider.IsTrigger = false;
-                doorFiller.Layer = (int)LayerID.EdgeWall;
+                doorFiller.Layer = LayerID.EdgeWall;
 
                 if (Doors.ContainsKey(dir)) {
                     Destroy(Doors[dir].gameObject);
@@ -342,9 +342,13 @@ namespace GameProject.Code.Scripts.Components {
         public void SetObstacleTiles(int[,] rawObstacleMap) {
             // Note: If for some reason we use tilemaps somewhere else, this is the way to do it.
 
-            gameObject.Layer = (int)LayerID.Obstacle; //this is probably a bad way to do this
+            gameObject.Layer = LayerID.Obstacle; //this is probably a bad way to do this
+            GameObject obstacleMapHolder = Instantiate<GameObject>(transform.Position, transform);
+            obstacleMapHolder.transform.Position = transform.Position;
+            Debug.Log($"holderpos: {obstacleMapHolder.transform.Position}");
+            obstacleMapHolder.Layer = LayerID.Obstacle;
 
-            ObstacleTilemap = gameObject.AddComponent<TileMap<ObstacleID>>();
+            ObstacleTilemap = obstacleMapHolder.AddComponent<TileMap<ObstacleID>>();
             
             ObstacleTilemap.TileChangeAction = (tile, parentMap) => {
                 tile.TileRenderer.Sprite = GetCorrectObstacleSprite(tile.Data);
@@ -358,23 +362,24 @@ namespace GameProject.Code.Scripts.Components {
                 if (ObstacleCollidable(tile.Data)) {
                     //Collider2D newTileCollider = parentMap.gameObject.AddComponent<RectCollider2D>(tile.TileRenderer);
 
-                    Collider2D newTileCollider = gameObject.AddComponent<RectCollider2D>(
+                    Collider2D newTileCollider = obstacleMapHolder.AddComponent<RectCollider2D>(
                         tile.TileRenderer.Sprite.Width * tile.TileRenderer.SpriteScale.X,
                         tile.TileRenderer.Sprite.Height * tile.TileRenderer.SpriteScale.Y,
-                        parentMap.transform.LocalPosition.X + tile.TileRenderer.SpriteOffset.X,
-                        parentMap.transform.LocalPosition.Y + tile.TileRenderer.SpriteOffset.Y
+                        parentMap.transform.Position.X + tile.TileRenderer.SpriteOffset.X,
+                        parentMap.transform.Position.Y + tile.TileRenderer.SpriteOffset.Y,
+                        false
                     );
 
                     newTileCollider.Bounds.ResolveCorners();
-
 
                     //maybe add a method here to see what we need to add to it
                     parentMap.ColliderMap[tile.TilemapPos.X, tile.TilemapPos.Y] = newTileCollider;
 
                 }else if (ObstacleDamaging(tile.Data)) {
-                    Vector2 pos = new Vector2(parentMap.transform.LocalPosition.X + tile.TileRenderer.SpriteOffset.X,
-                                              parentMap.transform.LocalPosition.Y + tile.TileRenderer.SpriteOffset.Y);
-                    Collider2D newTileCollider = gameObject.AddComponent<CircleCollider2D>(pos, 9.85f);
+                    Vector2 pos = new Vector2(parentMap.transform.Position.X + tile.TileRenderer.SpriteOffset.X,
+                                              parentMap.transform.Position.Y + tile.TileRenderer.SpriteOffset.Y);
+
+                    Collider2D newTileCollider = obstacleMapHolder.AddComponent<CircleCollider2D>(pos, 9.85f, false);
 
                     newTileCollider.IsTrigger = true;
 
@@ -395,6 +400,7 @@ namespace GameProject.Code.Scripts.Components {
 
             SetMapAction += () => {
                 ObstacleTilemap.SetMap(realMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y, new Vector2(26, 28), Vector2.One, mapOffset);
+                Debug.Log($"Transform: {ObstacleTilemap.transform.Position} ");
                 SetMapAction = () => { };
             };
         }

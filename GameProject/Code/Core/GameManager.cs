@@ -73,11 +73,86 @@ namespace GameProject.Code.Core {
 
 
 
-
+        #region Initialization Methods
         public static void SetMainGame(MainGame game) {
             _mainGame = game;
         }
 
+        public static void SetLayerRules() {
+            CollisionMatrix.SetLayerIgnore(LayerID.Player, LayerID.Bullet_Good);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy, LayerID.Pickup);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy, LayerID.Item);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy, LayerID.Bullet_Evil);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy, LayerID.ShopItem);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy_Flying, LayerID.Pickup);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy_Flying, LayerID.Item);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy_Flying, LayerID.Bullet_Evil);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy_Flying, LayerID.ShopItem);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy_Flying, LayerID.Wall);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy_Flying, LayerID.Obstacle);
+            CollisionMatrix.SetLayerIgnore(LayerID.Enemy_Flying, LayerID.Hole);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Pickup, LayerID.Item);
+            CollisionMatrix.SetLayerIgnore(LayerID.Pickup, LayerID.Bullet_Good);
+            CollisionMatrix.SetLayerIgnore(LayerID.Pickup, LayerID.Bullet_Evil);
+            CollisionMatrix.SetLayerIgnore(LayerID.Pickup, LayerID.ShopItem);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Item);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Wall);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.EdgeWall);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Door);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Bullet_Good);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Bullet_Evil);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Familiar);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Obstacle);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Hole);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.ShopItem);
+            CollisionMatrix.SetLayerIgnore(LayerID.Item, LayerID.Special);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Door, LayerID.Door);
+            CollisionMatrix.SetLayerIgnore(LayerID.Door, LayerID.Wall);
+            CollisionMatrix.SetLayerIgnore(LayerID.Door, LayerID.EdgeWall);
+            CollisionMatrix.SetLayerIgnore(LayerID.Door, LayerID.Obstacle);
+            CollisionMatrix.SetLayerIgnore(LayerID.Door, LayerID.Hole);
+            CollisionMatrix.SetLayerIgnore(LayerID.Door, LayerID.ShopItem);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Familiar, LayerID.Familiar);
+            CollisionMatrix.SetLayerIgnore(LayerID.Familiar, LayerID.Wall);
+            CollisionMatrix.SetLayerIgnore(LayerID.Familiar, LayerID.Bullet_Good);
+            CollisionMatrix.SetLayerIgnore(LayerID.Familiar, LayerID.Familiar);
+            CollisionMatrix.SetLayerIgnore(LayerID.Familiar, LayerID.Hole);
+            CollisionMatrix.SetLayerIgnore(LayerID.Familiar, LayerID.ShopItem);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Bullet_Good, LayerID.Bullet_Good);
+            CollisionMatrix.SetLayerIgnore(LayerID.Bullet_Good, LayerID.Hole);
+            CollisionMatrix.SetLayerIgnore(LayerID.Bullet_Good, LayerID.ShopItem);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Bullet_Evil, LayerID.Bullet_Evil);
+            CollisionMatrix.SetLayerIgnore(LayerID.Bullet_Evil, LayerID.Hole);
+            CollisionMatrix.SetLayerIgnore(LayerID.Bullet_Evil, LayerID.ShopItem);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.ShopItem, LayerID.ShopItem);
+            CollisionMatrix.SetLayerIgnore(LayerID.ShopItem, LayerID.Wall);
+            CollisionMatrix.SetLayerIgnore(LayerID.ShopItem, LayerID.EdgeWall);
+            CollisionMatrix.SetLayerIgnore(LayerID.ShopItem, LayerID.Obstacle);
+            CollisionMatrix.SetLayerIgnore(LayerID.ShopItem, LayerID.Hole);
+            CollisionMatrix.SetLayerIgnore(LayerID.ShopItem, LayerID.Special);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Wall, LayerID.EdgeWall);
+            CollisionMatrix.SetLayerIgnore(LayerID.Wall, LayerID.Obstacle);
+            CollisionMatrix.SetLayerIgnore(LayerID.Wall, LayerID.Hole);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.EdgeWall, LayerID.Obstacle);
+            CollisionMatrix.SetLayerIgnore(LayerID.EdgeWall, LayerID.Hole);
+
+            CollisionMatrix.SetLayerIgnore(LayerID.Obstacle, LayerID.Hole);
+        }
+        #endregion
+
+
+        #region Gameplay-related Methods
         public static void SwitchScene(int newSceneID) {
             if (_curSceneID == newSceneID) return;
 
@@ -90,16 +165,16 @@ namespace GameProject.Code.Core {
             Scene.LoadScene(CurrentScene, _mainGame.Content);
         }
 
-
         public static void Die() {
             if(CurrentScene is GameScene scene) {
                 scene.Die();
             }
         }
+        #endregion
 
 
 
-
+        #region Music and Sound methods
         public static void SetFloorSong(LevelID level) {
             if(FloorSong != null) {
                 FloorSong.Stop();
@@ -115,7 +190,6 @@ namespace GameProject.Code.Core {
         public static void StopFloorSong() {
             FloorSong.Stop();
         }
-
 
         public static void ActivateRoomSong(SoundEffect roomSong) {
             CurRoomSong = roomSong.CreateInstance();
@@ -134,6 +208,7 @@ namespace GameProject.Code.Core {
 
             FloorSong.Volume = _musicVolume * _masterVolume;
         }
+        #endregion
 
     }
 }

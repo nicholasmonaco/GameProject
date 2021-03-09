@@ -83,6 +83,9 @@ namespace GameProject.Code.Scripts.Components {
             Resources.UnloadRooms(); //maybe this should be called right after the map is generated, idk
             Resources.LoadRooms(level);
 
+            while(transform._children.Count > 0) {
+                Destroy(transform._children[0].gameObject);
+            }
 
             //generate random room layout
             //get number of end rooms 

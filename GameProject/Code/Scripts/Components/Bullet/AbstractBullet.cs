@@ -48,9 +48,11 @@ namespace GameProject.Code.Scripts.Components.Bullet {
 
             if (good) {
                 _curPiercingRemain = PlayerStats.PiercingCount;
+                gameObject.Layer = LayerID.Bullet_Good;
                 ColliderAction += NaturalCollisionLogic_Good;
             } else {
                 _curPiercingRemain = 0;
+                gameObject.Layer = LayerID.Bullet_Evil;
                 ColliderAction += NaturalCollisionLogic_Evil;
             }
         }
@@ -82,7 +84,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
         }
 
         public void TurnEvil() {
-            gameObject.Layer = (int)LayerID.Bullet_Evil;
+            gameObject.Layer = LayerID.Bullet_Evil;
         }
 
 
@@ -133,13 +135,13 @@ namespace GameProject.Code.Scripts.Components.Bullet {
         }
 
         protected void DefaultCollisionLogic(Collider2D collision, ref bool met) {
-            if (collision.gameObject.Layer == (int)LayerID.EdgeWall) {
+            if (collision.gameObject.Layer == LayerID.EdgeWall) {
                 Die();
                 met = true;
-            } else if (collision.gameObject.Layer == (int)LayerID.Door) {
+            } else if (collision.gameObject.Layer == LayerID.Door) {
                 Die();
                 met = true;
-            } else if (collision.gameObject.Layer == (int)LayerID.Obstacle) {
+            } else if (collision.gameObject.Layer == LayerID.Obstacle) {
                 //check if tileid at collider position is physical
                 if (Room.ObstacleSolid(GameManager.Map.CurrentRoom.GetObstacleAtPos(collision.Bounds.Center))) {
                     Die();
@@ -151,7 +153,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
         protected void NaturalCollisionLogic_Good(Collider2D other, ref bool met) {
             if (met) return;
 
-            if (other.gameObject.Layer == (int)LayerID.Enemy) {
+            if (other.gameObject.Layer == LayerID.Enemy || other.gameObject.Layer == LayerID.Enemy_Flying) {
                 AbstractEnemy enemy = other.AttachedRigidbody.GetComponent<AbstractEnemy>();
                 enemy.Health -= _damage;
                 //enemy.ApplyKnockback(BulletRB.velocity.normalized * _knockbackForce / Game.Manager.PlayerStats.ShotCount);
@@ -166,7 +168,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
         protected void NaturalCollisionLogic_Evil(Collider2D other, ref bool met) {
             if (met) return;
 
-            if (other.gameObject.Layer == (int)LayerID.Player) {
+            if (other.gameObject.Layer == LayerID.Player) {
                 GameManager.Player.HurtPlayer();
 
                 if (_curPiercingRemain == 0) {
@@ -185,7 +187,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
         }
 
         public override void OnCollisionEnter2D(Collider2D other) {
-            if (other.gameObject.Layer == (int)LayerID.Obstacle) {
+            if (other.gameObject.Layer == LayerID.Obstacle) {
                 Die();
             }
         }

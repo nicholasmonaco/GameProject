@@ -13,7 +13,7 @@ namespace GameProject.Code.Prefabs.MapGen {
         public Prefab_Door() : base() {
             Name = "Door";
             
-            Layer = (int)LayerID.Door;
+            Layer = LayerID.Door;
 
             SpriteRenderer frameRend = AddComponent<SpriteRenderer>();
 

@@ -26,6 +26,11 @@ namespace GameProject.Code.Core {
             ResetBounds(shapePoints, preClosed);
         }
 
+        public PolygonBounds(Vector2[] shapePoints, bool preClosed, bool applyWorldMatrix) {
+            _applyWorldMatrix = applyWorldMatrix;
+            ResetBounds(shapePoints, preClosed);
+        }
+
         public void ResetBounds(Vector2[] newPoints, bool preClosed) {
             int additive = preClosed ? 0 : 1;
             _origPoints = new Vector2[newPoints.Length + additive];
@@ -63,6 +68,8 @@ namespace GameProject.Code.Core {
 
 
         public override void ApplyWorldMatrix(Transform worldTransform) {
+            if (!_applyWorldMatrix) return;
+
             for(int i = 0; i < _points.Length; i++) {
                 _points[i] = Vector3.Transform(_origPoints[i].ToVector3(), worldTransform.WorldMatrix).ToVector2();
             }

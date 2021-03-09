@@ -135,18 +135,12 @@ namespace GameProject.Code.Scenes {
             PlayerStats.SetHealth(6, 0); //set with character stats later
 
             // Spawn player
-            //GameObjects.Add(new Prefab_Player());
             Instantiate(new Prefab_Player());
 
             // Create reticle
-            //GameObjects.Add(new Prefab_Reticle());
             Instantiate(new Prefab_Reticle());
 
-
-            //debug
-            Instantiate(new Prefab_PickupGeneric(Pickup.Coin));
-
-
+            // Start the game
             yield return new WaitForSeconds(0.15f);
             yield return StartCoroutine(Panel.FadeFromBlack(_fadeToBlack, 3.5f));
         }

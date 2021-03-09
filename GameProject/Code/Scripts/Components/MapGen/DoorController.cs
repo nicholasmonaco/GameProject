@@ -125,7 +125,7 @@ namespace GameProject.Code.Scripts.Components {
 
 
         public override void OnTriggerStay2D(Collider2D other) {
-            if(other.gameObject.Layer == (int)LayerID.Player && !GameManager.Map.ChangingRooms) {
+            if(other.gameObject.Layer == LayerID.Player && !GameManager.Map.ChangingRooms) {
                 StartCoroutine(RoomTransition(DoorDirection, CameraMoveStyle.Slide));
             }
         }

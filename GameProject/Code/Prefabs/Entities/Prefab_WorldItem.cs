@@ -12,7 +12,7 @@ namespace GameProject.Code.Prefabs {
     public class Prefab_WorldItem : GameObject {
         public Prefab_WorldItem(ItemID id) {
             Name = $"Item Pedastal ({id.ToString()})";
-            Layer = (int)LayerID.Item;
+            Layer = LayerID.Item;
 
             SpriteRenderer pedastalRend = AddComponent<SpriteRenderer>(Resources.Sprite_ItemPedastal);
             pedastalRend.DrawLayer = DrawLayer.ID[DrawLayers.Entities];

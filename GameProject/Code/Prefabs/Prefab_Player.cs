@@ -11,7 +11,7 @@ namespace GameProject.Code.Prefabs {
 
         public Prefab_Player() : base() {
             Name = "Player";
-            Layer = (int)LayerID.Player;
+            Layer = LayerID.Player;
 
             // Adding components
             //RectCollider2D collider = AddComponent<RectCollider2D>(26, 26); //Change this to be a circle collider later maybe?

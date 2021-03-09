@@ -11,6 +11,8 @@ using System.Text;
 namespace GameProject.Code.Scripts.Components.Entity {
     public class Enemy_DroneBugged : AbstractEnemy {
         public Enemy_DroneBugged(GameObject attached, EntityID id) : base(attached, id) {
+            gameObject.Layer = LayerID.Enemy_Flying;
+
             _frameIDs = new Dictionary<EnemyAnimationAction, (int[], float)>(1) {
                 { EnemyAnimationAction.Idle, (new int[7] { 0, 1, 2, 3, 2, 1, 0 }, 0.2f)}
             };

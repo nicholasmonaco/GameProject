@@ -14,11 +14,14 @@ namespace GameProject.Code.Core {
         public Vector2 RadiusScale = Vector2.One;
 
 
-        
-        public CircleBounds(Vector2 center, Vector2 offset, float radius) {
+
+        public CircleBounds(Vector2 center, Vector2 offset, float radius, bool applyWorldMatrix) {
+            _applyWorldMatrix = applyWorldMatrix;
             BoundsType = BoundsType.Circle;
             ResetBounds(center + offset, radius);
         }
+
+        public CircleBounds(Vector2 center, Vector2 offset, float radius) : this(center, offset, radius, true) { }
 
         public CircleBounds(Vector2 center, float radius) : this(center, Vector2.Zero, radius) { }
 
@@ -31,6 +34,8 @@ namespace GameProject.Code.Core {
         }
 
         public override void ApplyWorldMatrix(Transform worldTransform) {
+            if (!_applyWorldMatrix) return;
+
             Center = Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2();
             RadiusScale = worldTransform.Scale.ToVector2();
 
@@ -69,13 +74,20 @@ namespace GameProject.Code.Core {
             //Debug.Log($"CenterDist: {(colliderB.Center - colliderA.Center).Length()} | Radius difference: {colliderB.Radius + colliderA.Radius}");
             //Debug.Log($"Pos: ({colliderA.Center.X}, {colliderA.Center.Y})");
 
+            if(!result.Intersecting && !result.WillIntersect) { //this is kinda untested, but it should work
+                result.MinimumTranslationVector = Vector2.Zero;
+                return result;
+            }
+
             // Step 3: Set to mintranslationVector
 
             //difference of radii - actual measured distance
-            Vector2 radiusDist = Vector2.Normalize(cB_v - cA_v) * (colliderB.Radius + colliderA.Radius);
+            Vector2 radiusDist = (cB_v - cA_v).Norm() * (colliderB.Radius + colliderA.Radius);
             Vector2 actualDist = (cB_v - cA_v);
             Vector2 pushback = radiusDist - actualDist;
-            result.MinimumTranslationVector = -pushback; //maybe not negative, but i think its right
+            result.MinimumTranslationVector = -pushback;
+
+            //Debug.Log($"radiusDist: {radiusDist} | actualDist: {actualDist} | -pushback: {-pushback}");
 
             return result;
         }

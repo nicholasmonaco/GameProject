@@ -11,7 +11,7 @@ namespace GameProject.Code.Prefabs.Enemies {
     public class Prefab_DroneBugged : GameObject {
 
         public Prefab_DroneBugged() : base() {
-            Layer = (int)LayerID.Enemy;
+            Layer = LayerID.Enemy;
 
             // Adding components
             CircleCollider2D collider = AddComponent<CircleCollider2D>(4.5f); //Change this to be a circle collider later maybe?

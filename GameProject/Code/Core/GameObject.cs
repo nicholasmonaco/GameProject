@@ -25,6 +25,7 @@ namespace GameProject.Code.Core {
         public List<Component> _components;
         public Transform transform;
         public Rigidbody2D rigidbody2D = null;
+        public List<Collider2D> collider2Ds;
 
         public string Name = "GameObject";
         private bool _enabled = true;
@@ -47,7 +48,7 @@ namespace GameProject.Code.Core {
             }
         }
         public string Tag = null;
-        public int Layer = 0; // Default layer
+        public LayerID Layer = LayerID.Default;
 
         public bool _everAwaked = false;
         protected bool _everStarted = false;
@@ -57,13 +58,15 @@ namespace GameProject.Code.Core {
             _components = new List<Component>(1);
             transform = new Transform(this);
             _components.Add(transform);
+
+            collider2Ds = new List<Collider2D>(1);
         }
 
         public GameObject(string name) : this() {
             Name = name;
         }
 
-        public GameObject(string name, string tag = null, int layer = 0) : this() {
+        public GameObject(string name, string tag = null, LayerID layer = LayerID.Default) : this() {
             Name = name;
             Tag = tag;
             Layer = layer;

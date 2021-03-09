@@ -12,7 +12,7 @@ namespace GameProject.Code.Prefabs.Enemies {
     public class Prefab_CaveChaser : GameObject {
 
         public Prefab_CaveChaser() : base() {
-            Layer = (int)LayerID.Enemy;
+            Layer = LayerID.Enemy;
 
             // Adding components
             CircleCollider2D collider = AddComponent<CircleCollider2D>(9); //Change this to be a circle collider later maybe?

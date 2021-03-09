@@ -16,7 +16,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         public override void InitPickup(Pickup type, SpriteRenderer pickupRenderer) {
             base.InitPickup(type, pickupRenderer);
 
-            DeathAction = () => { StartCoroutine(YScaleFade()); };
+            DeathAction = () => { StartCoroutine(YScaleFadeOut()); };
 
             switch (type) {
                 default:

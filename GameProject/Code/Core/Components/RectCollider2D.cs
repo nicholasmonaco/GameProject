@@ -31,12 +31,12 @@ namespace GameProject.Code.Core.Components {
             //Size = new Vector2(2, 2); // ??? is this right?
         }
 
-        public RectCollider2D(GameObject attached, float Width, float Height, float xOffset, float yOffset) : base(attached) {
+        public RectCollider2D(GameObject attached, float Width, float Height, float xOffset, float yOffset, bool useWorldMatrix) : base(attached) {
             Bounds = new PolygonBounds(new Vector2[] { new Vector2(-Width/2 + xOffset, Height/2 + yOffset),       // Top Left
                                                 new Vector2(Width/2 + xOffset, Height/2 + yOffset),        // Top Right
                                                 new Vector2(Width/2 + xOffset, -Height/2 + yOffset),       // Bottom Right
                                                 new Vector2(-Width/2 + xOffset, -Height/2 + yOffset) },    // Bottom Left 
-                                                false);    
+                                                false, useWorldMatrix);
 
             Bounds.Center = PolyBounds.GetRectCenter();
             Bounds.OrigCenter = Bounds.Center;
@@ -45,6 +45,8 @@ namespace GameProject.Code.Core.Components {
 
             Size = new Vector2(Width, Height);
         }
+
+        public RectCollider2D(GameObject attached, float Width, float Height, float xOffset, float yOffset) : this(attached, Width, Height, xOffset, yOffset, true) { }
 
         public RectCollider2D(GameObject attached, SpriteRenderer sr) : this(sr.gameObject, 
                                                                              sr.Sprite.Width * sr.SpriteScale.X, 

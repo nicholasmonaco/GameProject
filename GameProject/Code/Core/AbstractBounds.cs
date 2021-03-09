@@ -12,6 +12,8 @@ namespace GameProject.Code.Core {
         public Vector2 OrigCenter = Vector2.Zero;
         public Vector2 Center = Vector2.Zero;
 
+        protected bool _applyWorldMatrix = true;
+
         //debug
         public Vector2 bottomLeft;
         public Vector2 topRight;

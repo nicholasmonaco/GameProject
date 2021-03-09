@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using GameProject.Code.Core.Components;
@@ -134,16 +135,234 @@ namespace GameProject.Code.Core {
                 Action _triggerActions = () => { };
                 Action _collisionActions = () => { };
 
-                foreach (GameObject go in GameObjects) {
-                    if (!go.Enabled) continue;
-                    //search for rigidbody in children
-                    if (go.rigidbody2D != null) {
-                        go.rigidbody2D._PhysicsUpdate();
-                        // Now, queue up trigger and collision events
-                        _triggerActions += go.rigidbody2D.CallTriggerEvents;
-                        _collisionActions += go.rigidbody2D.CallCollisionEvents;
+                //foreach (GameObject go in GameObjects) {
+                //    if (!go.Enabled) continue;
+                //    //search for rigidbody in children
+                //    if (go.rigidbody2D != null) {
+                //        go.rigidbody2D._PhysicsUpdate();
+
+                //        // Now, queue up trigger and collision events
+                //        _triggerActions += go.rigidbody2D.CallTriggerEvents;
+                //        _collisionActions += go.rigidbody2D.CallCollisionEvents;
+                //    }
+                //}
+
+                // Mark 2
+                for(int i = 0; i < GameObjects.Count; i++) {
+                    GameObject go = GameObjects[i];                    
+                    if (!go.Enabled || go.rigidbody2D == null) continue;
+
+                    //do physics logic
+                    Rigidbody2D localRB = go.rigidbody2D;
+
+                    foreach (Collider2D localCollider in localRB.Subcolliders) {
+                        if (localCollider.Enabled == false) continue;
+
+                        for (int j = 0; j < GameObjects.Count; j++) {
+                            GameObject otherGO = GameObjects[j];
+                            if (otherGO.Enabled == false || CollisionMatrix.DoLayersInteract(go.Layer, otherGO.Layer) == false) continue;
+
+                            foreach (Collider2D collider in otherGO.collider2Ds) {
+                                if (collider.Enabled == false) continue;
+                                //if (Subcolliders.Contains(collider)) continue;
+
+                                bool entered = false;
+                                if (!localCollider.Entered.ContainsKey(collider)) localCollider.Entered.Add(collider, false);
+                                else { entered = localCollider.Entered[collider]; }
+
+                                Vector2 otherVelocity = collider.AttachedRigidbody == null ? Vector2.Zero : collider.AttachedRigidbody.Velocity;
+
+                                // Use a switch depending on what type of shape match up it is
+                                CollisionResult2D result;
+
+                                AbstractBounds localBounds = localCollider.Bounds;
+                                AbstractBounds otherBounds = collider.Bounds;
+                                BoundsType localBoundType = localBounds.BoundsType;
+                                BoundsType otherBoundType = otherBounds.BoundsType;
+
+                                switch (localBoundType) {
+                                    case BoundsType.Rectangle:
+                                        switch (otherBoundType) {
+                                            case BoundsType.Rectangle:
+                                            case BoundsType.Polygon:
+                                                //rectangle polygon/rectangle
+                                                result = PolygonBounds.DetectPolygonCollision(localBounds as PolygonBounds, otherBounds as PolygonBounds, localRB.Velocity, otherVelocity);
+                                                break;
+                                            case BoundsType.Circle:
+                                                //rectangle circle
+                                                result = AbstractBounds.DetectCircleRectangleCollision(otherBounds as CircleBounds, localBounds as PolygonBounds, otherVelocity, localRB.Velocity);
+                                                break;
+                                            default:
+                                                result = new CollisionResult2D();
+                                                result.Intersecting = false;
+                                                result.WillIntersect = false;
+                                                result.MinimumTranslationVector = Vector2.Zero;
+                                                break;
+                                        }
+                                        break;
+                                    case BoundsType.Polygon:
+                                        switch (otherBoundType) {
+                                            case BoundsType.Rectangle:
+                                            case BoundsType.Polygon:
+                                                //polygon polygon
+                                                result = PolygonBounds.DetectPolygonCollision(localBounds as PolygonBounds, otherBounds as PolygonBounds, otherVelocity, localRB.Velocity);
+                                                break;
+                                            case BoundsType.Circle:
+                                                //polygon circle
+                                                result = AbstractBounds.DetectDualTypeCollision(otherBounds as CircleBounds, localBounds as PolygonBounds, otherVelocity, localRB.Velocity);
+                                                break;
+                                            default:
+                                                result = new CollisionResult2D();
+                                                result.Intersecting = false;
+                                                result.WillIntersect = false;
+                                                result.MinimumTranslationVector = Vector2.Zero;
+                                                break;
+                                        }
+                                        break;
+                                    case BoundsType.Circle:
+                                        switch (otherBoundType) {
+                                            case BoundsType.Rectangle:
+                                                //circle rectangle
+                                                result = AbstractBounds.DetectCircleRectangleCollision(localBounds as CircleBounds, otherBounds as PolygonBounds, localRB.Velocity, otherVelocity);
+                                                break;
+                                            case BoundsType.Polygon:
+                                                //circle polygon
+                                                result = AbstractBounds.DetectDualTypeCollision(localBounds as CircleBounds, otherBounds as PolygonBounds, localRB.Velocity, otherVelocity);
+                                                break;
+                                            case BoundsType.Circle:
+                                                //circle circle
+                                                result = CircleBounds.DetectCircleCollision(localBounds as CircleBounds, otherBounds as CircleBounds, localRB.Velocity, otherVelocity);
+                                                break;
+                                            default:
+                                                result = new CollisionResult2D();
+                                                result.Intersecting = false;
+                                                result.WillIntersect = false;
+                                                result.MinimumTranslationVector = Vector2.Zero;
+                                                break;
+                                        }
+                                        break;
+                                    default:
+                                        result = new CollisionResult2D();
+                                        result.Intersecting = false;
+                                        result.WillIntersect = false;
+                                        result.MinimumTranslationVector = Vector2.Zero;
+                                        break;
+                                }
+
+
+                                bool willCollide = false;
+                                bool nonTriggerCollision = false;
+                                Vector2 pushbackVec = Vector2.Zero;
+
+                                if (result.WillIntersect) {
+                                    bool notTrigger = !(collider.IsTrigger || localCollider.IsTrigger);
+                                    if (notTrigger) pushbackVec += result.MinimumTranslationVector;
+
+                                    if (!willCollide) willCollide = true;
+                                    if (notTrigger && !nonTriggerCollision) nonTriggerCollision = true;
+                                }
+
+                                //Debug.Log($"will intersect: {result.WillIntersect} | intersecting: {result.Intersecting}");
+
+                                //okay hear me out
+                                //instead of doing this this way, let's store a bool for each other collider in each collider that represents if it's been entered
+                                //if true, it's colliding
+                                //if false, it isn't
+                                //as long as it's true, we are staying, but until its false then we cant exit
+
+
+                                #region Collision Event Handlers
+
+                                if (!entered && result.WillIntersect) {
+                                    if (!nonTriggerCollision) {
+                                        _triggerActions += () => {
+                                            localRB.OnTriggerEnter2D_Direct(collider);
+                                            localCollider.OnTriggerEnter2D_Direct(collider);
+                                            collider.OnTriggerEnter2D_Direct(localCollider);
+                                            //Debug.Log("Trigger enter");
+                                        };
+                                    } else {
+                                        _collisionActions += () => {
+                                            localRB.OnCollisionEnter2D_Direct(collider);
+                                            localCollider.OnCollisionEnter2D_Direct(collider);
+                                            collider.OnCollisionEnter2D_Direct(localCollider);
+                                            //Debug.Log("Collision enter");
+                                        };
+                                    }
+                                } else if (entered && !result.WillIntersect) {
+                                    if (!nonTriggerCollision) {
+                                        _triggerActions += () => {
+                                            localRB.OnTriggerExit2D_Direct(collider);
+                                            localCollider.OnTriggerExit2D_Direct(collider);
+                                            collider.OnTriggerExit2D_Direct(localCollider);
+                                            //Debug.Log("Trigger exit");
+                                        };
+                                    } else {
+                                        _collisionActions += () => {
+                                            localRB.OnCollisionExit2D_Direct(collider);
+                                            localCollider.OnCollisionExit2D_Direct(collider);
+                                            collider.OnCollisionExit2D_Direct(localCollider);
+                                            //Debug.Log("Collision exit");
+                                        };
+                                    }
+                                } else if (entered) {
+                                    if (!nonTriggerCollision) {
+                                        _triggerActions += () => {
+                                            localRB.OnTriggerStay2D_Direct(collider);
+                                            localCollider.OnTriggerStay2D_Direct(collider);
+                                            collider.OnTriggerStay2D_Direct(localCollider);
+                                            //Debug.Log("Trigger stay");
+                                        };
+                                    } else {
+                                        _collisionActions += () => {
+                                            localRB.OnCollisionStay2D_Direct(collider);
+                                            localCollider.OnCollisionStay2D_Direct(collider);
+                                            collider.OnCollisionStay2D_Direct(localCollider);
+                                            //Debug.Log("Collision stay");
+                                        };
+                                    }
+                                }
+
+                                #endregion
+
+
+
+                                Rigidbody2D otherRB = otherGO.rigidbody2D;
+
+                                // Now, queue up trigger and collision events
+                                _triggerActions += localRB.CallTriggerEvents;
+                                _collisionActions += localRB.CallCollisionEvents;
+
+                                if(otherRB != null) {
+                                    _triggerActions += otherRB.CallTriggerEvents;
+                                    _collisionActions += otherRB.CallCollisionEvents;
+                                }
+
+
+                                // Apply collision logic                                
+                                if(otherRB == null || (otherRB.Mass == 0 && localRB.Mass == 0)) {
+                                    localRB.ApplyCollision(willCollide, nonTriggerCollision, pushbackVec);
+                                } else {
+                                    float totalMass = localRB.Mass + otherRB.Mass; 
+
+                                    localRB.ApplyCollision(willCollide, nonTriggerCollision, pushbackVec * (localRB.Mass / totalMass));
+                                    otherGO.rigidbody2D.ApplyCollision(willCollide, nonTriggerCollision, pushbackVec * (otherRB.Mass / totalMass));
+                                }
+
+                                localCollider.Entered[collider] = result.WillIntersect;
+                                collider.Entered[localCollider] = result.WillIntersect;
+                            }
+                        }
+
                     }
+                    //end physics logic
+
+
+                    if (go.rigidbody2D != null) GameObjects[i].rigidbody2D.UpdateValues();
                 }
+
+                //if (GameObjects[GameObjects.Count - 1].rigidbody2D != null) GameObjects[GameObjects.Count - 1].rigidbody2D.UpdateValues();
+
 
                 _triggerActions();
                 _collisionActions();

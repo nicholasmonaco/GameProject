@@ -18,6 +18,7 @@ namespace GameProject.Code.Core.Components {
         public RigidbodyType Type = RigidbodyType.Dynamic;
 
         public Vector2 Velocity = Vector2.Zero;
+        public float Mass = 0;
         public float Drag = 0;
 
         private Vector2 _position;
@@ -214,13 +215,15 @@ namespace GameProject.Code.Core.Components {
                 
             }
 
-            Vector2 origVelNoPushback_N = Velocity.Norm();
 
-            //Debug.Log($"{gameObject.Name} | Velocity 1: {Velocity}");
+            // Application Logic
+            Vector2 origVelNoPushback_N = Velocity.Norm();
 
             if (willCollide && nonTriggerCollision) {
                 _position += Velocity * Time.fixedDeltaTime + pushbackVec;
-                if(Type == RigidbodyType.Dynamic) Velocity += pushbackVec / Time.fixedDeltaTime;
+
+                // This causes a ton of issues if the colliders are inside each other, and I don't think its needed anyway
+                //if(Type == RigidbodyType.Dynamic) Velocity += pushbackVec / Time.fixedDeltaTime; 
             } else {
                 _position += Velocity * Time.fixedDeltaTime;
             }
@@ -230,22 +233,52 @@ namespace GameProject.Code.Core.Components {
 
             //if (Velocity != Vector2.Zero) Velocity += -origVelNoPushback_N * Drag;
 
-            if (Drag != 0 && Velocity != Vector2.Zero && !float.IsNaN(origVelNoPushback_N.X)) { //i think this NaN bug is fixed now
+            if (Drag != 0 && Velocity != Vector2.Zero /*&& !float.IsNaN(origVelNoPushback_N.X)*/) {
                 Vector2 checker = Velocity + (-origVelNoPushback_N * Drag);
-                if (checker.Norm() == -Velocity.Norm()) Velocity = Vector2.Zero;
-                else Velocity = checker;
+                //if (checker.Norm() == -Velocity.Norm()) Velocity = Vector2.Zero; // I don't think this is needed
+                /*else*/ 
+                Velocity = checker;
             }
 
-            //Debug.Log($"pos5 ({gameObject.Name}): ({transform.Position.X}, {transform.Position.Y})");
+            //Debug.Log($"{gameObject.Name} | Velocity: {Velocity}, checker: {checker}, origVelNoPushback: {origVelNoPushback_N}, pushbackVec: {pushbackVec}");
 
-            //Debug.Log($"{gameObject.Name} | Velocity: {Velocity}, pushbackVec: {pushbackVec}");
-
-            //if (float.IsNaN(_position.X)) {
-            //    _position = transform.Position.ToVector2();
-            //} // this should not ever be called in therory
-            
             transform.Position = _position.ToVector3();
-            //Debug.Log($"pos6 ({gameObject.Name}): ({transform.Position.X}, {transform.Position.Y})");
+        }
+
+
+
+        public bool CollisionVelFlipped = false;
+        public Vector2 pushBack = Vector2.Zero;
+
+        public void ApplyCollision(bool willCollide, bool nonTriggerCollision, Vector2 pushbackVec) {
+            if (willCollide && nonTriggerCollision) {
+                CollisionVelFlipped = true;
+                pushBack += pushbackVec;
+            }
+
+            // Now that this is here, we can actually extend this to apply all at once after all the computations have been done.
+            // If we want to do that, just move this into a delegate and keep adding it every time, then apply it all at once in a loop
+        }
+
+        public void UpdateValues() {
+            Vector2 origVelNoPushback_N = Velocity.Norm();
+
+            if (CollisionVelFlipped) {
+                _position += Velocity * Time.fixedDeltaTime + pushBack;
+                CollisionVelFlipped = false;
+            } else {
+                _position += Velocity * Time.fixedDeltaTime;
+            }
+
+            pushBack = Vector2.Zero;
+
+            if (Drag != 0 && Velocity != Vector2.Zero) {
+                Velocity = Velocity + (-origVelNoPushback_N * Drag);
+            }
+
+            //Debug.Log($"{gameObject.Name} | Velocity: {Velocity}, origVelNoPushback_N: {origVelNoPushback_N}, pushbackVec: {pushbackVec}");
+
+            transform.Position = _position.ToVector3();
         }
 
 
