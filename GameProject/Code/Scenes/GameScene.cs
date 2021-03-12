@@ -74,6 +74,8 @@ namespace GameProject.Code.Scenes {
                                                               GameManager.MainCanvas.Extents.Y - 45 - i * 15,
                                                               0);
 
+                counter.Justification = Justify.Left;
+
                 int dist = i;
                 GameManager.MainCanvas.ExtentsUpdate += () => {
                     counter.transform.LocalPosition = new Vector3(-GameManager.MainCanvas.Extents.X + 20,

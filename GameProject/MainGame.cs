@@ -40,7 +40,9 @@ namespace GameProject {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             GameManager.SetMainGame(this);
+            GameManager.InitInternalValues();
             GameManager.SetLayerRules();
+
             int seed = new System.Random().Next();
             GameManager.WorldRandom = new System.Random(seed); //Move this later to work with seed
             GameManager.DeltaRandom = new System.Random();
@@ -85,10 +87,10 @@ namespace GameProject {
 
         protected override void Update(GameTime gameTime) {
             Time.time = (float)gameTime.TotalGameTime.Seconds;
-            Time.deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Time.SetDeltaTime((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
 
             // Physics logic
             _fixedUpdateMeasurer += (float)gameTime.ElapsedGameTime.TotalSeconds;

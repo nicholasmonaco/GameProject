@@ -23,6 +23,8 @@ namespace GameProject.Code.Core {
         private static MainGame _mainGame;
         private static int _curSceneID = -1;
         public static Scene CurrentScene => _mainGame.SceneList[_curSceneID];
+
+        public static bool UsingKeyboardControls = false;
         #endregion
 
         #region Camera
@@ -31,6 +33,21 @@ namespace GameProject.Code.Core {
         public static Matrix ProjectionMatrix => MainCamera.ProjectionMatrix;
         public static Matrix ViewMatrix => MainCamera.ViewMatrix;
         public static Vector3 ViewOffset => new Vector3(Resolution.X / 2, Resolution.Y / 2, 0) / (MainCamera.Size * 2);
+        #endregion
+
+        #region Menu Handling
+        public static List<UI_LayoutItem> UILayoutMembers;
+
+        private static int _curUIIndex = 0;
+        public static int CurrentUIIndex {
+            get => _curUIIndex;
+            set {
+                _curUIIndex = value;
+                OnSelectIndexChange(value);
+            }
+        }
+
+        public static Action<int> OnSelectIndexChange = (newIndex) => { };
         #endregion
 
         #region Game World
@@ -47,6 +64,7 @@ namespace GameProject.Code.Core {
 
         public static LevelID CurLevelID { get; set; }
         #endregion
+
 
         #region Sound & Music
         private static float _masterVolume = 1;
@@ -76,6 +94,10 @@ namespace GameProject.Code.Core {
         #region Initialization Methods
         public static void SetMainGame(MainGame game) {
             _mainGame = game;
+        }
+
+        public static void InitInternalValues() {
+            UILayoutMembers = new List<UI_LayoutItem>();
         }
 
         public static void SetLayerRules() {
@@ -154,6 +176,10 @@ namespace GameProject.Code.Core {
 
         #region Gameplay-related Methods
         public static void SwitchScene(int newSceneID) {
+            OnSelectIndexChange = (newIndex) => { };
+            CurrentUIIndex = 0;
+            UILayoutMembers.Clear();
+
             if (_curSceneID == newSceneID) return;
 
             if (_curSceneID != -1 && CurrentScene != null) {
@@ -170,6 +196,10 @@ namespace GameProject.Code.Core {
                 scene.Die();
             }
         }
+
+        public static void ExitGame() {
+            _mainGame.Exit();
+        }
         #endregion
 
 
@@ -183,7 +213,8 @@ namespace GameProject.Code.Core {
 
             FloorSong = Resources.Music_QuarantineLevel.CreateInstance();
             FloorSong.IsLooped = true;
-            FloorSong.Volume = _musicVolume * _masterVolume;
+            //FloorSong.Volume = _musicVolume * _masterVolume;
+            FloorSong.Volume = _masterVolume;
             FloorSong.Play();
         }
 

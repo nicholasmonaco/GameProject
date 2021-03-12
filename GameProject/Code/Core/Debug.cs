@@ -13,8 +13,8 @@ namespace GameProject.Code.Core {
     /// Contains methods used for debugging.
     /// </summary>
     public static class Debug {
-        public static readonly bool ShowColliders = true;
-        public static readonly bool Mute = true;
+        public static readonly bool ShowColliders = false;
+        public static readonly bool Mute = false;
 
 
         public static void Log(string output, [CallerLineNumber] int lineNum = 0, [CallerMemberName] string caller = null, [CallerFilePath] string fp = null) {

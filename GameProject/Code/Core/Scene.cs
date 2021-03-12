@@ -14,6 +14,8 @@ namespace GameProject.Code.Core {
     /// A container for everything that is present in the game.
     /// </summary>
     public abstract class Scene {
+        public static Action EmptyAction = () => { };
+
 
         public List<GameObject> GameObjects; //change this to use guids and be made of a GameObjectReferencer class, so that we can just set the gameobject reference in there to be null when we want it to be destroyed
         public List<Collider2D> Collider2Ds;
@@ -31,7 +33,20 @@ namespace GameProject.Code.Core {
 
         public virtual void LoadContent(ContentManager content) { }
 
-        public virtual void UnloadContent() { }
+        public virtual void UnloadContent() {
+            foreach (Coroutine c in _coroutines) {
+                c.Finished = true;
+            }
+
+            while (GameObjects.Count > 0) {
+                GameObject.Destroy(GameObjects[0]);
+            }
+
+            Collider2Ds.Clear();
+
+            _coroutineQueue = EmptyAction;
+            _instantiateList = EmptyAction;
+        }
 
 
         public virtual void Init() {

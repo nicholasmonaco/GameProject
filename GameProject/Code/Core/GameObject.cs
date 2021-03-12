@@ -102,6 +102,22 @@ namespace GameProject.Code.Core {
             return default;
         }
 
+        public T[] GetAllComponents<T>() {
+            List<T> components = new List<T>();
+
+            foreach (Component c in _components) {
+                if (c is T rightType) components.Add(rightType);
+            }
+
+            foreach(Transform child in transform._children) {
+                foreach (Component c in child.gameObject._components) {
+                    if (c is T rightType) components.Add(rightType);
+                }
+            }
+
+            return components.ToArray();
+        }
+
         public bool TryGetComponent<T>(out T comp) {
             foreach (Component c in _components) {
                 if (c is T rightType) { 

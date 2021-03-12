@@ -10,8 +10,10 @@ using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 using GameProject.Code.Prefabs;
+using GameProject.Code.Prefabs.UI;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Components.UI;
+using GameProject.Code.Prefabs.UI.MainMenus;
 
 namespace GameProject.Code.Scenes {
     
@@ -21,6 +23,16 @@ namespace GameProject.Code.Scenes {
     public class MenuScene : Scene {
 
         private Panel _fadeToBlack;
+
+        private bool _changingMenus = false;
+        private float _menuTransitionTime = 1;
+
+        private Dictionary<MenuState, GameObject> _menus;
+        private MenuState _lastMenuState = MenuState.Title;
+        private MenuState _curMenuState = MenuState.Title;
+        private GameObject _curMenu => _menus[_curMenuState];
+        private GameObject _lastMenu => _menus[_lastMenuState];
+        public Stack<MenuState> _menuStack;
 
 
         public override void Init() {
@@ -34,46 +46,43 @@ namespace GameProject.Code.Scenes {
             //Instantiate(new Prefab_Reticle());
 
 
+            _menus = new Dictionary<MenuState, GameObject>(6);
+            _menuStack = new Stack<MenuState>();
+            _menuStack.Push(MenuState.Title);
 
-            GameObject background = Instantiate(new GameObject());
+            GameObject backDetector = Instantiate(new GameObject());
+            backDetector.AddComponent<BackDetector>();
+
+            GameObject titleMenu = Instantiate(new Prefab_TitleMenu());
+            _menus.Add(MenuState.Title, titleMenu);
+
+            GameObject mainMenu = Instantiate(new Prefab_MainMenu());
+            mainMenu.transform.Position = new Vector3(0, -500, 0);
+            _menus.Add(MenuState.Main, mainMenu);
+
+            GameObject optionsMenu = Instantiate(new Prefab_OptionsMenu());
+            optionsMenu.transform.Position = new Vector3(-800, -500, 0);
+            _menus.Add(MenuState.Options, optionsMenu);
+
+            GameObject creditsMenu = Instantiate(new Prefab_CreditsMenu());
+            creditsMenu.transform.Position = new Vector3(-800, -1000, 0);
+            _menus.Add(MenuState.Credits, creditsMenu);
+
+
+            GameObject background = Instantiate(new GameObject()); //we need to figure out how we want to do this
             background.Name = "Background Image";
             SpriteRenderer backRend = background.AddComponent<SpriteRenderer>();
             backRend.transform.Position = Vector3.Zero;
             backRend.transform.Scale *= 0.4f;
             backRend.Sprite = Resources.Sprite_MM_Background;
-
-            GameObject ground = Instantiate(new GameObject());
-            ground.Name = "Ground Image";
-            SpriteRenderer groundRend = ground.AddComponent<SpriteRenderer>();
-            groundRend.Sprite = Resources.Sprite_MM_Ground;
-            groundRend.transform.Scale *= 0.26f;
-            ground.transform.Parent = GameManager.MainCanvas.transform;
-            groundRend.transform.LocalPosition += new Vector3(0, -30, 0);
-            groundRend.Color = Color.Transparent; //DEBUG
+            backRend.DrawLayer = DrawLayer.ID[DrawLayers.Background];
+            backRend.OrderInLayer = 10;
 
 
-            GameObject title = Instantiate(new GameObject());
-            title.Name = "Title";
-            SpriteRenderer titleRend = title.AddComponent<SpriteRenderer>();
-            titleRend.Sprite = Resources.Sprite_MM_Title;
-            titleRend.transform.Scale *= 1.75f;
-            title.transform.Parent = GameManager.MainCanvas.transform;
-            titleRend.transform.LocalPosition += new Vector3(0, 71, 0);
-
-            UI_Bounce bounce = title.AddComponent<UI_Bounce>();
-            bounce.InitBounce(0.7f, new Vector3(0, -3, 0));
-
-
-            GameObject prompt = Instantiate(new GameObject());
-            prompt.Name = "Start Prompt";
-            SpriteRenderer promptRend = prompt.AddComponent<SpriteRenderer>();
-            promptRend.Sprite = Resources.Sprite_MM_Prompt;
-            promptRend.Color = new Color(181, 181, 181);
-            prompt.transform.Parent = GameManager.MainCanvas.transform;
-            promptRend.transform.LocalPosition += new Vector3(-5, -55, 0);
-
-            UI_Wobble wobble = prompt.AddComponent<UI_Wobble>();
-            wobble.Init(2.5f, 2);
+            // Options testing
+            //GameObject slider = Instantiate(new Prefab_Slider());
+            //slider.transform.Position = new Vector3(0, 0, 0);
+            //
 
 
             StartCoroutine(LoadMainMenu());
@@ -88,8 +97,24 @@ namespace GameProject.Code.Scenes {
 
             yield return StartCoroutine(Panel.FadeFromBlack(_fadeToBlack, 5.5f));
 
-            Input.OnShoot_Down += StartGame;
+            foreach (UI_LayoutItem item in _curMenu.GetAllComponents<UI_LayoutItem>()) {
+                item.ForceAddToUIList();
+            }
+
+            Input.OnSpace_Down += ActivateAction;
         }
+
+
+        public override void UnloadContent() {
+            base.UnloadContent();
+
+            Input.OnSpace_Down -= ActivateAction;
+
+            _menus.Clear();
+
+            _fadeToBlack = null;
+        }
+
 
         private IEnumerator StartGame_C() {
             yield return StartCoroutine(Panel.FadeIntoBlack(_fadeToBlack, 3f));
@@ -101,11 +126,73 @@ namespace GameProject.Code.Scenes {
         }
 
 
-        private void StartGame() {
-            Input.OnShoot_Down -= StartGame;
+        public void StartGame() {
             StartCoroutine(StartGame_C());
         }
-        
 
+
+        private void ActivateAction() {
+            GameManager.UILayoutMembers[GameManager.CurrentUIIndex].OnActivate();
+        }
+
+
+        public void SwitchMenu(MenuState newMenu, bool goingBack) {
+            if (_changingMenus) return;
+            _changingMenus = true;
+
+            _lastMenuState = _curMenuState;
+            _curMenuState = newMenu;
+            
+            if (!goingBack) {
+                _menuStack.Push(newMenu);
+            }
+
+            foreach(UI_LayoutItem item in _lastMenu.GetAllComponents<UI_LayoutItem>()) {
+                item.ForceRemoveFromUIList();
+            }
+
+            GameManager.UILayoutMembers.Clear();
+            GameManager.OnSelectIndexChange = (index) => { };            
+
+            foreach (UI_LayoutItem item in _curMenu.GetAllComponents<UI_LayoutItem>()) {
+                item.ForceAddToUIList();
+            }
+
+            GameManager.CurrentUIIndex = 0;
+
+            StartCoroutine(SwitchMenus_C());
+        }
+
+
+        private IEnumerator SwitchMenus_C() {
+            float timer = _menuTransitionTime;
+
+            Vector3 origPos = Camera.main.transform.Position;
+            Vector3 newPos = _menus[_curMenuState].transform.Position;
+            _menus[_curMenuState].Enabled = true;
+
+            while(timer > 0) {
+                timer -= Time.unscaledDeltaTime;
+                Camera.main.transform.Position = Vector3.SmoothStep(newPos, origPos, timer / _menuTransitionTime);
+                yield return null;
+            }
+
+            Camera.main.transform.Position = newPos;
+            yield return new WaitForEndOfFrame();
+
+            _menus[_lastMenuState].Enabled = false;
+
+            _changingMenus = false;
+        }
+
+    }
+
+    public enum MenuState {
+        Title,
+        Main,
+        CharSelect,
+        Options,
+        Credits,
+        Challenges
     }
 }

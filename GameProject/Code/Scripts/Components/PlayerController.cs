@@ -205,10 +205,10 @@ namespace GameProject.Code.Scripts.Components {
         }
 
 
-        public override void Draw(SpriteBatch sb) {
-            base.Draw(sb);
-            sb.DrawString(Resources.Font_Debug, $"playerpos: {transform.Position}", Input.MouseWorldPosition, Color.Red, 0, Vector2.Zero, -0.15f, SpriteEffects.FlipHorizontally, 1);
-        }
+        //public override void Draw(SpriteBatch sb) {
+        //    base.Draw(sb);
+        //    sb.DrawString(Resources.Font_Debug, $"playerpos: {transform.Position}", Input.MouseWorldPosition, Color.Red, 0, Vector2.Zero, -0.15f, SpriteEffects.FlipHorizontally, 1);
+        //}
 
 
         private void OnShootDown() {

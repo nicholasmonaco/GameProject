@@ -13,7 +13,10 @@ namespace GameProject.Code.Core.Components {
             get => _text;
             set {
                 _text = value;
-                _textDrawPos = new Vector2(_font.MeasureString(value).X / 2f, _font.MeasureString(value).Y / 2f);
+                if (value != null) { 
+                    _textDrawPos = new Vector2(_font.MeasureString(value).X / 2f, _font.MeasureString(value).Y / 2f);
+                    Justification = _justification;
+                }
             }
         }
 
@@ -23,6 +26,26 @@ namespace GameProject.Code.Core.Components {
         public Color Color = Color.White;
         public Color SecondaryColor = Color.Black;
         public Vector2 SpriteScale = Vector2.One;
+
+        private Justify _justification = Justify.Center;
+        public Justify Justification {
+            get => _justification;
+            set { 
+                _justification = value;
+                switch (value) {
+                    default:
+                    case Justify.Center:
+                        _justificationVector = Vector2.Zero;
+                        break;
+                    case Justify.Left:
+                        _justificationVector = new Vector2(SpriteSize.X / 2f, 0);
+                        break;
+                    case Justify.Right:
+                        _justificationVector = new Vector2(-SpriteSize.X / 2f, 0);
+                        break;
+                }
+            }
+        }
 
         public int DrawLayer {
             get { return _drawLayer; }
@@ -58,7 +81,13 @@ namespace GameProject.Code.Core.Components {
                         DrawMethod(sb, _secondaryFont, SecondaryColor);
                     };
                     break;
+                case GameFont.Debug:
+                    _font = Resources.Font_Debug;
+                    _drawAction = (sb) => { DrawMethod(sb, _font, Color); };
+                    break;
             }
+
+            Justification = _justification;
         }
 
 
@@ -67,6 +96,8 @@ namespace GameProject.Code.Core.Components {
         public TextRenderer(GameObject attached, GameFont font, string text) : base(attached) {
             SetFont(font);
             Text = text;
+
+            transform.WorldMatrixUpdateAction += () => { Justification = _justification; };
         }
 
 
@@ -78,7 +109,7 @@ namespace GameProject.Code.Core.Components {
         private void DrawMethod(SpriteBatch sb, SpriteFont font, Color color) {
             sb.DrawString(font,
                           Text,
-                          transform.Position.ToVector2() + new Vector2(SpriteSize.X/2f, 0),
+                          transform.Position.ToVector2() + _justificationVector,
                           color,
                           transform.Rotation_Rads,
                           _textDrawPos,
@@ -87,11 +118,20 @@ namespace GameProject.Code.Core.Components {
                           _realDrawOrder);
         }
 
-        public Point SpriteSize => (_font.MeasureString(Text) * transform.Scale.ToVector2()).ToPoint();
+        public Vector2 SpriteSize => _font.MeasureString(Text) * transform.Scale.ToVector2();
+
+        private Vector2 _justificationVector = Vector2.Zero;
     }
 
     public enum GameFont {
-        Base = 1,
-        Styled = 1
+        Base = 0,
+        Styled = 1,
+        Debug = 2
+    }
+
+    public enum Justify {
+        Left,
+        Center,
+        Right
     }
 }

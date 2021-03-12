@@ -120,28 +120,22 @@ namespace GameProject.Code.Core {
 
             // Shoot
             // Change this based on settings later
-            //localVal = _keyboardState.IsKeyDown(Act_Shoot);
-            //lastLocalVal = _lastKeyboardState.IsKeyDown(Act_Shoot);
-            //if (localVal && !lastLocalVal) {
-            //    OnShoot_Down();
-            //} else if (!localVal && lastLocalVal) {
-            //    OnShoot_Released();
-            //}
-
-            localVal = _mouseState.LeftButton == ButtonState.Pressed;
-            lastLocalVal = _lastMouseState.LeftButton == ButtonState.Released;
-            if (localVal && !lastLocalVal) {
-                OnShoot_Down();
-            } else if (!localVal && lastLocalVal) {
-                OnShoot_Released();
-            }
-
-            localVal = _keyboardState.IsKeyDown(Act_Shoot);
-            lastLocalVal = _lastKeyboardState.IsKeyDown(Act_Shoot);
-            if (localVal && !lastLocalVal) {
-                OnShoot_Down();
-            } else if (!localVal && lastLocalVal) {
-                OnShoot_Released();
+            if (GameManager.UsingKeyboardControls) {
+                localVal = _keyboardState.IsKeyDown(Act_Shoot);
+                lastLocalVal = _lastKeyboardState.IsKeyDown(Act_Shoot);
+                if (localVal && !lastLocalVal) {
+                    OnShoot_Down();
+                } else if (!localVal && lastLocalVal) {
+                    OnShoot_Released();
+                }
+            } else {
+                localVal = _mouseState.LeftButton == ButtonState.Pressed;
+                lastLocalVal = _lastMouseState.LeftButton == ButtonState.Pressed;
+                if (localVal && !lastLocalVal) {
+                    OnShoot_Down();
+                } else if (!localVal && lastLocalVal) {
+                    OnShoot_Released();
+                }
             }
 
 
@@ -217,6 +211,45 @@ namespace GameProject.Code.Core {
                 OnMouseRight_Released();
             }
 
+
+            // Any Up
+            localVal = _keyboardState.IsKeyDown(Aim_Up) || _keyboardState.IsKeyDown(Movement_Up);
+            lastLocalVal = _lastKeyboardState.IsKeyDown(Aim_Up) || _lastKeyboardState.IsKeyDown(Movement_Up);
+            if (localVal && !lastLocalVal) {
+                OnAnyUpDown();
+            }
+
+            // Any Down
+            localVal = _keyboardState.IsKeyDown(Aim_Down) || _keyboardState.IsKeyDown(Movement_Down);
+            lastLocalVal = _lastKeyboardState.IsKeyDown(Aim_Down) || _lastKeyboardState.IsKeyDown(Movement_Down);
+            if (localVal && !lastLocalVal) {
+                OnAnyDownDown();
+            }
+
+            // Any Left
+            localVal = _keyboardState.IsKeyDown(Aim_Left) || _keyboardState.IsKeyDown(Movement_Left);
+            lastLocalVal = _lastKeyboardState.IsKeyDown(Aim_Left) || _lastKeyboardState.IsKeyDown(Movement_Left);
+            if (localVal && !lastLocalVal) {
+                OnAnyLeftDown();
+            }
+
+            // Any Right
+            localVal = _keyboardState.IsKeyDown(Aim_Right) || _keyboardState.IsKeyDown(Movement_Right);
+            lastLocalVal = _lastKeyboardState.IsKeyDown(Aim_Right) || _lastKeyboardState.IsKeyDown(Movement_Right);
+            if (localVal && !lastLocalVal) {
+                OnAnyRightDown();
+            }
+
+
+            // Space
+            localVal = _keyboardState.IsKeyDown(Act_Shoot);
+            lastLocalVal = _lastKeyboardState.IsKeyDown(Act_Shoot);
+            if (localVal && !lastLocalVal) {
+                OnSpace_Down();
+            } else if (!localVal && lastLocalVal) {
+                OnSpace_Released();
+            }
+
             // End checking for event handlers
 
 
@@ -256,6 +289,14 @@ namespace GameProject.Code.Core {
         public static Action OnMouseRight_Released = _emptyAction;
 
         public static Action OnFullscreenToggle = _emptyAction;
+
+        public static Action OnAnyLeftDown = _emptyAction;
+        public static Action OnAnyRightDown = _emptyAction;
+        public static Action OnAnyUpDown = _emptyAction;
+        public static Action OnAnyDownDown = _emptyAction;
+
+        public static Action OnSpace_Down = _emptyAction;
+        public static Action OnSpace_Released = _emptyAction;
 
         // End event handler methods
     }

@@ -1,3 +1,8 @@
-﻿Content/Textures - All textures created by Nick Monaco
+﻿Content/Music - All music created by Nick Monaco
+Content/RoomData - All room data created by Nick Monaco
+Content/Sounds - All sound effects created by Nick Monaco
+Content/Textures - All textures created by Nick Monaco
 
+Content/Fonts/Base_Inner.spritefont - created by Nick Monaco
+Content/Fonts/Base_Outer.spritefont - created by Nick Monaco
 Content/Fonts/arial.spritefont - created by Windows
