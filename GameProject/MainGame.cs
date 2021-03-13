@@ -97,7 +97,7 @@ namespace GameProject {
             while(_fixedUpdateMeasurer > Time.fixedDeltaTime) {
                 GameManager.CurrentScene.FixedUpdate();
                 GameManager.CurrentScene.PhysicsUpdate();
-                _fixedUpdateMeasurer -= Time.fixedDeltaTime;
+                _fixedUpdateMeasurer -= Time.unscaledFixedDeltaTime;
             }
             // End Physics logic
 

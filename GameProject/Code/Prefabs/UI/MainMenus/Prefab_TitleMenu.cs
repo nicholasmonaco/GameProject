@@ -20,6 +20,7 @@ namespace GameProject.Code.Prefabs.UI.MainMenus {
             //groundRend.transform.Scale *= 0.26f;
             Vector3 scl = groundRend.transform.Scale * 0.3f;
             scl.Y *= 2;
+            scl.X *= 0.85f;
             groundRend.transform.Scale = scl;
             groundRend.transform.LocalPosition += new Vector3(0, 60, 0);
             groundRend.DrawLayer = DrawLayer.ID[DrawLayers.Background];

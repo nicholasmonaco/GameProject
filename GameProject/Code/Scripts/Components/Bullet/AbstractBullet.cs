@@ -59,7 +59,8 @@ namespace GameProject.Code.Scripts.Components.Bullet {
 
 
         public void SetScale(float scale) {
-            BulletRenderer.SpriteScale = new Vector2(scale, scale);
+            //BulletRenderer.SpriteScale = new Vector2(scale, scale);
+            transform.Scale = new Vector3(scale);
         }
 
         public void SetScale(float x, float y) {

@@ -32,7 +32,6 @@ namespace GameProject.Code.Scripts.Components {
         // Private values
         private float _maxSpeed = 105;
         private float _acceleration = 800;
-        private float _shotRate = 2;
 
         private Vector2 _moveVec = Vector2.Zero;
         private float _shootDelayTimer = 0;
@@ -112,7 +111,7 @@ namespace GameProject.Code.Scripts.Components {
             while (true) {
                 _animTimer -= Time.deltaTime;
 
-                if(_animTimer <= 0) {
+                if(_animTimer <= 0 && !FreezeMovement) {
                     if (_curDir == Direction.None) {
                         _playerSprite.Sprite = Resources.Sprites_PlayerMove[Direction.Down][0];
                     } else {
@@ -146,9 +145,9 @@ namespace GameProject.Code.Scripts.Components {
 
         private void Shoot() {
             if(_shootDelayTimer <= 0) {
-                if (_shooting) {
+                if (_shooting && !FreezeMovement && CanMove) {
                     ShootLogic();
-                    _shootDelayTimer = 1 / _shotRate;
+                    _shootDelayTimer = 1 / PlayerStats.ShotRate;
                 }
             } else {
                 _shootDelayTimer -= Time.deltaTime;
@@ -159,8 +158,10 @@ namespace GameProject.Code.Scripts.Components {
             Vector2 aimDir = Vector2.Normalize(Input.MouseWorldPosition - transform.Position.ToVector2());
             
             Bullet_Standard bullet = Instantiate<Prefab_Bullet>().GetComponent<Bullet_Standard>();
+            bullet.transform.Parent = GameManager.BulletHolder;
             bullet.transform.Position = transform.Position; //can customize this later
             bullet.InitBullet(true, aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
+            bullet.SetScale(PlayerStats.ShotSize);
         }
 
 

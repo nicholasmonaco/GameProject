@@ -61,18 +61,25 @@ namespace GameProject.Code.Scripts.Components.UI {
         public virtual void OnDeselected() { }
 
         public Action OnActivate = EmptyAction;
+        public void DoActivate() {
+            if (Enabled) {
+                OnActivate();
+            }
+        }
 
         private void MoveToPrevious() {
-            if (Selected) {
+            if (Enabled && Selected) {
                 int i = GameManager.CurrentUIIndex - 1;
-                GameManager.CurrentUIIndex = i < 0 ? GameManager.UILayoutMembers.Count - 1 : i;
+                GameManager.CurrentUIIndex = i < 0 ? GameManager.UILayoutMembers.Count-1 : i;
+                Resources.Sound_Menu_Move.Play(GameManager.RealSoundVolume);
             }
         }
 
         private void MoveToNext() {
-            if (Selected) {
+            if (Enabled && Selected) {
                 int i = GameManager.CurrentUIIndex + 1;
-                GameManager.CurrentUIIndex = i > GameManager.UILayoutMembers.Count - 1 ? 0 : i;
+                GameManager.CurrentUIIndex = i >= GameManager.UILayoutMembers.Count ? 0 : i;
+                Resources.Sound_Menu_Move.Play(GameManager.RealSoundVolume);
             }
         }
 

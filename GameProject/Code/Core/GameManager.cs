@@ -62,6 +62,8 @@ namespace GameProject.Code.Core {
         public static MinimapController Minimap;
         public static InventoryTracker Inventory;
 
+        public static Transform BulletHolder;
+
         public static LevelID CurLevelID { get; set; }
         #endregion
 
@@ -72,16 +74,24 @@ namespace GameProject.Code.Core {
         private static float _musicVolume = 1;
         public static float MasterVolume {
             get => _masterVolume;
-            set { _masterVolume = MathHelper.Clamp(value, 0, 1); }
+            set { 
+                _masterVolume = MathHelper.Clamp(value, 0, 1);
+                RealSoundVolume = _soundVolume * _masterVolume;
+            }
         }
         public static float SoundVolume {
             get => _soundVolume;
-            set { _soundVolume = MathHelper.Clamp(value, 0, 1); }
+            set { 
+                _soundVolume = MathHelper.Clamp(value, 0, 1);
+                RealSoundVolume = _soundVolume * _masterVolume;
+            }
         }
         public static float MusicVolume {
             get => _musicVolume;
             set { _musicVolume = MathHelper.Clamp(value, 0, 1); }
         }
+
+        public static float RealSoundVolume = 1;
 
         public static SoundEffectInstance FloorSong = null;         // This is what plays by default
         public static SoundEffectInstance CurRoomSong = null;       // This overrides the default floor song, if applicable
@@ -213,8 +223,7 @@ namespace GameProject.Code.Core {
 
             FloorSong = Resources.Music_QuarantineLevel.CreateInstance();
             FloorSong.IsLooped = true;
-            //FloorSong.Volume = _musicVolume * _masterVolume;
-            FloorSong.Volume = _masterVolume;
+            FloorSong.Volume = _musicVolume * _masterVolume;
             FloorSong.Play();
         }
 

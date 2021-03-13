@@ -440,6 +440,11 @@ namespace GameProject.Code.Core {
             scene.UnloadContent();
         }
 
-        
+
+        protected void ActivateAction() {
+            if(GameManager.CurrentUIIndex >= 0 && GameManager.CurrentUIIndex <= GameManager.UILayoutMembers.Count && GameManager.UILayoutMembers.Count > 0) 
+                GameManager.UILayoutMembers[GameManager.CurrentUIIndex].DoActivate();
+        }
+
     }
 }

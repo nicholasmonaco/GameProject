@@ -32,13 +32,13 @@ namespace GameProject.Code.Prefabs.UI.MainMenus {
 
             creditText.transform.Scale *= 0.3f; //debug
 
-            init -= diff + 25;
+            init -= diff + 20;
 
 
 
 
-            List<(string, Action)> buttons = new List<(string, Action)>() {
-                ("Fullscreen", Input.OnFullscreenToggle),
+            List<(string, string, Action)> buttons = new List<(string, string, Action)>() {
+                ("Go Fullscreen", "Go Windowed", Input.OnFullscreenToggle),
                 //("Keyboard Controls", () => { menu.SwitchMenu(MenuState.Options, false); }),
             };
 
@@ -50,13 +50,19 @@ namespace GameProject.Code.Prefabs.UI.MainMenus {
 
 
 
-            foreach ((string, Action) buttonData in buttons) {
+            foreach ((string, string, Action) buttonData in buttons) {
                 GameObject textButton = Instantiate(new Prefab_SelectableText(buttonData.Item1, deselected, selected));
                 textButton.transform.Parent = transform;
                 textButton.transform.LocalPosition = new Vector3(0, init, 0);
-                textButton.GetComponent<SelectableText>().OnActivate = buttonData.Item2;
+                SelectableText selectable = textButton.GetComponent<SelectableText>();
+                TextRenderer text = textButton.GetComponent<TextRenderer>();
 
-                textButton.transform.Scale *= 0.3f; //debug
+                selectable.OnActivate = buttonData.Item3;
+                selectable.OnActivate += () => {
+                    text.Text = text.Text == buttonData.Item1 ? buttonData.Item2 : buttonData.Item1;
+                };
+
+                textButton.transform.Scale *= 0.2f; //debug
 
                 init -= diff;
             }
@@ -82,6 +88,8 @@ namespace GameProject.Code.Prefabs.UI.MainMenus {
                 slider.transform.LocalPosition = new Vector3(sliderPos, init, 0);
                 slider.ExtraSelectAction += () => { labelRend.Color = selected; };
                 slider.ExtraDeselectAction += () => { labelRend.Color = deselected; };
+                slider.SetBackgroundColor(deselected);
+                slider.SetHandleColor(selected);
 
                 init -= diff;
             }

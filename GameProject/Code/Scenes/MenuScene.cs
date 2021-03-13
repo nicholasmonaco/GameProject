@@ -45,6 +45,11 @@ namespace GameProject.Code.Scenes {
 
             //Instantiate(new Prefab_Reticle());
 
+            GameManager.UILayoutMembers.Clear();
+            GameManager.OnSelectIndexChange = (value) => { };
+
+            _lastMenuState = MenuState.Title;
+            _curMenuState = MenuState.Title;
 
             _menus = new Dictionary<MenuState, GameObject>(6);
             _menuStack = new Stack<MenuState>();
@@ -68,6 +73,8 @@ namespace GameProject.Code.Scenes {
             creditsMenu.transform.Position = new Vector3(-800, -1000, 0);
             _menus.Add(MenuState.Credits, creditsMenu);
 
+            GameManager.CurrentUIIndex = 0;
+
 
             GameObject background = Instantiate(new GameObject()); //we need to figure out how we want to do this
             background.Name = "Background Image";
@@ -77,6 +84,15 @@ namespace GameProject.Code.Scenes {
             backRend.Sprite = Resources.Sprite_MM_Background;
             backRend.DrawLayer = DrawLayer.ID[DrawLayers.Background];
             backRend.OrderInLayer = 10;
+
+            GameObject backgroundGradient = Instantiate(new GameObject());
+            backgroundGradient.Name = "Background Gradient";
+            SpriteRenderer gradientRend = backgroundGradient.AddComponent<SpriteRenderer>();
+            gradientRend.transform.Position = new Vector3(0, -700, 0);
+            gradientRend.transform.Scale = new Vector3(3000, 0.5f, 1);
+            gradientRend.Sprite = Resources.Sprite_MM_BackgroundGradient;
+            gradientRend.DrawLayer = DrawLayer.ID[DrawLayers.Background];
+            gradientRend.OrderInLayer = 11;
 
 
             // Options testing
@@ -110,13 +126,32 @@ namespace GameProject.Code.Scenes {
 
             Input.OnSpace_Down -= ActivateAction;
 
+
+            foreach (UI_LayoutItem item in _lastMenu.GetAllComponents<UI_LayoutItem>()) {
+                item.ForceRemoveFromUIList();
+            }
+
+            foreach (UI_LayoutItem item in _curMenu.GetAllComponents<UI_LayoutItem>()) {
+                item.ForceRemoveFromUIList();
+            }
+
+            GameManager.UILayoutMembers.Clear();
+            GameManager.OnSelectIndexChange = (value) => { };
+            GameManager.CurrentUIIndex = 0;
+
             _menus.Clear();
+            _menus = null;
+
+            _menuStack.Clear();
+            _menuStack = null;
 
             _fadeToBlack = null;
         }
 
 
         private IEnumerator StartGame_C() {
+            Debug.Log("game started from menu");
+            
             yield return StartCoroutine(Panel.FadeIntoBlack(_fadeToBlack, 3f));
 
             yield return new WaitForSeconds(0.35f);
@@ -131,9 +166,7 @@ namespace GameProject.Code.Scenes {
         }
 
 
-        private void ActivateAction() {
-            GameManager.UILayoutMembers[GameManager.CurrentUIIndex].OnActivate();
-        }
+        
 
 
         public void SwitchMenu(MenuState newMenu, bool goingBack) {
@@ -145,6 +178,9 @@ namespace GameProject.Code.Scenes {
             
             if (!goingBack) {
                 _menuStack.Push(newMenu);
+                Resources.Sound_Menu_Back.Play(GameManager.RealSoundVolume);
+            } else {
+                Resources.Sound_Menu_Next.Play(GameManager.RealSoundVolume);
             }
 
             foreach(UI_LayoutItem item in _lastMenu.GetAllComponents<UI_LayoutItem>()) {

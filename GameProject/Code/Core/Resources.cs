@@ -27,6 +27,7 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_TestSquare;
         public static Texture2D Sprite_Pixel;
         public static Texture2D Sprite_Invisible;
+        public static Texture2D Sprite_ControlGuide;
 
         public static Dictionary<RoomStyle, List<Texture2D>> Sprites_RoomCorners;
 
@@ -61,8 +62,10 @@ namespace GameProject.Code.Core {
 
         public static Texture2D Sprite_Vignette;
         public static Texture2D Sprite_DeathMessage;
+        public static Texture2D Sprite_WinMessage;
 
         public static Texture2D Sprite_MM_Background;
+        public static Texture2D Sprite_MM_BackgroundGradient;
         public static Texture2D Sprite_MM_Ground;
         public static Texture2D Sprite_MM_Title;
         public static Texture2D Sprite_MM_Prompt;
@@ -83,8 +86,14 @@ namespace GameProject.Code.Core {
 
         public static SoundEffect Sound_CaveChaser;
 
+        public static SoundEffect Sound_Doors_Close;
+
         public static Dictionary<Pickup, SoundEffect> Sounds_PickupSpawn;
         public static Dictionary<Pickup, SoundEffect> Sounds_PickupCollect;
+
+        public static SoundEffect Sound_Menu_Move;
+        public static SoundEffect Sound_Menu_Next;
+        public static SoundEffect Sound_Menu_Back;
         #endregion
 
         #region Music Resources
@@ -234,6 +243,13 @@ namespace GameProject.Code.Core {
             //Sounds_PickupSpawn.Add(Pickup.Key, content.Load<SoundEffect>("Sounds/Pickup/Collect/Key"));
             //Sounds_PickupSpawn.Add(Pickup.Chest_Free, content.Load<SoundEffect>("Sounds/Pickup/Collect/Chest"));
             //Sounds_PickupSpawn.Add(Pickup.PowerCell, content.Load<SoundEffect>("Sounds/Pickup/Collect/PowerCell"));
+
+
+            Sound_Doors_Close = content.Load<SoundEffect>("Sounds/DoorClose");
+
+            Sound_Menu_Move = content.Load<SoundEffect>("Sounds/UI/MenuMove");
+            Sound_Menu_Next = content.Load<SoundEffect>("Sounds/UI/MenuChange");
+            Sound_Menu_Back = content.Load<SoundEffect>("Sounds/UI/MenuBack");
         }
 
         private static void LoadMusic(ContentManager content) {
@@ -250,6 +266,8 @@ namespace GameProject.Code.Core {
             Sprite_TestSquare = content.Load<Texture2D>("Textures/Misc/Square_01");
             Sprite_Pixel = content.Load<Texture2D>("Textures/Misc/Pixel");
             Sprite_Invisible = content.Load<Texture2D>("Textures/Misc/Invisible");
+
+            Sprite_ControlGuide = content.Load<Texture2D>("Textures/Misc/ControlGuide");
 
 
             Sprites_RoomCorners = new Dictionary<RoomStyle, List<Texture2D>>(1);
@@ -317,6 +335,7 @@ namespace GameProject.Code.Core {
             Sprite_Pickups.Add(Pickup.Coin, content.Load<Texture2D>("Textures/Pickup/Coin"));
             Sprite_Pickups.Add(Pickup.Coin_5, content.Load<Texture2D>("Textures/Pickup/Coin_5"));
             Sprite_Pickups.Add(Pickup.PowerCell, content.Load<Texture2D>("Textures/Pickup/EnergyCell"));
+            Sprite_Pickups.Add(Pickup.Key, content.Load<Texture2D>("Textures/Pickup/Key"));
 
             Sprite_MinimapBackground = content.Load<Texture2D>("Textures/UI/Minimap/Background");
 
@@ -374,8 +393,10 @@ namespace GameProject.Code.Core {
         private static void LoadMainMenuSprites(ContentManager content) {
             Sprite_Vignette = content.Load<Texture2D>("Textures/UI/Misc/Vignette");
             Sprite_DeathMessage = content.Load<Texture2D>("Textures/UI/Misc/DeathMessage");
+            Sprite_WinMessage = content.Load<Texture2D>("Textures/UI/Misc/WinMessage");
 
             Sprite_MM_Background = content.Load<Texture2D>("Textures/UI/MainMenu/Sky");
+            Sprite_MM_BackgroundGradient = content.Load<Texture2D>("Textures/UI/MainMenu/BackGradient");
             Sprite_MM_Ground = content.Load<Texture2D>("Textures/UI/MainMenu/Ground");
             Sprite_MM_Title = content.Load<Texture2D>("Textures/UI/MainMenu/Title_Backed");
             Sprite_MM_Prompt = content.Load<Texture2D>("Textures/UI/MainMenu/Start-Prompt_Space");

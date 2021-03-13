@@ -865,3 +865,11 @@ C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\D
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Items\SniperScope.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Items\Unknown.xnb
 C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Items\VitaminH.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\UI\MainMenu\BackGradient.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\UI\MenuBack.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\UI\MenuChange.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\UI\MenuMove.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Misc\ControlGuide.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\DoorClose.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Pickup\Key.xnb
+C:\Users\Nick\Desktop\School\_CIS 580\Game Project\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\UI\Misc\WinMessage.xnb

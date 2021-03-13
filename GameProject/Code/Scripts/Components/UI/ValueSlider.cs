@@ -67,6 +67,8 @@ namespace GameProject.Code.Scripts.Components.UI {
 
 
         public Transform Handle;
+        public SpriteRenderer HandleRenderer;
+        public SpriteRenderer BackgroundRenderer;
 
         private float _minX, _maxX;
 
@@ -77,6 +79,14 @@ namespace GameProject.Code.Scripts.Components.UI {
             _minX = transform.Position.X - size.X / 2f;
             _maxX = transform.Position.X + size.X / 2f;
         }
+
+        public void SetBackgroundColor(Color newColor) {
+            BackgroundRenderer.Color = newColor;
+        }
+
+        public void SetHandleColor(Color newColor) {
+            HandleRenderer.Color = newColor;
+        }
         
 
 
@@ -86,6 +96,8 @@ namespace GameProject.Code.Scripts.Components.UI {
 
             Handle.Position = new Vector3(x, Handle.Position.Y, 0);
             Value = (x - _minX) / (_maxX - _minX);
+
+            Resources.Sound_Menu_Move.Play(GameManager.RealSoundVolume);
         }
 
 

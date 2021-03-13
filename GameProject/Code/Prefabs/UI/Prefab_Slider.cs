@@ -29,6 +29,8 @@ namespace GameProject.Code.Prefabs.UI {
             ValueSlider slider = AddComponent<ValueSlider>(0.3f);
             slider.ForceSetHandle(handle.transform);
             slider.SetOnValueChangedAction((value) => { GameManager.MasterVolume = value; });
+            slider.BackgroundRenderer = backgroundRenderer;
+            slider.HandleRenderer = handleRenderer;
         }
     }
 }

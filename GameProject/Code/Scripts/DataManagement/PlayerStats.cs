@@ -240,7 +240,7 @@ namespace GameProject.Code.Scripts {
         // Regular stats
         public static float Speed = 1;
         public static float Range = 1.2f;
-        public static float ShotRate = 0.5f;
+        public static float ShotRate = 2;
         public static float ShotSpeed = 90;
         public static float ShotSize = 1;
         public static float Damage = 3;

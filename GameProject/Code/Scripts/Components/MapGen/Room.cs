@@ -5,12 +5,14 @@ using GameProject.Code.Scripts.Components.Entity;
 using GameProject.Code.Prefabs;
 using GameProject.Code.Pipeline;
 using GameProject.Code.Prefabs.MapGen;
+using GameProject.Code.Prefabs.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
+using GameProject.Code.Scenes;
 
 namespace GameProject.Code.Scripts.Components {
     public class Room : Component {
@@ -196,6 +198,7 @@ namespace GameProject.Code.Scripts.Components {
                                               Doors.ContainsKey(Direction.Right));
 
             if (RoomType == RoomType.Item) GenerateItem();
+            else if (RoomType == RoomType.Boss) SpawnBoss();
 
             // If no room is found
             if (data.RoomID == -99999) return;
@@ -455,6 +458,11 @@ namespace GameProject.Code.Scripts.Components {
 
 
         private void GenerateRandomLoot() {
+            if(GameManager.WorldRandom.NextValue(0, 10) >= 6.5f) {
+                Loot = new List<Pickup>(0);
+                return;
+            }
+
             float lootRNG = GameManager.WorldRandom.NextValue(0, 100);
             int lootCount;
             if (lootRNG <= 70 && lootRNG > 30) {
@@ -467,6 +475,8 @@ namespace GameProject.Code.Scripts.Components {
                 lootCount = 4;
             }
 
+            lootCount = 1; //debug
+
             Loot = new List<Pickup>(lootCount);
             for(int i = 0; i < lootCount; i++) {
                 Loot.Add(GetRandomLootPickup());
@@ -474,8 +484,15 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         private Pickup GetRandomLootPickup() {
-            //todo
-            return Pickup.Coin;
+            //todo - improve
+            float rng = GameManager.WorldRandom.NextValue(0, 100);
+            if (rng > 95) return Pickup.Coin_5;
+            else if (rng > 75) return Pickup.Coin;
+            else if (rng > 55) return Pickup.Heart_Whole;
+            else if (rng > 40) return Pickup.Heart_Half;
+            //else if (rng > 25) return Pickup.BonusHeart;
+            else if (rng > 10) return Pickup.Heart_Whole;
+            else return Pickup.Key;
         }
 
         private void GenerateItem() {
@@ -488,6 +505,21 @@ namespace GameProject.Code.Scripts.Components {
             Debug.Log($"Spawning item at {GridPos}");
         }
 
+        private void SpawnBoss() {
+            AbstractEnemy boss = Instantiate(new Prefab_TestBoss()).GetComponent<AbstractEnemy>();
+            boss.transform.Parent = transform;
+            boss.transform.LocalPosition = Vector3.Zero;
+
+            boss.OnDeathFlag = () => {
+                Enemies.Remove(boss);
+
+                //debug - end game
+                (GameManager.CurrentScene as GameScene).Win();
+            };
+            boss.OnDeathFlag += CheckClear;
+
+            Enemies.Add(boss);
+        }
         
         
 

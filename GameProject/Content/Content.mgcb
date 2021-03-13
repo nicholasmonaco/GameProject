@@ -537,6 +537,12 @@
 /processorParam:Quality=Best
 /build:Sounds/Death.wav
 
+#begin Sounds/DoorClose.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/DoorClose.wav
+
 #begin Sounds/PlayerHurt.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -548,6 +554,24 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/soda2.wav
+
+#begin Sounds/UI/MenuBack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/UI/MenuBack.wav
+
+#begin Sounds/UI/MenuChange.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/UI/MenuChange.wav
+
+#begin Sounds/UI/MenuMove.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/UI/MenuMove.wav
 
 #begin Textures/Bullet/PhotonShot.png
 /importer:TextureImporter
@@ -1377,6 +1401,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Misc/Ball.png
 
+#begin Textures/Misc/ControlGuide.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Misc/ControlGuide.png
+
 #begin Textures/Misc/Invisible.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1485,6 +1521,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Pickup/Heart_Whole.png
 
+#begin Textures/Pickup/Key.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Pickup/Key.png
+
 #begin Textures/UI/Bomb.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1568,6 +1616,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Key.png
+
+#begin Textures/UI/MainMenu/BackGradient.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/MainMenu/BackGradient.png
 
 #begin Textures/UI/MainMenu/Ground.png
 /importer:TextureImporter
@@ -1736,6 +1796,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/Misc/Vignette.png
+
+#begin Textures/UI/Misc/WinMessage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/Misc/WinMessage.png
 
 #begin Textures/UI/Money.png
 /importer:TextureImporter

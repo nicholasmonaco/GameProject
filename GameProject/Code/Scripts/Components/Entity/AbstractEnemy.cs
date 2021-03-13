@@ -22,6 +22,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         public float Health {
             get { return _health; }
             set {
+                if (_health - value <= _health) { StartCoroutine(RedFlash(0.2f)); }
                 _health = value;
                 if (_health <= 0) Die();
             }
@@ -58,8 +59,18 @@ namespace GameProject.Code.Scripts.Components.Entity {
         protected Color _shotColor = Color.Red;
         // End enemy stats
 
+        //
+        //DEBUG
+        public void SetHealth(float mult) {
+            _health *= mult;
+        }
 
-
+        public void SetSpeed(float speed) {
+            _speed = speed;
+        }
+        //DEBUG
+        //
+        
 
         public override void PreAwake() {
             base.PreAwake();
@@ -121,7 +132,8 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         public override sealed void FixedUpdate() {
-            _fixedUpdateAction();
+            if(_fixedUpdateAction != null) //this if is debug, fix the real cause later - check buckshot things
+                _fixedUpdateAction();
         }
 
         private Action _fixedUpdateAction;
@@ -137,6 +149,14 @@ namespace GameProject.Code.Scripts.Components.Entity {
             yield return new WaitForSeconds(0.5f);
             _fixedUpdateAction = FixedUpdate_Enemy;
         }
+
+        private IEnumerator RedFlash(float duration) {
+            Color oldColor = _enemyRenderer.Color;
+            _enemyRenderer.Color = Color.Red;
+            yield return new WaitForSeconds(duration);
+            _enemyRenderer.Color = oldColor;
+        }
+
 
 
         public override void OnDisable() {
@@ -256,6 +276,13 @@ namespace GameProject.Code.Scripts.Components.Entity {
         #endregion
 
 
+        public override void OnCollisionStay2D(Collider2D other) {
+            base.OnCollisionStay2D(other);
+
+            if(other.gameObject.Layer == LayerID.Player) {
+                GameManager.Player.HurtPlayer();
+            }
+        }
 
 
         public static GameObject GetEnemyFromID(EntityID id) {

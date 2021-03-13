@@ -77,7 +77,7 @@ namespace GameProject.Code.Core.Components {
                     _font = Resources.Font_Base_Outer;
                     _secondaryFont = Resources.Font_Base_Inner;
                     _drawAction = (sb) => {
-                        DrawMethod(sb, _font, Color);
+                        DrawMethod_Over(sb, _font, Color);
                         DrawMethod(sb, _secondaryFont, SecondaryColor);
                     };
                     break;
@@ -116,6 +116,18 @@ namespace GameProject.Code.Core.Components {
                           transform.Scale.ToVector2().FlipY() * SpriteScale,
                           SpriteEffects.None,
                           _realDrawOrder);
+        }
+
+        private void DrawMethod_Over(SpriteBatch sb, SpriteFont font, Color color) {
+            sb.DrawString(font,
+                          Text,
+                          transform.Position.ToVector2() + _justificationVector,
+                          color,
+                          transform.Rotation_Rads,
+                          _textDrawPos,
+                          transform.Scale.ToVector2().FlipY() * SpriteScale,
+                          SpriteEffects.None,
+                          (_drawLayer * 10000 + _orderInLayer + 1) / 500000f);
         }
 
         public Vector2 SpriteSize => _font.MeasureString(Text) * transform.Scale.ToVector2();

@@ -120,6 +120,8 @@ namespace GameProject.Code.Scripts.Components {
                 yield return new WaitForSeconds(frameDur);
                 DoorRenderer.Sprite = Resources.Sprites_DoorCloseFrames[i];
             }
+
+            Resources.Sound_Doors_Close.Play(GameManager.RealSoundVolume);
         }
 
 
@@ -150,6 +152,11 @@ namespace GameProject.Code.Scripts.Components {
                 case Direction.Right:
                     additive = new Point(1, 0);
                     break;
+            }
+
+            // delete all bullets
+            while(GameManager.BulletHolder._children.Count > 0) {
+                Destroy(GameManager.BulletHolder._children[0]);
             }
 
             // load entered room
