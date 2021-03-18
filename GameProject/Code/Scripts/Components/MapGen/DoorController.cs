@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Scripts.Util;
+using GameProject.Code.Scripts.Components.UI;
+using GameProject.Code.Prefabs;
 
 namespace GameProject.Code.Scripts.Components {
     public class DoorController : Component {
@@ -179,7 +183,7 @@ namespace GameProject.Code.Scripts.Components {
                     Vector3 origMMPos = GameManager.Minimap.transform.LocalPosition;
                     Vector3 nextMMPos = mult.ToVector2().ToVector3() * GameManager.Minimap.transform.LocalScale;
 
-                    while (timer > 0) {
+                    while (timer > 0 && !GameManager.LevelResetting) {
                         timer -= Time.deltaTime;
                         yield return new WaitForEndOfFrame();
                         Camera.main.transform.Position = Vector3.SmoothStep(nextRoom.transform.Position, origPos, timer / timer_max);
@@ -190,6 +194,13 @@ namespace GameProject.Code.Scripts.Components {
                             GameManager.PlayerTransform.Position = GetOppositeDoorPosition(nextRoom.transform, doorDirection);
                             playerTeleported = true;
                         }
+                    }
+
+                    if (GameManager.LevelResetting) {
+                        GameManager.Player.FreezeMovement = false;
+                        GameManager.Map.ChangingRooms = false;
+
+                        yield break;
                     }
 
                     yield return new WaitForEndOfFrame();
@@ -203,6 +214,13 @@ namespace GameProject.Code.Scripts.Components {
                     Camera.main.transform.Position = nextRoom.transform.Position;
                     break;
             }
+
+
+            if(nextRoom.RoomType == RoomType.Boss) {
+                //do boss cutscene
+                yield return StartCoroutine(VersusScreen());
+            }
+
 
             // switch music (if applicable)
             if(nextRoom.RoomType != lastRoomType) { //replace this with a more intuitive version later
@@ -222,11 +240,15 @@ namespace GameProject.Code.Scripts.Components {
                 nextRoom.CloseDoors();
             }
 
-            // set real current room position
-            GameManager.Map.SetCurrentRoomInDirection(additive);
 
-            // update minimap
-            GameManager.Minimap.ShiftDirection(GameManager.Map.CurrentGridPos);
+            if(GameManager.LevelResetting == false) {
+                // set real current room position
+                GameManager.Map.SetCurrentRoomInDirection(additive);
+
+                // update minimap
+                GameManager.Minimap.ShiftDirection(GameManager.Map.CurrentGridPos);
+            }
+            
 
             // resume player movement
             GameManager.Player.FreezeMovement = false;
@@ -234,6 +256,80 @@ namespace GameProject.Code.Scripts.Components {
             // reset checker flag
             GameManager.Map.ChangingRooms = false;
         }
+
+        private IEnumerator VersusScreen() {
+            yield return null;
+
+            //stop gametime
+            float origTimeScale = Time.EntityTimeScale;
+            Time.EntityTimeScale = 0;
+
+            //add input checker
+            bool skip = false;
+            Action inputCheck = () => { skip = true; };
+            Input.OnAnyKey_Down += inputCheck;
+
+            //black overlay active
+            Panel backroundPanel = Instantiate<Prefab_Panel>(Vector3.Zero, GameManager.MainCanvas.transform).GetComponent<Panel>();
+            backroundPanel.transform.LocalPosition = Vector3.Zero;
+            backroundPanel.SetColor(new Color(49, 15, 77));
+            backroundPanel.SetOpacity(1);
+
+
+            //prepare while loop variables
+            bool displayUp = false;
+
+            Panel topBar = Instantiate<Prefab_Panel>(Vector3.Zero, GameManager.MainCanvas.transform).GetComponent<Panel>();
+            topBar.rectTransform.VerticalAlignment = VerticalStick.Top;
+            topBar.rectTransform.LocalPosition = Vector3.Zero;
+            topBar.rectTransform.LocalScale *= new Vector3(1, 0.35f, 1);
+            topBar.SetColor(Color.Black);
+            topBar.SetOpacity(1);
+            topBar.AddToOrder(1);
+
+            Panel bottomBar = Instantiate<Prefab_Panel>(Vector3.Zero, GameManager.MainCanvas.transform).GetComponent<Panel>();
+            bottomBar.rectTransform.VerticalAlignment = VerticalStick.Bottom;
+            bottomBar.rectTransform.LocalPosition = Vector3.Zero;
+            bottomBar.rectTransform.LocalScale *= new Vector3(1, 0.35f, 1);
+            bottomBar.SetColor(Color.Black);
+            bottomBar.SetOpacity(1);
+            bottomBar.AddToOrder(1);
+
+            Transform playerImage;
+            Transform bossImage;
+            Transform versusText;
+
+
+            //play ambience
+            //GameManager.ActivateOverlayRoomSong(Resources.VersusAmbience);
+
+            //enter while loop: While input not pressed
+            while (!skip) {
+                if (!displayUp) {
+                    //slide in top and bottom bar things
+                    //slide in player imge, boss image, versus text, play ambience
+                }
+
+                yield return null;
+            }
+
+            //once input pressed:
+            //remove input checker
+            Input.OnAnyKey_Down -= inputCheck;
+
+
+            //fade in white overlay really fast
+            //once all white, remove all graphics
+            //hold for one frame
+            //fade white back to invisible
+
+            //disable versus ambience
+            GameManager.DeactivateOverlayRoomSong();
+
+            //resume time
+            Time.EntityTimeScale = origTimeScale;
+        }
+
 
 
         private static Vector3 GetOppositeDoorPosition(Transform nextRoom, Direction doorDirection) {

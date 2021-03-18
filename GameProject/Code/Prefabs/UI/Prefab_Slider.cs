@@ -4,12 +4,17 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Scripts.Components.UI;
 
 namespace GameProject.Code.Prefabs.UI {
     public class Prefab_Slider : GameObject {
         public Prefab_Slider() : base() {
+            Name = "Slider";
+
             GameObject handle = Instantiate<GameObject>(transform.Position, transform);
+            handle.Name = "Slider Handle";
+            handle.transform.Parent = transform;
             SpriteRenderer handleRenderer = handle.AddComponent<SpriteRenderer>();
             handleRenderer.Sprite = Resources.Sprite_Pixel;
             handleRenderer.DrawLayer = DrawLayer.ID[DrawLayers.HUD];

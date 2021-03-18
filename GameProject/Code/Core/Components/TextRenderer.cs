@@ -47,6 +47,8 @@ namespace GameProject.Code.Core.Components {
             }
         }
 
+        private static readonly float MinDrawIncrement = 1 / 500000f;
+
         public int DrawLayer {
             get { return _drawLayer; }
             set {
@@ -127,7 +129,7 @@ namespace GameProject.Code.Core.Components {
                           _textDrawPos,
                           transform.Scale.ToVector2().FlipY() * SpriteScale,
                           SpriteEffects.None,
-                          (_drawLayer * 10000 + _orderInLayer + 1) / 500000f);
+                          _realDrawOrder + MinDrawIncrement);
         }
 
         public Vector2 SpriteSize => _font.MeasureString(Text) * transform.Scale.ToVector2();

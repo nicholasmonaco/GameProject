@@ -10,12 +10,15 @@ using GameProject.Code.Scripts.Components.UI;
 namespace GameProject.Code.Prefabs.UI.MainMenus {
     public class Prefab_CreditsMenu : GameObject {
         public Prefab_CreditsMenu() : base() {
+            Name = "Credits Menu";
+
             float init = 15;
             float diff = 30;
             List<string> list = new List<string>(2) { "Programming, Art, Music, and SFX", "by Nick Monaco" };
 
             for(int i = 0; i < list.Count; i++) {
                 GameObject creditText = Instantiate<GameObject>(Vector3.Zero, transform);
+                creditText.Name = $"Label ({list[i]})";
                 TextRenderer textRend = creditText.AddComponent<TextRenderer>();
                 textRend.SetFont(GameFont.Debug); //make styled later
                 textRend.Text = list[i];

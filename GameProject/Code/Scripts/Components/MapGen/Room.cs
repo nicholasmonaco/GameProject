@@ -475,8 +475,6 @@ namespace GameProject.Code.Scripts.Components {
                 lootCount = 4;
             }
 
-            lootCount = 1; //debug
-
             Loot = new List<Pickup>(lootCount);
             for(int i = 0; i < lootCount; i++) {
                 Loot.Add(GetRandomLootPickup());
@@ -506,19 +504,19 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         private void SpawnBoss() {
-            AbstractEnemy boss = Instantiate(new Prefab_TestBoss()).GetComponent<AbstractEnemy>();
-            boss.transform.Parent = transform;
-            boss.transform.LocalPosition = Vector3.Zero;
+            //AbstractEnemy boss = Instantiate(new Prefab_TestBoss()).GetComponent<AbstractEnemy>();
+            //boss.transform.Parent = transform;
+            //boss.transform.LocalPosition = Vector3.Zero;
 
-            boss.OnDeathFlag = () => {
-                Enemies.Remove(boss);
+            //boss.OnDeathFlag = () => {
+            //    Enemies.Remove(boss);
 
-                //debug - end game
-                (GameManager.CurrentScene as GameScene).Win();
-            };
-            boss.OnDeathFlag += CheckClear;
+            //    //debug - end game
+            //    //(GameManager.CurrentScene as GameScene).Win();
+            //};
+            //boss.OnDeathFlag += CheckClear;
 
-            Enemies.Add(boss);
+            //Enemies.Add(boss);
         }
         
         

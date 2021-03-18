@@ -38,9 +38,15 @@ namespace GameProject.Code.Core {
                 c.Finished = true;
             }
 
+            Debug.Log("Checkpoint 2.1");
+
             while (GameObjects.Count > 0) {
+                Debug.Log($"Removing {GameObjects[0].Name}");
                 GameObject.Destroy(GameObjects[0]);
+                //GameObjects.RemoveAt(0);
             }
+
+            Debug.Log("Checkpoint 2.2");
 
             Collider2Ds.Clear();
 
@@ -442,8 +448,9 @@ namespace GameProject.Code.Core {
 
 
         protected void ActivateAction() {
-            if(GameManager.CurrentUIIndex >= 0 && GameManager.CurrentUIIndex <= GameManager.UILayoutMembers.Count && GameManager.UILayoutMembers.Count > 0) 
+            if(GameManager.CurrentUIIndex >= 0 && GameManager.CurrentUIIndex <= GameManager.UILayoutMembers.Count && GameManager.UILayoutMembers.Count > 0) {
                 GameManager.UILayoutMembers[GameManager.CurrentUIIndex].DoActivate();
+            }
         }
 
     }

@@ -18,8 +18,8 @@ namespace GameProject.Code.Prefabs.Enemies {
             //Enemy_CaveChaserOmega enemy = AddComponent<Enemy_CaveChaserOmega>(EntityID.CaveChaser_Omega);
             Enemy_CaveChaserOmega enemy = GetComponent<Enemy_CaveChaserOmega>();
             transform.Scale *= 3;
-            enemy.SetHealth(10f);
-            enemy.SetSpeed(2);
+            //enemy.SetHealth(10f);
+            //enemy.SetSpeed(2);
         }
 
     }

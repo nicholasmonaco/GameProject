@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameProject.Code.Scripts.Components {
+namespace GameProject.Code.Core.UI {
     public class Canvas : Component {
         public Canvas(GameObject attached) : base(attached) {
             GameManager.MainCanvas = this;

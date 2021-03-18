@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Components.UI;
 using GameProject.Code.Scenes;
@@ -11,7 +12,7 @@ using GameProject.Code.Scenes;
 namespace GameProject.Code.Prefabs.UI.MainMenus {
     public class Prefab_TitleMenu : GameObject {
         public Prefab_TitleMenu() : base() {
-
+            Name = "Title Menu";
 
             GameObject ground = Instantiate(new GameObject());
             ground.Name = "Ground Image";

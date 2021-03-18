@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Components.UI;
 using GameProject.Code.Scenes;
@@ -11,6 +12,8 @@ using GameProject.Code.Scenes;
 namespace GameProject.Code.Prefabs.UI.MainMenus {
     public class Prefab_MainMenu : GameObject {
         public Prefab_MainMenu() : base() {
+            Name = "Main Menu";
+
             Color selected = new Color(17, 125, 240);
             Color deselected = new Color(108, 112, 117);
 
@@ -31,8 +34,10 @@ namespace GameProject.Code.Prefabs.UI.MainMenus {
             foreach((string, Action) buttonData in buttons) {
                 GameObject textButton = Instantiate(new Prefab_SelectableText(buttonData.Item1, deselected, selected));
                 textButton.transform.Parent = transform;
-                textButton.transform.LocalPosition = new Vector3(0, startPoint, 0);
+                
                 textButton.GetComponent<SelectableText>().OnActivate = buttonData.Item2;
+
+                textButton.transform.LocalPosition = new Vector3(0, startPoint, 0);
 
                 textButton.transform.Scale *= 0.3f; //debug
 

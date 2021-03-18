@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Scripts.Components;
 
 namespace GameProject.Code.Prefabs {

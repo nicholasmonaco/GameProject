@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Components.UI;
 using GameProject.Code.Scenes;
@@ -11,6 +12,8 @@ using GameProject.Code.Scenes;
 namespace GameProject.Code.Prefabs.UI.MainMenus {
     public class Prefab_OptionsMenu : GameObject {
         public Prefab_OptionsMenu() : base() {
+            Name = "Options Menu";
+
             Color selected = new Color(17, 125, 240);
             Color deselected = new Color(108, 112, 117);
 
@@ -21,6 +24,7 @@ namespace GameProject.Code.Prefabs.UI.MainMenus {
 
 
             GameObject creditText = Instantiate<GameObject>(Vector3.Zero, transform);
+            creditText.Name = "Options Title";
             TextRenderer textRend = creditText.AddComponent<TextRenderer>();
             textRend.SetFont(GameFont.Debug); //make styled later
             textRend.Text = "Options";
@@ -72,6 +76,7 @@ namespace GameProject.Code.Prefabs.UI.MainMenus {
 
             foreach ((string, Action<float>) sliderData in sliders) {
                 GameObject sliderText = Instantiate<GameObject>(Vector3.Zero, transform);
+                sliderText.Name = $"Slider Text ({sliderData.Item1})";
                 TextRenderer labelRend = sliderText.AddComponent<TextRenderer>();
                 labelRend.SetFont(GameFont.Debug); //make styled later
                 //labelRend.Justification = Justify.Right;

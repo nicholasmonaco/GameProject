@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GameProject.Code.Core;
 using GameProject.Code.Scripts.Components;
+using Microsoft.Xna.Framework;
 
 namespace GameProject.Code.Scripts {
     public static class PlayerStats {
@@ -173,6 +174,8 @@ namespace GameProject.Code.Scripts {
         }
 
         public static void ChangeBonusHealth(int halfHeartChange, HeartType addType = HeartType.Bonus) {
+            if (halfHeartChange == 0) return;
+
             int realChange = Math.Clamp(halfHeartChange, -BonusHearts.Count, MaxRedHearts - RedHearts.Count);
             realChange = Math.Abs(realChange);
 
@@ -252,6 +255,8 @@ namespace GameProject.Code.Scripts {
 
 
         // Special abilities
+        public static Color ShotColor = new Color(255, 252, 230); // Super light yellow
+
         public static int HomingStr = 0;
         public static int PiercingCount = 0;
 

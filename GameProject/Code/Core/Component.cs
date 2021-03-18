@@ -45,6 +45,7 @@ namespace GameProject.Code.Core {
             }
         }
 
+        protected Component() { }
 
         public Component(GameObject attached) {
             gameObject = attached;
@@ -139,6 +140,7 @@ namespace GameProject.Code.Core {
             OnDestroy();
             Destroyed = true;
             gameObject.RemoveComponent(this);
+            //gameObject._components.Remove(this);
             Dispose();
         }
 

@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameProject.Code.Scripts.Components.UI {
-    public class UI_LayoutItem : Component {
+namespace GameProject.Code.Core.UI {
+    public class UI_LayoutItem : UIComponent {
         protected static Action EmptyAction = () => { };
 
         public UI_LayoutItem(GameObject attached) : base(attached) {
@@ -90,6 +90,7 @@ namespace GameProject.Code.Scripts.Components.UI {
                 Input.OnAnyUpDown -= MoveToPrevious;
                 Input.OnAnyDownDown -= MoveToNext;
                 ExtraDeselectAction();
+                Selected = false;
             }
 
             base.OnDestroy();

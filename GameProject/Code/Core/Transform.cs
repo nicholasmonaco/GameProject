@@ -24,9 +24,10 @@ namespace GameProject.Code.Core {
                          Matrix.CreateTranslation(GameManager.ViewOffset);
         }
 
+        public bool UIParentFlag = false;
 
 
-        public Vector3 LocalPosition {
+        public virtual Vector3 LocalPosition {
             get { return _localPosition; }
             set {
                 if (Parent == null) { 
@@ -158,7 +159,7 @@ namespace GameProject.Code.Core {
         //    ViewChangeAction();
         //}
 
-        private void RecalculateWorldMatrix() {
+        protected virtual void RecalculateWorldMatrix() {
             WorldMatrix = Matrix.CreateScale(_worldScale) * 
                           Matrix.CreateRotationZ(_worldRotationRad) * 
                           Matrix.CreateTranslation(_worldPosition);
@@ -196,24 +197,24 @@ namespace GameProject.Code.Core {
 
         public List<Transform> _children;
 
-        private Vector3 ParentPos => Parent == null ? Vector3.Zero : Parent.Position;
-        private Vector3 ParentScale => Parent == null ? Vector3.One : Parent.Scale;
+        protected Vector3 ParentPos => Parent == null ? Vector3.Zero : Parent.Position;
+        protected Vector3 ParentScale => Parent == null ? Vector3.One : Parent.Scale;
 
         // This is representative of world space for this single transform
-        public Matrix WorldMatrix { get; private set; } = Matrix.Identity;
+        public Matrix WorldMatrix { get; protected set; } = Matrix.Identity;
         public Matrix ViewMatrix { get; private set; } = Matrix.Identity;
 
         //private Vector3 _up = Vector3.Up;//i think this stuff can be replaced with quaternions. do it
 
 
         // V3
-        private Vector3 _worldPosition = Vector3.Zero; //World position is ParentPos + _localPos
-        private float _worldRotation = 0;
-        private float _worldRotationRad = 0;
-        private Vector3 _worldScale = Vector3.One;
+        protected Vector3 _worldPosition = Vector3.Zero; //World position is ParentPos + _localPos
+        protected float _worldRotation = 0;
+        protected float _worldRotationRad = 0;
+        protected Vector3 _worldScale = Vector3.One;
 
-        private Vector3 _localPosition = Vector3.Zero; //_localPos is the distance from ParentPos
-        private Vector3 _localScale = Vector3.One;
+        protected Vector3 _localPosition = Vector3.Zero; //_localPos is the distance from ParentPos
+        protected Vector3 _localScale = Vector3.One;
 
         public Vector3 RenderOffsets = Vector3.Zero;
 
@@ -280,8 +281,14 @@ namespace GameProject.Code.Core {
             //foreach(Transform t in _children) {
             //    GameObject.Destroy(t.gameObject);
             //}
+
+            if(Parent != null) {
+                Parent._children.Remove(this);
+            }
+
             while(_children.Count > 0) {
                 GameObject.Destroy(_children[0].transform.gameObject);
+                //_children.RemoveAt(0);
             }
         }
 

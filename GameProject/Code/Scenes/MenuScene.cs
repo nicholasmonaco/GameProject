@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Prefabs;
 using GameProject.Code.Prefabs.UI;
 using GameProject.Code.Scripts.Components;
@@ -56,6 +57,7 @@ namespace GameProject.Code.Scenes {
             _menuStack.Push(MenuState.Title);
 
             GameObject backDetector = Instantiate(new GameObject());
+            backDetector.Name = "Back Detector";
             backDetector.AddComponent<BackDetector>();
 
             GameObject titleMenu = Instantiate(new Prefab_TitleMenu());
@@ -124,6 +126,8 @@ namespace GameProject.Code.Scenes {
         public override void UnloadContent() {
             base.UnloadContent();
 
+            Debug.Log("starting to unload menu");
+
             Input.OnSpace_Down -= ActivateAction;
 
 
@@ -146,12 +150,12 @@ namespace GameProject.Code.Scenes {
             _menuStack = null;
 
             _fadeToBlack = null;
+
+            Debug.Log("Finished unloading menu");
         }
 
 
-        private IEnumerator StartGame_C() {
-            Debug.Log("game started from menu");
-            
+        private IEnumerator StartGame_C() {            
             yield return StartCoroutine(Panel.FadeIntoBlack(_fadeToBlack, 3f));
 
             yield return new WaitForSeconds(0.35f);

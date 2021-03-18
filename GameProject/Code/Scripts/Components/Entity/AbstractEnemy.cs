@@ -59,17 +59,6 @@ namespace GameProject.Code.Scripts.Components.Entity {
         protected Color _shotColor = Color.Red;
         // End enemy stats
 
-        //
-        //DEBUG
-        public void SetHealth(float mult) {
-            _health *= mult;
-        }
-
-        public void SetSpeed(float speed) {
-            _speed = speed;
-        }
-        //DEBUG
-        //
         
 
         public override void PreAwake() {
@@ -132,8 +121,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         public override sealed void FixedUpdate() {
-            if(_fixedUpdateAction != null) //this if is debug, fix the real cause later - check buckshot things
-                _fixedUpdateAction();
+            _fixedUpdateAction();
         }
 
         private Action _fixedUpdateAction;

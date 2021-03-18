@@ -193,7 +193,7 @@ namespace GameProject.Code.Core {
         /// <param name="circCenter">The center of the circle</param>
         /// <param name="circRadius">The radius of the circle</param>
         /// <returns>If the point is within the circle</returns>
-        private static bool DetectPointCircleCollision(Vector2 point, Vector2 circCenter, float circRadius) {
+        public static bool DetectPointCircleCollision(Vector2 point, Vector2 circCenter, float circRadius) {
             float dist = Vector2.Distance(point, circCenter);
             return dist <= circRadius;
         }

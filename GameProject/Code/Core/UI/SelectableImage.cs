@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameProject.Code.Scripts.Components.UI {
+namespace GameProject.Code.Core.UI {
     public class SelectableImage : UI_LayoutItem {
         public SelectableImage(GameObject attached, Texture2D altImage, SpriteRenderer spriteRenderer) : base(attached) {
             _spriteRenderer = spriteRenderer;

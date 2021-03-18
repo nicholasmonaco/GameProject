@@ -260,6 +260,12 @@ namespace GameProject.Code.Core {
             if(localVal && !lastLocalVal) {
                 OnFullscreenToggle();
             }
+
+
+            // Any key down
+            if(_keyboardState.GetPressedKeyCount() > 0 && _keyboardState.GetPressedKeyCount() > _lastKeyboardState.GetPressedKeyCount()) {
+                OnAnyKey_Down();
+            }
         }
 
 
@@ -297,6 +303,8 @@ namespace GameProject.Code.Core {
 
         public static Action OnSpace_Down = _emptyAction;
         public static Action OnSpace_Released = _emptyAction;
+
+        public static Action OnAnyKey_Down = _emptyAction;
 
         // End event handler methods
     }

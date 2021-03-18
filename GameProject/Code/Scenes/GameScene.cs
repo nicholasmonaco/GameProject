@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Prefabs;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Scripts;
@@ -239,6 +240,8 @@ namespace GameProject.Code.Scenes {
         private IEnumerator ResetLevel() {
             yield return new WaitForEndOfFrame();
 
+            GameManager.LevelResetting = true;
+
             _updating = true; // This could probably be moved further down
 
             _pausePanel.gameObject.Enabled = false;
@@ -277,12 +280,15 @@ namespace GameProject.Code.Scenes {
 
 
             yield return StartCoroutine(Panel.FadeFromBlack(_fadeToBlack, 3.5f));
+
+            GameManager.LevelResetting = false;
         }
 
 
         public override void UnloadContent() {
             base.UnloadContent();
 
+            Input.OnSpace_Down -= ActivateAction;
             Input.OnEscape_Down -= TogglePause;
         }
 

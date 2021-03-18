@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Util;
@@ -64,6 +65,7 @@ namespace GameProject.Code.Core {
 
         public static Transform BulletHolder;
 
+        public static bool LevelResetting = false;
         public static LevelID CurLevelID { get; set; }
         #endregion
 
@@ -247,6 +249,24 @@ namespace GameProject.Code.Core {
             CurRoomSong.Dispose();
 
             FloorSong.Volume = _musicVolume * _masterVolume;
+        }
+
+        public static void ActivateOverlayRoomSong(SoundEffect overlaySong) {
+            OverlayRoomSong = overlaySong.CreateInstance();
+            OverlayRoomSong.IsLooped = true;
+            OverlayRoomSong.Volume = _musicVolume * _masterVolume;
+            OverlayRoomSong.Play();
+
+            CurRoomSong.Pause();
+        }
+
+        public static void DeactivateOverlayRoomSong() {
+            if (OverlayRoomSong == null) return;
+            
+            OverlayRoomSong.Stop();
+            OverlayRoomSong.Dispose();
+
+            CurRoomSong.Play();
         }
         #endregion
 

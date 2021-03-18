@@ -6,17 +6,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameProject.Code.Scripts.Components.UI {
-    public class Panel : Component {
+namespace GameProject.Code.Core.UI {
+    public class Panel : UIComponent {
 
-        private SpriteRenderer _panelRenderer;
+        private Image _panelRenderer;
         public float _origA { private get; set; } = 0;
 
 
         public Panel(GameObject attached) : base(attached) {
-            _panelRenderer = gameObject.AddComponent<SpriteRenderer>();
-            _panelRenderer.Sprite = Resources.Sprite_Pixel;
-            _panelRenderer.SpriteScale = GameManager.Resolution.ToVector2();
+            _panelRenderer = gameObject.AddComponent<Image>();
+            _panelRenderer.Texture = Resources.Sprite_Pixel;
+            _panelRenderer.rectTransform.Size = GameManager.Resolution.ToVector2();
             _panelRenderer.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
             _panelRenderer.OrderInLayer = 20;
         }
@@ -31,6 +31,10 @@ namespace GameProject.Code.Scripts.Components.UI {
             _panelRenderer.Color = new Color(_panelRenderer.Color, alpha); //use the byte implementation later if you can, it's faster but idk how it works
         }
 
+        public void AddToOrder(int addition) {
+            _panelRenderer.OrderInLayer += addition;
+        }
+
         public bool IsVisible => _panelRenderer.Color.A > 0;
 
 
@@ -43,7 +47,7 @@ namespace GameProject.Code.Scripts.Components.UI {
 
             while (timer > 0) {
                 yield return null;
-                timer -= Time.deltaTime;
+                timer -= Time.unscaledDeltaTime;
                 panel.SetOpacity(MathHelper.SmoothStep(1, 0, timer / duration));
             }
 
@@ -60,7 +64,7 @@ namespace GameProject.Code.Scripts.Components.UI {
 
             while (timer > 0) {
                 yield return null;
-                timer -= Time.deltaTime;
+                timer -= Time.unscaledDeltaTime;
                 panel.SetOpacity(MathHelper.SmoothStep(0, 1, timer / duration));
             }
 

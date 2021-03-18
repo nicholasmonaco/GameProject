@@ -162,6 +162,7 @@ namespace GameProject.Code.Scripts.Components {
             bullet.transform.Position = transform.Position; //can customize this later
             bullet.InitBullet(true, aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
             bullet.SetScale(PlayerStats.ShotSize);
+            bullet.SetColor(PlayerStats.ShotColor);
         }
 
 

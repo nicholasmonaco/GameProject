@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.UI;
 using GameProject.Code.Scripts.Components.Bullet;
 
 namespace GameProject.Code.Core {
@@ -72,6 +73,37 @@ namespace GameProject.Code.Core {
             Layer = layer;
         }
 
+
+        public RectTransform SwitchToRectTransform() {
+            RectTransform rectTransform = new RectTransform(this);
+            rectTransform.Parent = transform.Parent;
+            rectTransform.Position = transform.Position;
+            rectTransform.Scale = transform.Scale;
+            rectTransform.Rotation = transform.Rotation;
+
+            Transform[] newChildren = new Transform[transform._children.Count];
+            transform._children.CopyTo(newChildren);
+            rectTransform._children = new List<Transform>(newChildren);
+
+            foreach(Transform t in newChildren) {
+                t.Parent = rectTransform;
+            }
+
+            bool markedForCanvasChild = transform.UIParentFlag;
+            rectTransform.UIParentFlag = markedForCanvasChild;
+
+            Component.Destroy(transform);
+
+            transform = rectTransform;
+            foreach(Component c in _components) {
+                c.transform = rectTransform;
+            }
+
+            _components[0] = rectTransform;
+
+            return rectTransform;
+        }
+
         public Coroutine StartCoroutine(IEnumerator routine) {
             return GameManager.CurrentScene.StartCoroutine(routine);
         }
@@ -93,6 +125,10 @@ namespace GameProject.Code.Core {
             _components.Add(newComp);
 
             return newComp;
+        }
+
+        public bool HasComponent<T>() {
+            return GetComponent<T>() != null;
         }
 
         public T GetComponent<T>() {
@@ -133,10 +169,20 @@ namespace GameProject.Code.Core {
             foreach (Component c in _components) {
                 if (c is T _) {
                     Component.Destroy(c);
+                    RemoveComponent(c);
                     return true;
                 }
             }
             return false;
+        }
+
+        public void RemoveAllComponents<T>() {
+            foreach (Component c in _components) {
+                if (c is T _) {
+                    Component.Destroy(c);
+                    RemoveComponent(c);
+                }
+            }
         }
 
         public void RemoveComponent(Component c) {
@@ -264,9 +310,9 @@ namespace GameProject.Code.Core {
         }
 
         private void Dispose() {
-            foreach(Component comp in _components) {
-                //Debug.Log("Destroyed " + comp);
-                comp.Destroy();
+            while(_components.Count > 0) {
+                _components[0].Destroy();
+                _components.RemoveAt(0);
             }
             //_components.Clear();
 

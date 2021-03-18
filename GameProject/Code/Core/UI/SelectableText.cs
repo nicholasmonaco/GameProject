@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameProject.Code.Scripts.Components.UI {
+namespace GameProject.Code.Core.UI {
     public class SelectableText : UI_LayoutItem {
         public SelectableText(GameObject attached, Color altColor, TextRenderer textRenderer) : base(attached) {
             _textRenderer = textRenderer;

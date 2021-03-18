@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameProject.Code.Scripts.Components.UI {
+namespace GameProject.Code.Core.UI {
     public class ValueSlider : UI_LayoutItem {
         public ValueSlider(GameObject attached, float startValue, float minValue, float maxValue) : base(attached) {
             MinValue = minValue;
