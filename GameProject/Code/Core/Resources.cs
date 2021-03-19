@@ -470,6 +470,7 @@ namespace GameProject.Code.Core {
 
             Sprites_Items = new Dictionary<ItemID, Texture2D>();
 
+            Sprites_Items.Add(ItemID.None, Sprite_Invisible);
             Sprites_Items.Add(ItemID.VitaminH, content.Load<Texture2D>($"Textures/Items/{ItemID.VitaminH.ToString()}"));
         }
 

@@ -193,6 +193,9 @@ namespace GameProject.Code.Scenes {
 
             _updating = true;
 
+            // Reset inventory
+            PlayerStats.ResetInventory();
+
             // Start music 
             GameManager.SetFloorSong(LevelID.QuarantineLevel); //use logic for this later
 
@@ -245,6 +248,9 @@ namespace GameProject.Code.Scenes {
             _updating = true; // This could probably be moved further down
 
             _pausePanel.gameObject.Enabled = false;
+
+            // Reset inventory
+            PlayerStats.ResetInventory();
 
             // Reset music
             GameManager.SetFloorSong(LevelID.QuarantineLevel); //use logic for this later

@@ -1,6 +1,7 @@
 ﻿using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 using GameProject.Code.Scripts.Util;
+using GameProject.Code.Scripts.Items;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,15 @@ namespace GameProject.Code.Scripts.Components {
     public class WorldItem : Component {
         public WorldItem(GameObject attached) : base(attached) { }
 
-        public ItemID ID;
+        private ItemID _id;
+        public ItemID ID {
+            get => _id;
+            set {
+                _id = value;
+                if (ItemRenderer != null) ItemRenderer.Sprite = Resources.Sprites_Items[value];
+            }
+        }
+
         public SpriteRenderer ItemRenderer;
         public SpriteRenderer PedastalRenderer;
 
@@ -49,6 +58,37 @@ namespace GameProject.Code.Scripts.Components {
         public static ItemID GetRandomItem(ItemPool pool) {
             //todo
             return ItemID.VitaminH;
+        }
+
+
+        public override void OnCollisionStay2D(Collider2D other) {
+            //if item is passive,
+            //   add it to inventory
+            //   set item pedastal to "none" item
+            //if item is active,
+            //   check if current active is none or not
+            //   if current active is none,
+            //       set active to item
+            //       set itemid to none
+            //   if current active is not none,
+            //       swap active and pedastal item
+
+
+            //do a coroutine here for the display of item name and stuff
+
+            if (Item.IsActive(ID)) {
+                if(PlayerStats.ActiveItem == ItemID.None) {
+                    PlayerStats.ActiveItem = ID;
+                    ID = ItemID.None;
+                } else {
+                    ItemID temp = PlayerStats.ActiveItem;
+                    PlayerStats.ActiveItem = ID;
+                    ID = temp;
+                }
+            } else if(ID != ItemID.None) {
+                PlayerStats.AddItem(ID);
+                ID = ItemID.None;
+            }
         }
 
     }

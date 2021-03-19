@@ -22,7 +22,11 @@ namespace GameProject.Code.Scripts.Components.Entity {
         public float Health {
             get { return _health; }
             set {
-                if (_health - value <= _health) { StartCoroutine(RedFlash(0.2f)); }
+                if (_health - value <= _health) {
+                    if (_redFlashTimer > 0) _redFlashTimer = 0.2f;
+                    else { StartCoroutine(RedFlash(0.2f)); }
+                }
+
                 _health = value;
                 if (_health <= 0) Die();
             }
@@ -33,6 +37,9 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
         protected Dictionary<EnemyAnimationAction, (Texture2D[], int[], float)> _animFrames;
         protected Dictionary<EnemyAnimationAction, (int[], float)> _frameIDs = null;
+
+        protected Color _origColor;
+        protected float _redFlashTimer = 0;
 
         // End enemy variables
 
@@ -70,6 +77,8 @@ namespace GameProject.Code.Scripts.Components.Entity {
             _enemyRB.Velocity = Vector2.Zero;
 
             _enemyRenderer = GetComponent<SpriteRenderer>();
+
+            _origColor = _enemyRenderer.Color;
 
             SetAnimationFrames();
             StartCoroutine(Animate());
@@ -139,10 +148,16 @@ namespace GameProject.Code.Scripts.Components.Entity {
         }
 
         private IEnumerator RedFlash(float duration) {
-            Color oldColor = _enemyRenderer.Color;
+            _redFlashTimer = duration;
+
             _enemyRenderer.Color = Color.Red;
-            yield return new WaitForSeconds(duration);
-            _enemyRenderer.Color = oldColor;
+
+            while(_redFlashTimer > 0) {
+                yield return null;
+                _redFlashTimer -= Time.entityDeltaTime;
+            }
+
+            _enemyRenderer.Color = _origColor;
         }
 
 

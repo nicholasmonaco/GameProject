@@ -8,11 +8,14 @@ using GameProject.Code.Scripts;
 using GameProject.Code.Scripts.Components;
 using GameProject.Code.Scripts.Components.Bullet;
 using GameProject.Code.Scripts.Components.Entity;
+using GameProject.Code.Scripts.Items.Passive;
 
 namespace GameProject.Code.Scripts.Items {
     public abstract class Item {
 
         public ItemID ID { get; private set; }
+
+        public int _index = -1;
 
         public Item(ItemID id) {
             ID = id;
@@ -54,5 +57,28 @@ namespace GameProject.Code.Scripts.Items {
         //public virtual void OnRoomExit(Room room) { }
         //public virtual void OnLevelChange(LevelID newLevel) { }
 
+
+        public static bool IsActive(ItemID item) {
+            return (int)item >= 10000;
+        }
+
+
+        public static Type GetItem(ItemID id) {
+            switch (id) {
+                case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+
+                default:
+                    return null;
+            }
+        }
     }
 }

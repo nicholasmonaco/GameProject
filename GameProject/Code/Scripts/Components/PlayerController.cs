@@ -136,8 +136,15 @@ namespace GameProject.Code.Scripts.Components {
                 if (!CanMove) return;
                 _playerRB.Velocity += _moveVec * _acceleration * Time.fixedDeltaTime;
 
-                if (_playerRB.Velocity.Length() > _maxSpeed) {
+                float vLength = _playerRB.Velocity.Length();
+
+                if (vLength > _maxSpeed) {
                     _playerRB.Velocity += -_playerRB.Velocity * (_playerRB.Velocity.Length() - _maxSpeed) * Time.fixedDeltaTime;
+                }
+
+
+                if(vLength <= 4f && _moveVec == Vector2.Zero) {
+                    _playerRB.Velocity = Vector2.Zero;
                 }
             }
         }

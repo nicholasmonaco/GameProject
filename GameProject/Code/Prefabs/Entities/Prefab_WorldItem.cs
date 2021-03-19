@@ -27,7 +27,7 @@ namespace GameProject.Code.Prefabs {
             item.Init(id, itemRend, pedastalRend);
 
             Collider2D coll = AddComponent<CircleCollider2D>(10);
-            coll.IsTrigger = true;
+            //coll.IsTrigger = true;
         }
     }
 }
