@@ -2,8 +2,10 @@
 using GameProject.Code.Core.Components;
 using GameProject.Code.Scripts.Util;
 using GameProject.Code.Scripts.Items;
+using GameProject.Code.Scripts.Components.UI;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -28,6 +30,8 @@ namespace GameProject.Code.Scripts.Components {
         private const float _hoverDur = 0.45f;
         private float _hoverTimer = 0;
         private int _hoverDir = 1;
+
+        private bool _changing = false;
 
 
         public void Init(ItemID id, SpriteRenderer spriteRend, SpriteRenderer pedastalRend) {
@@ -62,30 +66,107 @@ namespace GameProject.Code.Scripts.Components {
 
 
         public override void OnCollisionStay2D(Collider2D other) {
-            //if item is passive,
-            //   add it to inventory
-            //   set item pedastal to "none" item
-            //if item is active,
-            //   check if current active is none or not
-            //   if current active is none,
-            //       set active to item
-            //       set itemid to none
-            //   if current active is not none,
-            //       swap active and pedastal item
+            if(other.Layer == LayerID.Player) {
+                if (!_changing) {
+                    _changing = true;
+                    // Coroutine for the display of item name and delayed pickup logic
+                    StartCoroutine(ItemGetCoroutine());
+                }
+            }
+        }
+
+        private IEnumerator ItemGetCoroutine() {
+            float holdTime = 2f;
 
 
-            //do a coroutine here for the display of item name and stuff
+            //play pickup sfx
 
+
+            //pop up ui display of item name
+            StartCoroutine(FlashUI(holdTime));
+
+            //switch to player pickup animation and pass in time
+            StartCoroutine(GameManager.Player.PickupItem(holdTime));
+
+            // Actually do item pickup logic
+            PickupItem();
+
+            //hold for 0.75f or whatever
+            yield return new WaitForSeconds(holdTime);
+
+            //get rid of ui display
+            //happens automatically
+
+
+            // Flip pickup flag
+            _changing = false;
+        }
+
+
+        private IEnumerator FlashUI(float duration) {
+            Type itemType = Item.GetItem(ID);
+            if (itemType == null) yield break;
+            Item realItem = (Item)Activator.CreateInstance(itemType);
+
+            float bonusSlideTime = 0.5f;
+            float holdDuration = duration - bonusSlideTime;
+
+            //enable item ui
+            ItemPickupUI ui = GameManager.ItemPickupUI;
+            ui.gameObject.Enabled = true;
+
+            //set text of it
+            
+            ui.NameRenderer.Text = realItem.Name;
+            ui.FlavorTextRenderer.Text = realItem.FlavorText;
+
+            //slide it in from the side
+            float timer = bonusSlideTime;
+            while(timer > 0) {
+                ui.transform.LocalPosition = Vector3.Lerp(ui.CenteredPos, ui.OffscreenPos_Right, timer / bonusSlideTime);
+
+                yield return null;
+                timer -= Time.deltaTime;
+            }
+
+            ui.transform.LocalPosition = ui.CenteredPos;
+
+            //wait duration
+            yield return new WaitForSeconds(holdDuration);
+
+            //slide it out to the other side
+            timer = bonusSlideTime;
+            while (timer > 0) {
+                ui.transform.LocalPosition = Vector3.Lerp(ui.OffscreenPos_Left, ui.CenteredPos, timer / bonusSlideTime);
+
+                yield return null;
+                timer -= Time.deltaTime;
+            }
+
+            ui.transform.LocalPosition = ui.OffscreenPos_Left;
+            ui.gameObject.Enabled = false;
+        }
+
+
+
+        private void PickupItem() {
+            // If item is an active item:
             if (Item.IsActive(ID)) {
-                if(PlayerStats.ActiveItem == ItemID.None) {
+                // If the player doesn't already have an active item:
+                if (PlayerStats.ActiveItem == ItemID.None) {
+                    // Give the player the active item
                     PlayerStats.ActiveItem = ID;
                     ID = ItemID.None;
                 } else {
+                    // Swap the player's active item and the pedastal item
                     ItemID temp = PlayerStats.ActiveItem;
                     PlayerStats.ActiveItem = ID;
                     ID = temp;
                 }
-            } else if(ID != ItemID.None) {
+
+            // If item is passive (and also isn't nothing):
+            } else if (ID != ItemID.None) {
+                // Give the player the item
                 PlayerStats.AddItem(ID);
                 ID = ItemID.None;
             }

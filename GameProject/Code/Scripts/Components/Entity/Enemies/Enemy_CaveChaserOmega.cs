@@ -18,7 +18,26 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
             _shotTimer_Max = 2;
             _shotTimer = _shotTimer_Max + GameManager.DeltaRandom.NextValue(-_shotTimer_Max / 2, _shotTimer_Max / 2);
+
+            if(_flag)
+                Do();
         }
+
+
+        //TEMP
+        bool _flag = false;
+        public void flag() {
+            _flag = true;
+        }
+
+        void Do() {
+            _health *= 17;
+            transform.Scale *= 3;
+            _shotSize *= 1.5f;
+            _shotSpeed *= 2;
+            _shotRate *= 1.25f;
+        }
+        //
 
 
 

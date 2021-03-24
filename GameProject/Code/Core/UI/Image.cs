@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace GameProject.Code.Core.UI {
+    [AnimatableComponent]
     public class Image : UIComponent {
         
-        public Texture2D Texture;
-        public Color Color = Color.White;
+        [AnimatableValue] public Texture2D Texture;
+        [AnimatableValue] public Color Color = Color.White;
 
 
         public int DrawLayer {

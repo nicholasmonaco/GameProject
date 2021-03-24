@@ -7,8 +7,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace GameProject.Code.Core.Components {
+    [AnimatableComponent]
     public class TextRenderer : Component {
         private string _text = "";
+
+        [AnimatableValue]
         public string Text {
             get => _text;
             set {
@@ -23,11 +26,14 @@ namespace GameProject.Code.Core.Components {
         private Vector2 _textDrawPos;
         private SpriteFont _font;
         private SpriteFont _secondaryFont;
-        public Color Color = Color.White;
-        public Color SecondaryColor = Color.Black;
-        public Vector2 SpriteScale = Vector2.One;
+        [AnimatableValue] public Color Color = Color.White;
+        [AnimatableValue] public Color SecondaryColor = Color.Black;
+        [AnimatableValue] public Vector2 SpriteScale = Vector2.One;
+        [AnimatableValue] public Vector2 SpriteOffset = Vector2.Zero;
 
         private Justify _justification = Justify.Center;
+
+        [AnimatableValue]
         public Justify Justification {
             get => _justification;
             set { 
@@ -111,7 +117,7 @@ namespace GameProject.Code.Core.Components {
         private void DrawMethod(SpriteBatch sb, SpriteFont font, Color color) {
             sb.DrawString(font,
                           Text,
-                          transform.Position.ToVector2() + _justificationVector,
+                          transform.Position.ToVector2() + SpriteOffset + _justificationVector,
                           color,
                           transform.Rotation_Rads,
                           _textDrawPos,
@@ -123,7 +129,7 @@ namespace GameProject.Code.Core.Components {
         private void DrawMethod_Over(SpriteBatch sb, SpriteFont font, Color color) {
             sb.DrawString(font,
                           Text,
-                          transform.Position.ToVector2() + _justificationVector,
+                          transform.Position.ToVector2() + SpriteOffset + _justificationVector,
                           color,
                           transform.Rotation_Rads,
                           _textDrawPos,

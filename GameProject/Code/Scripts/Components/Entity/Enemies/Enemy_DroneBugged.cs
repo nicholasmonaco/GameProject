@@ -65,8 +65,6 @@ namespace GameProject.Code.Scripts.Components.Entity {
             transform.Scale = end.ToVector3();
 
             //_extraDeathAction();
-
-            Destroy(gameObject);
         }
 
 

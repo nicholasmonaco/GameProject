@@ -45,11 +45,15 @@ namespace GameProject.Code.Core {
             }
         }
 
-        protected Component() { }
+        protected Component() {
+            GUID = Guid.NewGuid();
+        }
 
         public Component(GameObject attached) {
             gameObject = attached;
             transform = attached.transform;
+
+            GUID = Guid.NewGuid();
         }
 
 
@@ -180,6 +184,7 @@ namespace GameProject.Code.Core {
         }
 
         
+        public Guid GUID { get; private set; }
 
 
 

@@ -15,6 +15,8 @@ namespace GameProject.Code.Core.Components {
     /// </summary>
     public class Collider2D : Component {
 
+        public LayerID Layer => gameObject.Layer;
+
         public bool IsTrigger = false;
         public Rigidbody2D AttachedRigidbody = null;
         public AbstractBounds Bounds;

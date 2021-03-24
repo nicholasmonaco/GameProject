@@ -403,7 +403,7 @@ namespace GameProject.Code.Scripts.Components {
 
             SetMapAction += () => {
                 ObstacleTilemap.SetMap(realMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y, new Vector2(26, 28), Vector2.One, mapOffset);
-                Debug.Log($"Transform: {ObstacleTilemap.transform.Position} ");
+                //Debug.Log($"Transform: {ObstacleTilemap.transform.Position} ");
                 SetMapAction = () => { };
             };
         }
@@ -475,6 +475,10 @@ namespace GameProject.Code.Scripts.Components {
                 lootCount = 4;
             }
 
+            //debug - for workshop release
+            if(lootCount > 1) lootCount = 1;
+            //debug
+
             Loot = new List<Pickup>(lootCount);
             for(int i = 0; i < lootCount; i++) {
                 Loot.Add(GetRandomLootPickup());
@@ -500,23 +504,23 @@ namespace GameProject.Code.Scripts.Components {
 
             //WorldItem item = Instantiate(itemObj).GetComponent<WorldItem>();
 
-            Debug.Log($"Spawning item at {GridPos}");
+            //Debug.Log($"Spawning item at {GridPos}");
         }
 
         private void SpawnBoss() {
-            //AbstractEnemy boss = Instantiate(new Prefab_TestBoss()).GetComponent<AbstractEnemy>();
-            //boss.transform.Parent = transform;
-            //boss.transform.LocalPosition = Vector3.Zero;
+            AbstractEnemy boss = Instantiate(new Prefab_TestBoss()).GetComponent<AbstractEnemy>();
+            boss.transform.Parent = transform;
+            boss.transform.LocalPosition = Vector3.Zero;
 
-            //boss.OnDeathFlag = () => {
-            //    Enemies.Remove(boss);
+            boss.OnDeathFlag = () => {
+                Enemies.Remove(boss);
 
-            //    //debug - end game
-            //    //(GameManager.CurrentScene as GameScene).Win();
-            //};
-            //boss.OnDeathFlag += CheckClear;
+                //debug - end game
+                (GameManager.CurrentScene as GameScene).Win();
+            };
+            boss.OnDeathFlag += CheckClear;
 
-            //Enemies.Add(boss);
+            Enemies.Add(boss);
         }
         
         

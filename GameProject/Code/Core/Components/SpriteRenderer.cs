@@ -12,12 +12,13 @@ namespace GameProject.Code.Core.Components {
     /// <summary>
     /// Component allowing a sprite to be drawn into the scene.
     /// </summary>
+    [AnimatableComponent]
     public class SpriteRenderer : Renderer {
 
-        public Texture2D Sprite;
-        public Color Color = Color.White;
-        public Vector2 SpriteScale = Vector2.One;
-        public Vector2 SpriteOffset = Vector2.Zero;
+        [AnimatableValue] public Texture2D Sprite;
+        [AnimatableValue] public Color Color = Color.White;
+        [AnimatableValue] public Vector2 SpriteScale = Vector2.One;
+        [AnimatableValue] public Vector2 SpriteOffset = Vector2.Zero;
 
         public int DrawLayer { 
             get { return _drawLayer; }

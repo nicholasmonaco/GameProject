@@ -75,6 +75,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
             _enemyRB = GetComponent<Rigidbody2D>();
             _enemyRB.Velocity = Vector2.Zero;
+            _enemyRB.TimeMultplier = Rigidbody2D.EntityTime;
 
             _enemyRenderer = GetComponent<SpriteRenderer>();
 
@@ -133,7 +134,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
             _fixedUpdateAction();
         }
 
-        private Action _fixedUpdateAction;
+        private Action _fixedUpdateAction = () => { };
         public virtual void FixedUpdate_Enemy() { }
 
 
@@ -215,7 +216,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
             while (!_dead) {
                 if (Enabled) {
                     float waitTime = GameManager.DeltaRandom.NextValue(minRandRange, maxRandRange);
-                    sound.Play();
+                    sound.Play(1);
                     yield return new WaitForSeconds(waitTime);
                 } else {
                     yield return null;
@@ -224,7 +225,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         }
 
         private IEnumerator PlaySound_C(SoundEffect sound, float minDelay) {
-            sound.Play();
+            sound.Play(1);
             if(minDelay != 0) yield return new WaitForSeconds((float)sound.Duration.TotalSeconds + minDelay);
         }
 
@@ -261,6 +262,8 @@ namespace GameProject.Code.Scripts.Components.Entity {
         }
 
         protected void ShootInDirection(Vector2 direction) {
+            if (Time.EntityTimeScale == 0) return;
+
             AbstractBullet bullet = Instantiate<Prefab_Bullet>().GetComponent<AbstractBullet>();
             bullet.transform.Position = transform.Position;
             bullet.transform.LocalScale = new Vector3(_shotSize);

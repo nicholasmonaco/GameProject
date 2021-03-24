@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Core.UI;
 
 namespace GameProject.Code.Core.UI {
+    [AnimatableComponent]
     public class RectTransform : Transform {
 
         private Vector3 _alignOffset = Vector3.Zero;
@@ -13,6 +14,7 @@ namespace GameProject.Code.Core.UI {
         private HorizontalStick _hStick = HorizontalStick.Center;
         private VerticalStick _vStick = VerticalStick.Center;
 
+        [AnimatableValue]
         public HorizontalStick HorizontalAlignment {
             get => _hStick;
             set {
@@ -33,6 +35,7 @@ namespace GameProject.Code.Core.UI {
             }
         }
 
+        [AnimatableValue]
         public VerticalStick VerticalAlignment {
             get => _vStick;
             set {
@@ -56,6 +59,8 @@ namespace GameProject.Code.Core.UI {
 
         private float _width = 100;
         private float _height = 100;
+
+        [AnimatableValue]
         public float Width {
             get => _width;
             set {
@@ -65,6 +70,7 @@ namespace GameProject.Code.Core.UI {
             }
         }
 
+        [AnimatableValue]
         public float Height {
             get => _height;
             set {
@@ -75,6 +81,8 @@ namespace GameProject.Code.Core.UI {
         }
 
         private Vector2 _size = Vector2.Zero;
+
+        [AnimatableValue]
         public Vector2 Size {
             get => _size;
             set {
@@ -89,6 +97,7 @@ namespace GameProject.Code.Core.UI {
 
 
 
+        [AnimatableValue]
         public override Vector3 LocalPosition {
             get { return _localPosition; }
             set {

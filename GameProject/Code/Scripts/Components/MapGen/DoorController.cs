@@ -171,9 +171,13 @@ namespace GameProject.Code.Scripts.Components {
             // stop player movement
             GameManager.Player.FreezeMovement = true;
 
+            //kinda debug, kinda not
+            CameraMoveStyle moveStyle = nextRoom.RoomType == RoomType.Boss ? CameraMoveStyle.Instant : CameraMoveStyle.Slide;
+            //
+
             // slide camera one room distance in the direction if TransitionType is slide
             // teleport camera one room distance in the direction if TransitionType is teleport
-            switch (camMoveStyle) {
+            switch (moveStyle) {
                 case CameraMoveStyle.Slide:
                     float timer_max = 0.3f; // Time the camera slides
                     float timer = timer_max;
@@ -212,20 +216,25 @@ namespace GameProject.Code.Scripts.Components {
                 case CameraMoveStyle.Instant:
                     yield return null;
                     Camera.main.transform.Position = nextRoom.transform.Position;
+                    GameManager.PlayerTransform.Position = GetOppositeDoorPosition(nextRoom.transform, doorDirection);
                     break;
             }
 
 
-            if(nextRoom.RoomType == RoomType.Boss) {
+            // Versus screen check
+            if (nextRoom.RoomType == RoomType.Boss) {
                 //do boss cutscene
-                yield return StartCoroutine(VersusScreen());
+                /*yield return */
+                StartCoroutine(VersusScreen());
             }
 
 
             // switch music (if applicable)
-            if(nextRoom.RoomType != lastRoomType) { //replace this with a more intuitive version later
+            if (nextRoom.RoomType != lastRoomType) { //replace this with a more intuitive version later
                 if (nextRoom.RoomType == RoomType.Item) {
                     GameManager.ActivateRoomSong(Resources.Music_Store);
+                }else if (nextRoom.RoomType == RoomType.Boss) {
+                    GameManager.ActivateRoomSong(Resources.Music_MagmaChambers);
                 } else {
                     GameManager.DeactivateRoomSong();
                 }
@@ -258,11 +267,11 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         private IEnumerator VersusScreen() {
-            yield return null;
-
             //stop gametime
             float origTimeScale = Time.EntityTimeScale;
             Time.EntityTimeScale = 0;
+
+            GameManager.Player.FreezeMovement = true;
 
             //add input checker
             bool skip = false;
@@ -317,17 +326,33 @@ namespace GameProject.Code.Scripts.Components {
             //remove input checker
             Input.OnAnyKey_Down -= inputCheck;
 
+            
 
             //fade in white overlay really fast
+
+
             //once all white, remove all graphics
+            Destroy(backroundPanel.gameObject);
+            Destroy(topBar.gameObject);
+            Destroy(bottomBar.gameObject);
+            //Destroy(playerImage.gameObject);
+            //Destroy(bossImage.gameObject);
+            //Destroy(versusText.gameObject);
+
             //hold for one frame
+            yield return new WaitForEndOfFrame();
+
             //fade white back to invisible
+
 
             //disable versus ambience
             GameManager.DeactivateOverlayRoomSong();
 
             //resume time
             Time.EntityTimeScale = origTimeScale;
+
+            // Resume player movement
+            GameManager.Player.FreezeMovement = false;
         }
 
 

@@ -20,10 +20,11 @@ namespace GameProject.Code.Core {
         public List<GameObject> GameObjects; //change this to use guids and be made of a GameObjectReferencer class, so that we can just set the gameobject reference in there to be null when we want it to be destroyed
         public List<Collider2D> Collider2Ds;
 
-        private List<Coroutine> _coroutines;
+        private List<(Coroutine, Guid)> _coroutines;
         private Action _coroutineQueue = () => { };
 
         private Action _instantiateList = () => { };
+        private Action _removeList = EmptyAction;
 
         protected bool _updating = true;
 
@@ -34,19 +35,14 @@ namespace GameProject.Code.Core {
         public virtual void LoadContent(ContentManager content) { }
 
         public virtual void UnloadContent() {
-            foreach (Coroutine c in _coroutines) {
-                c.Finished = true;
+            foreach ((Coroutine, Guid) c in _coroutines) {
+                c.Item1.Finished = true;
             }
 
-            Debug.Log("Checkpoint 2.1");
-
             while (GameObjects.Count > 0) {
-                Debug.Log($"Removing {GameObjects[0].Name}");
                 GameObject.Destroy(GameObjects[0]);
                 //GameObjects.RemoveAt(0);
             }
-
-            Debug.Log("Checkpoint 2.2");
 
             Collider2Ds.Clear();
 
@@ -58,7 +54,7 @@ namespace GameProject.Code.Core {
         public virtual void Init() {
             GameObjects = new List<GameObject>();
             Collider2Ds = new List<Collider2D>();
-            _coroutines = new List<Coroutine>();
+            _coroutines = new List<(Coroutine, Guid)>();
         }
 
         public virtual void Awake() {
@@ -98,16 +94,17 @@ namespace GameProject.Code.Core {
             _coroutineQueue();
             _coroutineQueue = () => { };
 
-            Action removeQueue = () => { };
+            if (_removeList != EmptyAction) _removeList();
+            _removeList = EmptyAction;
 
-            foreach (Coroutine routine in _coroutines) {
+            foreach ((Coroutine, Guid) routine in _coroutines) {
                 // Update the coroutine
-                routine.Update();
+                routine.Item1.Update();
                 // If the coroutine is finished, remove it from the list.
-                if (routine.Finished) removeQueue += () => { _coroutines.Remove(routine); };
+                if (routine.Item1.Finished) _removeList += () => { _coroutines.Remove(routine); };
             }
 
-            removeQueue();
+            _removeList();
         }
 
         public virtual void FixedUpdate() {
@@ -128,16 +125,17 @@ namespace GameProject.Code.Core {
             }
 
             // Handle coroutines
-            Action removeQueue = () => { };
+            if (_removeList != EmptyAction) _removeList();
+            _removeList = EmptyAction;
 
-            foreach (Coroutine routine in _coroutines) {
+            foreach ((Coroutine, Guid) routine in _coroutines) {
                 // Update the coroutine
-                routine.LateUpdate();
+                routine.Item1.LateUpdate();
                 // If the coroutine is finished, remove it from the list.
-                if (routine.Finished) removeQueue += () => { _coroutines.Remove(routine); };
+                if (routine.Item1.Finished) _removeList += () => { _coroutines.Remove(routine); };
             }
 
-            removeQueue();
+            _removeList();
         }
 
         public virtual void Draw(SpriteBatch sb) {
@@ -391,28 +389,47 @@ namespace GameProject.Code.Core {
             }
 
             // Handle coroutines
-            Action removeQueue = () => { };
+            if (_removeList != EmptyAction) _removeList();
+            _removeList = EmptyAction;
 
-            foreach (Coroutine routine in _coroutines) {
+            foreach ((Coroutine, Guid) routine in _coroutines) {
                 // Update the coroutine
-                routine.FixedUpdate();
+                routine.Item1.FixedUpdate();
                 // If the coroutine is finished, remove it from the list.
-                if (routine.Finished) removeQueue += () => { _coroutines.Remove(routine); };
+                if (routine.Item1.Finished) _removeList += () => { _coroutines.Remove(routine); };
             }
 
-            removeQueue();
+            _removeList();
         }
 
-        public Coroutine StartCoroutine(IEnumerator routine) {
+        public Coroutine StartCoroutine(IEnumerator routine, Guid id) {
             Coroutine coroutine = new Coroutine(routine);
 
-            _coroutineQueue += () => { _coroutines.Add(coroutine); };
+            _coroutineQueue += () => { _coroutines.Add((coroutine, id)); };
 
             // This StepThrough makes it so the first section of code in the coroutine (before the first yield) happens immediately
             coroutine.StepThrough(); 
 
             return coroutine;
         }
+
+        public Coroutine StartCoroutine(IEnumerator routine) {
+            return StartCoroutine(routine, Guid.Empty);
+        }
+
+        public void RemoveRelatedCoroutines(Guid id) {
+            List<(Coroutine, Guid)> found = new List<(Coroutine, Guid)>();
+
+            foreach((Coroutine, Guid) routinePair in _coroutines){
+                if (id == routinePair.Item2) found.Add(routinePair);
+            }
+
+            foreach((Coroutine, Guid) routinePair in found) {
+                //_coroutines[i].Item1.Finished = true;
+                _removeList += () => { _coroutines.Remove(routinePair); };
+            }
+        }
+
 
         //public void RemoveGameObject(GameObject obj) {
         //    GameObjects.Remove(obj);

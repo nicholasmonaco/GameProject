@@ -63,6 +63,8 @@ namespace GameProject.Code.Core {
         public static MinimapController Minimap;
         public static InventoryTracker Inventory;
 
+        public static ItemPickupUI ItemPickupUI;
+
         public static Transform BulletHolder;
 
         public static bool LevelResetting = false;

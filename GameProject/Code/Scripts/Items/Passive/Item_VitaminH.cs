@@ -7,15 +7,18 @@ using GameProject.Code.Scripts.Util;
 namespace GameProject.Code.Scripts.Items.Passive {
     public class Item_VitaminH : Item {
 
-        public Item_VitaminH() : base(ItemID.VitaminH) { }
+        public Item_VitaminH() : base(ItemID.VitaminH) {
+            Name = "Vitamin H";
+            FlavorText = "Full of Nutrients!";
+        }
 
 
         protected override void OnLose() {
-            Debug.Log("Lost a Vitamin H!");
+            PlayerStats.ChangeMaxRedHealth(1, true);
         }
 
         protected override void OnPickup() {
-            Debug.Log("Picked up Vitamin H!");
+            PlayerStats.ChangeMaxRedHealth(-1, true);
         }
     }
 }

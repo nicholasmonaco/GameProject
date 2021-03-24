@@ -5,9 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.Animation;
 using GameProject.Code.Prefabs;
 using GameProject.Code.Scripts;
 using GameProject.Code.Scripts.Components.Bullet;
+using GameProject.Code.Scripts.Components.Entity.Arms;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Scripts.Util;
 
@@ -20,13 +22,19 @@ namespace GameProject.Code.Scripts.Components {
 
 
         // Components
+        public AnimationController PlayerAnimator { get; private set; }
+
         private Rigidbody2D _playerRB;
         private SpriteRenderer _playerSprite;
+
+        public List<ArmController> Arms;
         // End components
 
         // Public values
         public bool CanMove = true;
         public bool FreezeMovement = false;
+
+        public bool ArmsOut = false;
         // End public values
 
         // Private values
@@ -38,6 +46,7 @@ namespace GameProject.Code.Scripts.Components {
         private bool _shooting = false;
 
         private bool _iFraming = false;
+        private bool _togglingArms = false;
 
         private Direction _curDir = Direction.Down;
         private int _animFrame = 0;
@@ -65,14 +74,17 @@ namespace GameProject.Code.Scripts.Components {
 
             _playerSprite = GetComponent<SpriteRenderer>();
 
+            PlayerAnimator = GetComponent<AnimationController>();
+
             // Input
             Input.OnShoot_Down += OnShootDown;
             Input.OnShoot_Released += OnShootUp;
+            Input.OnSpace_Down += OnSpaceDown;
             // End input
 
             GameManager.Player = this;
 
-            StartCoroutine(MoveAnim());
+            ToggleArms(false);
         }
 
 
@@ -82,50 +94,132 @@ namespace GameProject.Code.Scripts.Components {
 
             FixDirAnim();
 
-            Shoot();
+            
+            if (!ArmsOut) {
+                Shoot();
+            }
         }
 
-        private void FixDirAnim() {
-            bool refix = false;
 
-            if(_moveVec.Y > 0 && _curDir != Direction.Up) {
-                _curDir = Direction.Up;
-                refix = true;
-            } else if(_moveVec.Y < 0 && _curDir != Direction.Down) {
-                _curDir = Direction.Down;
-                refix = true;
-            } else if(_moveVec.Y == 0 && _curDir != Direction.None) {
-                _curDir = Direction.None;
-                refix = true;
+        public void SetArmState(ArmState state) {
+            foreach(ArmController arm in Arms) {
+                arm.CurState = state;
             }
-
-
-            if (refix) {
-                _animFrame = 0;
-                _animTimer = 0;
-            }
-
         }
 
-        private IEnumerator MoveAnim() {
-            while (true) {
-                _animTimer -= Time.deltaTime;
 
-                if(_animTimer <= 0 && !FreezeMovement) {
-                    if (_curDir == Direction.None) {
-                        _playerSprite.Sprite = Resources.Sprites_PlayerMove[Direction.Down][0];
-                    } else {
-                        _playerSprite.Sprite = Resources.Sprites_PlayerMove[_curDir][_animFrame];
-                    }
+        public void ToggleArms(bool active) {
+            ArmsOut = active;
 
-                    _animTimer = 0.25f;
-                    _animFrame++;
-                    if (_animFrame >= _vertFrames) _animFrame = 0;
+            if (active) {
+                foreach (ArmController arm in Arms) {
+                    arm.CurState = ArmState.Idle;
+                    arm.ArmRenderer.Color = Color.White;   
+                }
+            } else {
+                foreach (ArmController arm in Arms) {
+                    arm.CurState = ArmState.Locked;
+                    arm.ArmRenderer.Color = Color.Transparent;
+                    arm.ResetRotation();
+                }
+            }
+        }
+
+        public IEnumerator FadeToggleArms(bool active) {
+            float fadeTime = 0.3f;
+            float timer = fadeTime;
+            _togglingArms = true;
+
+            while (timer > 0) {
+                foreach (ArmController arm in Arms) {
+                    if(active) arm.ArmRenderer.Color = Color.Lerp(Color.White, Color.Transparent, timer / fadeTime);
+                    else arm.ArmRenderer.Color = Color.Lerp(Color.Transparent, Color.White, timer / fadeTime);
                 }
 
                 yield return null;
+                timer -= Time.deltaTime;
+            }
+
+            ToggleArms(active);
+
+            yield return new WaitForEndOfFrame();
+
+            _togglingArms = false;
+        }
+
+
+
+
+        private void FixDirAnim() {
+            if(_moveVec.Y > 0 && _curDir != Direction.Up) {
+                _curDir = Direction.Up;
+                ChangePlayerAnimationState(PlayerAnimationState.Idle_Up);
+            } else if(_moveVec.Y < 0 && _curDir != Direction.Down) {
+                _curDir = Direction.Down;
+                ChangePlayerAnimationState(PlayerAnimationState.Idle_Down);
+            } 
+        }
+
+        private void HardFixDirAim() {
+            if (_moveVec.Y > 0) {
+                _curDir = Direction.Up;
+                ForceChangePlayerAnimationState(PlayerAnimationState.Idle_Up);
+            } else if (_moveVec.Y <= 0) {
+                _curDir = Direction.Down;
+                ForceChangePlayerAnimationState(PlayerAnimationState.Idle_Down);
             }
         }
+
+
+        public PlayerAnimationState CurrentAnimationState { get; private set; }
+
+        public void ChangePlayerAnimationState(PlayerAnimationState state) {
+            bool success = false;
+
+            switch (state) {
+                case PlayerAnimationState.Idle_Up:
+                case PlayerAnimationState.Idle_Down:
+                case PlayerAnimationState.Walk_Up:
+                case PlayerAnimationState.Walk_Down:
+                    if (CurrentAnimationState == PlayerAnimationState.Idle_Down ||
+                        CurrentAnimationState == PlayerAnimationState.Idle_Up ||
+                        CurrentAnimationState == PlayerAnimationState.Walk_Down ||
+                        CurrentAnimationState == PlayerAnimationState.Walk_Up)
+                        success = true;
+                    break;
+                
+            }
+
+            if (success) {
+                CurrentAnimationState = state;
+                PlayerAnimator.ChangeAnimationState((int)state);
+            } 
+        }
+
+        public void ForceChangePlayerAnimationState(PlayerAnimationState state) {
+            PlayerAnimator.ChangeAnimationState((int)state);
+        }
+
+
+        //private IEnumerator MoveAnim() {
+        //    while (true) {
+        //        _animTimer -= Time.deltaTime;
+
+        //        if(_animTimer <= 0 && !FreezeMovement) {
+        //            if (_curDir == Direction.None) {
+        //                _playerSprite.Sprite = Resources.Sprites_PlayerMove[Direction.Down][0];
+        //            } else {
+        //                _playerSprite.Sprite = Resources.Sprites_PlayerMove[_curDir][_animFrame];
+        //            }
+
+        //            _animTimer = 0.25f;
+        //            _animFrame++;
+        //            if (_animFrame >= _vertFrames) _animFrame = 0;
+        //        }
+
+        //        yield return null;
+        //    }
+        //}
 
 
 
@@ -188,8 +282,10 @@ namespace GameProject.Code.Scripts.Components {
             const float flashDur = 0.1f;
             float flashTimer = 0;
             bool invis = false;
-            
-            while(durTimer >= 0 && !_dead) {
+
+            ForceChangePlayerAnimationState(PlayerAnimationState.Damage);
+
+            while (durTimer >= 0 && !_dead) {
                 if(flashTimer <= 0) {
                     invis = !invis;
                     flashTimer = flashDur;
@@ -203,8 +299,20 @@ namespace GameProject.Code.Scripts.Components {
 
             _playerSprite.Color = Color.White;
 
+            HardFixDirAim();
+
             _iFraming = false;
         }
+
+
+        public IEnumerator PickupItem(float holdDuration) {
+            ForceChangePlayerAnimationState(PlayerAnimationState.ItemPickup);
+
+            yield return new WaitForSeconds(holdDuration);
+
+            HardFixDirAim();
+        }
+
 
 
         public static void DamagePlayer(Collider2D other) {
@@ -222,11 +330,40 @@ namespace GameProject.Code.Scripts.Components {
 
         private void OnShootDown() {
             _shooting = true;
+
+            if(ArmsOut) SetArmState(ArmState.Rushing);
         }
 
         private void OnShootUp() {
             _shooting = false;
+
+            if (ArmsOut) SetArmState(ArmState.Idle);
         }
 
+        private void OnSpaceDown() {
+            if(!_togglingArms) StartCoroutine(FadeToggleArms(!ArmsOut));
+        }
+
+
+
+
+        public override void OnDestroy() {
+            Input.OnShoot_Down -= OnShootDown;
+            Input.OnShoot_Released -= OnShootUp;
+            Input.OnSpace_Down -= OnSpaceDown;
+
+            base.OnDestroy();
+        }
+    }
+
+
+    public enum PlayerAnimationState {
+        Idle_Down = 0,
+        Idle_Up = 1,
+        Walk_Down = 2,
+        Walk_Up = 3,
+        Damage = 4,
+        ItemPickup = 5,
+        Die = 6
     }
 }

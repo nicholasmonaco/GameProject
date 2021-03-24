@@ -131,7 +131,9 @@ namespace GameProject.Code.Scenes {
             InventoryTracker inventory = GameManager.MainCanvas.gameObject.AddComponent<InventoryTracker>();
 
 
-            for(int i = 0; i < 3; i++) {
+            #region Creating Main UI
+
+            for (int i = 0; i < 3; i++) {
                 TextRenderer counter = Instantiate(new GameObject()).AddComponent<TextRenderer>(GameFont.Base, "000");
                 counter.transform.Parent = GameManager.MainCanvas.transform;
                 counter.transform.LocalScale *= 0.75f;
@@ -176,6 +178,15 @@ namespace GameProject.Code.Scenes {
             PlayerStats.Money = 0;
             PlayerStats.Keys = 0;
             PlayerStats.Bombs = 0;
+
+            #endregion
+
+
+            #region Creating Popup UI
+
+            Instantiate(new Prefab_ItemPickupUI());
+
+            #endregion
 
 
             GameObject levelMapGO = Instantiate(new GameObject());

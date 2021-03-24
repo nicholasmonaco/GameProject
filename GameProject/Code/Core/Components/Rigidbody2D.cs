@@ -11,13 +11,24 @@ namespace GameProject.Code.Core.Components {
     /// Allows all physics (other than collision) to occur within the game world.
     /// </summary>
     public class Rigidbody2D : Component {
+        public delegate float RetFloat();
+
 
         public List<Collider2D> Subcolliders;
         public Collider2D MainCollider => Subcolliders[0];
 
         public RigidbodyType Type = RigidbodyType.Dynamic;
 
-        public Vector2 Velocity = Vector2.Zero;
+        public RetFloat TimeMultplier = ScaledTime;
+
+        private Vector2 _rawVelocity = Vector2.Zero;
+        public Vector2 Velocity {
+            get => _rawVelocity * TimeMultplier();
+            set {
+                _rawVelocity = value;
+            }
+        }
+        
         public float Mass = 0;
         public float Drag = 0;
 
@@ -45,6 +56,11 @@ namespace GameProject.Code.Core.Components {
             _position = transform.Position.ToVector2();
             //if (gameObject.Name == "Bullet") Debug.Log($"pos9 ({gameObject.Name}): ({_position.X}, {_position.Y})");
         }
+
+
+        public static float UnscaledTime() { return 1; }
+        public static float ScaledTime() { return Time.TimeScale; }
+        public static float EntityTime() { return Time.EntityTimeScale; }
 
 
         public void _PhysicsUpdate() { //the rotation is being messed up by either this or someting in scene. fix it

@@ -66,7 +66,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
             //_extraDeathAction();
 
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }

@@ -14,6 +14,8 @@ namespace GameProject.Code.Scripts.Items {
     public abstract class Item {
 
         public ItemID ID { get; private set; }
+        public string Name = "Unknown Item";
+        public string FlavorText = "You shouldn't have this.";
 
         public int _index = -1;
 

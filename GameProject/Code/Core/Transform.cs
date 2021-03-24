@@ -7,11 +7,12 @@ using Microsoft.Xna.Framework;
 using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
-    
+
     /// <summary>
     /// How position, scale, and rotation are stored and handled.
     /// Closely intwined with GameObjects and can be controlled by a rigidbody.
     /// </summary>
+    [AnimatableComponent]
     public class Transform : Component {
 
         public Action ViewChangeAction = () => { };
@@ -27,6 +28,8 @@ namespace GameProject.Code.Core {
         public bool UIParentFlag = false;
 
 
+
+        [AnimatableValue]
         public virtual Vector3 LocalPosition {
             get { return _localPosition; }
             set {
@@ -54,6 +57,7 @@ namespace GameProject.Code.Core {
         //    }
         //}
 
+        [AnimatableValue]
         public Vector3 LocalScale {
             get { return _localScale; }
             set {
@@ -72,6 +76,7 @@ namespace GameProject.Code.Core {
             }
         }
 
+        [AnimatableValue]
         public Vector3 Position {
             get { return _worldPosition; }
             set {
@@ -84,6 +89,7 @@ namespace GameProject.Code.Core {
             }
         }
 
+        [AnimatableValue]
         public float Rotation {
             get { return _worldRotation; }
             set {
@@ -104,6 +110,7 @@ namespace GameProject.Code.Core {
 
         public float Rotation_Rads => _worldRotationRad;
 
+        [AnimatableValue]
         public Vector3 Scale {
             get { return _worldScale; }
             set {

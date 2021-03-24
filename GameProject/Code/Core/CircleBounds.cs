@@ -38,7 +38,7 @@ namespace GameProject.Code.Core {
 
             Center = Vector3.Transform(OrigCenter.ToVector3(), worldTransform.WorldMatrix).ToVector2();
             RadiusScale = worldTransform.Scale.ToVector2();
-            Radius = _origRadius * RadiusScale.X;
+            Radius = MathF.Abs(_origRadius * RadiusScale.X);
 
             if (Debug.ShowColliders) {
                 if (ParentCollider != null)

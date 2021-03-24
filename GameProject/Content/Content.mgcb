@@ -531,6 +531,12 @@
 /processorParam:Quality=Best
 /build:Sounds/CaveChaser.wav
 
+#begin Sounds/Combat/Punch_Impact.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Combat/Punch_Impact.wav
+
 #begin Sounds/Death.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -693,7 +699,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Entities/Misc/ItemPedastal.png
 
-#begin Textures/Entities/Player/Down_0.png
+#begin Textures/Entities/Player/Arms/Outer.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -703,9 +709,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Down_0.png
+/build:Textures/Entities/Player/Arms/Outer.png
 
-#begin Textures/Entities/Player/Down_1.png
+#begin Textures/Entities/Player/Die.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -715,9 +721,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Down_1.png
+/build:Textures/Entities/Player/Die.png
 
-#begin Textures/Entities/Player/Down_2.png
+#begin Textures/Entities/Player/Hurt.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -727,9 +733,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Down_2.png
+/build:Textures/Entities/Player/Hurt.png
 
-#begin Textures/Entities/Player/Down_3.png
+#begin Textures/Entities/Player/Idle/Down_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -739,9 +745,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Down_3.png
+/build:Textures/Entities/Player/Idle/Down_0.png
 
-#begin Textures/Entities/Player/Down_4.png
+#begin Textures/Entities/Player/Idle/Down_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -751,9 +757,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Down_4.png
+/build:Textures/Entities/Player/Idle/Down_1.png
 
-#begin Textures/Entities/Player/Down_5.png
+#begin Textures/Entities/Player/Idle/Up_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -763,9 +769,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Down_5.png
+/build:Textures/Entities/Player/Idle/Up_0.png
 
-#begin Textures/Entities/Player/Up_0.png
+#begin Textures/Entities/Player/Idle/Up_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -775,9 +781,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Up_0.png
+/build:Textures/Entities/Player/Idle/Up_1.png
 
-#begin Textures/Entities/Player/Up_1.png
+#begin Textures/Entities/Player/Pickup.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -787,9 +793,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Up_1.png
+/build:Textures/Entities/Player/Pickup.png
 
-#begin Textures/Entities/Player/Up_2.png
+#begin Textures/Entities/Player/Walk/Left_Down.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -799,9 +805,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Up_2.png
+/build:Textures/Entities/Player/Walk/Left_Down.png
 
-#begin Textures/Entities/Player/Up_3.png
+#begin Textures/Entities/Player/Walk/Left_Down_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -811,9 +817,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Up_3.png
+/build:Textures/Entities/Player/Walk/Left_Down_1.png
 
-#begin Textures/Entities/Player/Up_4.png
+#begin Textures/Entities/Player/Walk/Left_Up_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -823,9 +829,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Up_4.png
+/build:Textures/Entities/Player/Walk/Left_Up_0.png
 
-#begin Textures/Entities/Player/Up_5.png
+#begin Textures/Entities/Player/Walk/Left_Up_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -835,7 +841,55 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Entities/Player/Up_5.png
+/build:Textures/Entities/Player/Walk/Left_Up_1.png
+
+#begin Textures/Entities/Player/Walk/Right_Down_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Entities/Player/Walk/Right_Down_0.png
+
+#begin Textures/Entities/Player/Walk/Right_Down_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Entities/Player/Walk/Right_Down_1.png
+
+#begin Textures/Entities/Player/Walk/Right_Up_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Entities/Player/Walk/Right_Up_0.png
+
+#begin Textures/Entities/Player/Walk/Right_Up_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Entities/Player/Walk/Right_Up_1.png
 
 #begin Textures/Items/4LeafClover.png
 /importer:TextureImporter

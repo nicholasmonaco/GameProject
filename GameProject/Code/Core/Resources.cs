@@ -72,6 +72,33 @@ namespace GameProject.Code.Core {
 
         public static Dictionary<EntityID, Dictionary<EnemyAnimationAction, List<Texture2D>>> Sprites_EnemyAnimations;
 
+        #region Player Sprites
+        public static Texture2D Sprite_Player_IdleDown_0;
+        public static Texture2D Sprite_Player_IdleDown_1;
+
+        public static Texture2D Sprite_Player_IdleUp_0;
+        public static Texture2D Sprite_Player_IdleUp_1;
+
+        public static Texture2D Sprite_Player_WalkDown_0;
+        public static Texture2D Sprite_Player_WalkDown_1;
+        public static Texture2D Sprite_Player_WalkDown_2;
+
+        public static Texture2D Sprite_Player_WalkUp_0;
+        public static Texture2D Sprite_Player_WalkUp_1;
+        public static Texture2D Sprite_Player_WalkUp_2;
+
+        public static Texture2D Sprite_Player_ItemPickup;
+
+        public static Texture2D Sprite_Player_Damage;
+
+        public static Texture2D Sprite_Player_Die;
+        #endregion
+
+        #region Arm Sprites
+        public static Texture2D Sprite_Arm_Outer;
+        #endregion
+
+
         #endregion
 
         #region Font Resources
@@ -94,12 +121,16 @@ namespace GameProject.Code.Core {
         public static SoundEffect Sound_Menu_Move;
         public static SoundEffect Sound_Menu_Next;
         public static SoundEffect Sound_Menu_Back;
+
+        public static SoundEffect Sound_Punch_Impact;
         #endregion
 
         #region Music Resources
         public static SoundEffect Music_Store;
 
         public static SoundEffect Music_QuarantineLevel;
+
+        public static SoundEffect Music_MagmaChambers;
 
         #endregion
 
@@ -250,13 +281,15 @@ namespace GameProject.Code.Core {
             Sound_Menu_Move = content.Load<SoundEffect>("Sounds/UI/MenuMove");
             Sound_Menu_Next = content.Load<SoundEffect>("Sounds/UI/MenuChange");
             Sound_Menu_Back = content.Load<SoundEffect>("Sounds/UI/MenuBack");
+
+            Sound_Punch_Impact = content.Load<SoundEffect>("Sounds/Combat/Punch_Impact");
         }
 
         private static void LoadMusic(ContentManager content) {
             Music_Store = content.Load<SoundEffect>("Music/Store");
 
             Music_QuarantineLevel = content.Load<SoundEffect>("Music/QuarantineLevel");
-            //Music_MagmaChambers = content.Load<SoundEffect>("Music/MagmaChambers");
+            Music_MagmaChambers = content.Load<SoundEffect>("Music/MagmaChambers");
         }
 
 
@@ -357,28 +390,30 @@ namespace GameProject.Code.Core {
             LoadEnemySprites(content);
 
             //player
-            Sprites_PlayerMove = new Dictionary<Direction, List<Texture2D>>(4);
+            LoadPlayerSprites(content);
 
-            List<Texture2D> upTex = new List<Texture2D>(7);
-            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_0"));
-            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_1"));
-            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_2"));
-            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_3"));
-            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_0"));
-            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_4"));
-            upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_5"));
+            //Sprites_PlayerMove = new Dictionary<Direction, List<Texture2D>>(4);
 
-            List<Texture2D> downTex = new List<Texture2D>(7);
-            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_0"));
-            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_1"));
-            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_2"));
-            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_3"));
-            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_0"));
-            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_4"));
-            downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_5"));
+            //List<Texture2D> upTex = new List<Texture2D>(7);
+            //upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_0"));
+            //upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_1"));
+            //upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_2"));
+            //upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_3"));
+            //upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_0"));
+            //upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_4"));
+            //upTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Up_5"));
 
-            Sprites_PlayerMove.Add(Direction.Up, upTex);
-            Sprites_PlayerMove.Add(Direction.Down, downTex);
+            //List<Texture2D> downTex = new List<Texture2D>(7);
+            //downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_0"));
+            //downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_1"));
+            //downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_2"));
+            //downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_3"));
+            //downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_0"));
+            //downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_4"));
+            //downTex.Add(content.Load<Texture2D>("Textures/Entities/Player/Down_5"));
+
+            //Sprites_PlayerMove.Add(Direction.Up, upTex);
+            //Sprites_PlayerMove.Add(Direction.Down, downTex);
             //end player
 
 
@@ -388,6 +423,34 @@ namespace GameProject.Code.Core {
 
 
             Debug.Log("Textures loaded.");
+        }
+
+
+        private static void LoadPlayerSprites(ContentManager content) {
+            Sprite_Player_IdleDown_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Down_0");
+            Sprite_Player_IdleDown_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Down_1");
+
+            Sprite_Player_IdleUp_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_0");
+            Sprite_Player_IdleUp_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
+
+            Sprite_Player_WalkDown_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
+            Sprite_Player_WalkDown_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
+            Sprite_Player_WalkDown_2 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
+
+            Sprite_Player_WalkUp_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
+            Sprite_Player_WalkUp_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
+            Sprite_Player_WalkUp_2 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
+
+
+            Sprite_Player_ItemPickup = content.Load<Texture2D>("Textures/Entities/Player/Pickup");
+            
+            Sprite_Player_Damage = content.Load<Texture2D>("Textures/Entities/Player/Hurt");
+            
+            Sprite_Player_Die = content.Load<Texture2D>("Textures/Entities/Player/Die");
+
+
+            // Arms
+            Sprite_Arm_Outer = content.Load<Texture2D>("Textures/Entities/Player/Arms/Outer");
         }
 
         private static void LoadMainMenuSprites(ContentManager content) {

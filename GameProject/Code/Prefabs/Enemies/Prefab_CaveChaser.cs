@@ -21,7 +21,7 @@ namespace GameProject.Code.Prefabs.Enemies {
 
             SpriteRenderer sr = AddComponent<SpriteRenderer>(Resources.Sprite_Pixel);
             sr.SpriteScale = collider.Size;
-            sr.Color = Color.Red;
+            sr.Color = Color.Orange;
             sr.DrawLayer = DrawLayer.ID[DrawLayers.Enemies];
             sr.OrderInLayer = 15;
 

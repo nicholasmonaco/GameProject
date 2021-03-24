@@ -7,9 +7,24 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace GameProject.Code.Core.UI {
+    [AnimatableComponent]
     public class Panel : UIComponent {
 
         private Image _panelRenderer;
+        [AnimatableValue] public Color PanelColor {
+            get => _panelRenderer.Color;
+            set {
+                SetColor(value);
+            }
+        }
+
+        [AnimatableValue] public float Alpha {
+            get => _panelRenderer.Color.ToVector4().W;
+            set {
+                SetOpacity(value);
+            }
+        }
+
         public float _origA { private get; set; } = 0;
 
 

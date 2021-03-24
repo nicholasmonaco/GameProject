@@ -29,6 +29,8 @@ namespace GameProject.Code.Core {
         public List<Collider2D> collider2Ds;
 
         public string Name = "GameObject";
+        public Guid GUID;
+
         private bool _enabled = true;
         public bool Enabled {
             get { return _enabled; }
@@ -61,6 +63,8 @@ namespace GameProject.Code.Core {
             _components.Add(transform);
 
             collider2Ds = new List<Collider2D>(1);
+
+            GUID = Guid.NewGuid();
         }
 
         public GameObject(string name) : this() {
@@ -105,7 +109,7 @@ namespace GameProject.Code.Core {
         }
 
         public Coroutine StartCoroutine(IEnumerator routine) {
-            return GameManager.CurrentScene.StartCoroutine(routine);
+            return GameManager.CurrentScene.StartCoroutine(routine, GUID);
         }
 
 
@@ -273,6 +277,7 @@ namespace GameProject.Code.Core {
             }
         }
 
+
         // End standard scene methods
 
 
@@ -304,6 +309,11 @@ namespace GameProject.Code.Core {
 
 
         public static void Destroy(GameObject g) {
+            while(g.transform._children.Count > 0) {
+                Destroy(g.transform._children[0].gameObject);
+            }
+
+            GameManager.CurrentScene.RemoveRelatedCoroutines(g.GUID);
             GameManager.CurrentScene.GameObjects.Remove(g);
 
             g.Dispose();
@@ -318,7 +328,7 @@ namespace GameProject.Code.Core {
 
             // Okay, this is some cursed programming.
             // For the class, get all of the global variables. Yeah, all of them.
-            // For each of those, if it's not a struct, set it to be null.
+            // For eash of those, if it's not a struct, set it to be null.
             PropertyInfo[] props = this.GetType().GetProperties(__bindingFlags);
             foreach (PropertyInfo property in props) {
                 if (!(property.PropertyType).IsValueType) {
