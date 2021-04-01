@@ -36,7 +36,8 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         public override void FixedUpdate_Enemy() {
-            ChasePlayer();
+            //ChasePlayer();
+            TrackChasePlayer();
         }
 
 

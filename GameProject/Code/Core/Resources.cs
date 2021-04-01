@@ -101,6 +101,7 @@ namespace GameProject.Code.Core {
 
         #endregion
 
+
         #region Font Resources
         public static SpriteFont Font_Debug;
         public static SpriteFont Font_Base_Inner;
@@ -162,12 +163,19 @@ namespace GameProject.Code.Core {
         public static Dictionary<RoomType, Dictionary<int, RoomData>> CurRooms_Right;
         #endregion
 
+        #region Effect Resources (Shaders)
+        public static Effect Effect_Base;
+
+        public static Effect Effect_Grayscale;
+        #endregion
 
 
 
 
 
         public static void LoadContent(ContentManager content) {
+            LoadEffects(content);
+
             LoadTextures(content);
 
             LoadMusic(content);
@@ -251,6 +259,13 @@ namespace GameProject.Code.Core {
             RoomContent.Unload();
         }
 
+
+
+        private static void LoadEffects(ContentManager content) {
+            Effect_Base = content.Load<Effect>("Effects/BaseSpriteEffect");
+
+            Effect_Grayscale = content.Load<Effect>("Effects/Grayscale");
+        }
 
 
 

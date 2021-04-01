@@ -6,6 +6,7 @@ using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
 using GameProject.Code.Scripts.Components.Entity;
 using GameProject.Code.Scripts.Util;
+using GameProject.Code.Core.PathFinding;
 
 
 namespace GameProject.Code.Prefabs.Enemies {
@@ -24,6 +25,8 @@ namespace GameProject.Code.Prefabs.Enemies {
             sr.Color = Color.Orange;
             sr.DrawLayer = DrawLayer.ID[DrawLayers.Enemies];
             sr.OrderInLayer = 15;
+
+            AddComponent<PathFinder>();
 
             SetSpecificData();
         }

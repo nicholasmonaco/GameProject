@@ -57,8 +57,12 @@ namespace GameProject.Code.Core {
         public static Random WorldRandom;
         public static Random DeltaRandom;
 
+        public static bool Paused => GameScene.Paused;
+
         public static PlayerController Player;
         public static Transform PlayerTransform => Player.transform;
+        public static Guid PlayerID => Player.GUID;
+
         public static MapManager Map;
         public static MinimapController Minimap;
         public static InventoryTracker Inventory;

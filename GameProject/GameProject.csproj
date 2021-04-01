@@ -22,5 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Code\Scripts\Items\Active\" />
+    <Folder Include="Content\Effects\" />
   </ItemGroup>
 </Project>

@@ -26,6 +26,7 @@ namespace GameProject.Code.Scripts.Components {
                     SpriteRenderer rend = heart.AddComponent<SpriteRenderer>();
                     rend.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
                     rend.OrderInLayer = 60;
+                    rend.Material.BatchID = BatchID.HUD;
 
                     UI_Heart data = heart.AddComponent<UI_Heart>();
                     data.SetHeartRenderer(rend);

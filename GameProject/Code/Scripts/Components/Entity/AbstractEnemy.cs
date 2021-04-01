@@ -1,5 +1,6 @@
 ﻿using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Core.PathFinding;
 using GameProject.Code.Scripts.Components.Bullet;
 using GameProject.Code.Scripts.Util;
 using GameProject.Code.Prefabs;
@@ -52,6 +53,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         // Enemy components
         protected Rigidbody2D _enemyRB;
         protected SpriteRenderer _enemyRenderer;
+        protected PathFinder _enemyPathFinder;
         // End enemy components
 
         // Enemy stats
@@ -78,6 +80,9 @@ namespace GameProject.Code.Scripts.Components.Entity {
             _enemyRB.TimeMultplier = Rigidbody2D.EntityTime;
 
             _enemyRenderer = GetComponent<SpriteRenderer>();
+            _enemyRenderer.Material.BatchID = BatchID.Entities;
+
+            _enemyPathFinder = GetComponent<PathFinder>();
 
             _origColor = _enemyRenderer.Color;
 
@@ -245,6 +250,26 @@ namespace GameProject.Code.Scripts.Components.Entity {
             }
         }
 
+        private int _reachMask = Physics2D.GetMask(LayerID.Hole, LayerID.Item, LayerID.Obstacle, LayerID.Wall, LayerID.Player);
+
+        protected bool CanSeePlayer() {
+            if (GameManager.Map.CurrentRoom.ObstacleColliders == null) return true;
+
+            Ray2D ray = new Ray2D(transform.Position.ToVector2(), _playerPos - transform.Position.ToVector2());
+
+            Collider2D targetCollider = GameManager.Player.PlayerCollider;
+            int maxIndex = GameManager.Map.CurrentRoom.ObstacleColliders.Count - 1;
+            Collider2D[] hitlist = new Collider2D[maxIndex + 2];
+            GameManager.Map.CurrentRoom.ObstacleColliders.CopyTo(hitlist, 0);
+            hitlist[maxIndex + 1] = targetCollider;
+
+            RaycastHit2D hit;
+            if(Physics2D.Raycast_List(ray, 1000, _reachMask, hitlist, out hit)) {
+                return hit.HitTransform.gameObject.Layer == LayerID.Player;
+            }
+            return false;
+        }
+
 
         protected void ChasePlayer() {
             if (GameManager.Player == null) return;
@@ -254,6 +279,59 @@ namespace GameProject.Code.Scripts.Components.Entity {
             } else {
                 _enemyRB.Velocity = Vector2.Zero;
             }
+        }
+
+        protected void TrackChasePlayer() {
+            if (GameManager.Player == null) return;
+
+            // If the player can be seen, just move towards it
+            //if (CanSeePlayer()) {
+            //    _enemyRB.Velocity = Vector2.Normalize(_playerPos - transform.Position.ToVector2()) * _speed;
+
+            //    //DBEUG
+            //    trackerposss = _enemyRB.Velocity.Norm();
+            //    trackercolorrr = Color.Pink;
+
+            //    return;
+            //}
+
+            //THE OFSSET IS OFF BY HALF A TILE!!!!!!!! but maybe only for this - not the tiles themselves
+
+            // Otherwise, use pathfinding
+            Vector2 dir;
+            if (_enemyPathFinder.FindPath(_playerPos, out dir)) {
+                if (dir == Vector2.Zero) {
+                    _enemyRB.Velocity = Vector2.Normalize(_playerPos - transform.Position.ToVector2()) * _speed;
+                    return;
+                }
+
+                _enemyRB.Velocity = dir * _speed;
+
+                //Debug.Log($"Path found: Direction Vector {dir}");
+                //DBEUG
+                trackerposss = dir;
+                trackercolorrr = Color.LimeGreen;
+
+                return;
+            }
+
+            //DEBUG
+            trackerposss = Vector2.Zero;
+            trackercolorrr = Color.Transparent;
+
+            _enemyRB.Velocity = Vector2.Zero;
+        }
+
+
+
+        //DEBUG
+        private Vector2 trackerposss = Vector2.Zero;
+        private Color trackercolorrr = Color.LimeGreen;
+        public override void Draw(SpriteBatch sb) {
+            base.Draw(sb);
+
+            float angle = MathF.Atan2(trackerposss.Y, trackerposss.X);
+            sb.Draw(Resources.Sprite_Pixel, transform.Position.ToVector2() + trackerposss, null, trackercolorrr, angle, Vector2.Zero, new Vector2(32, 1), SpriteEffects.None, 1);
         }
 
 
@@ -272,11 +350,6 @@ namespace GameProject.Code.Scripts.Components.Entity {
             bullet.SetColor(_shotColor);
         }
 
-        protected bool CanSeePlayer() {
-            //todo:
-            //if no line of sight, return
-            return true;
-        }
 
 
         #endregion

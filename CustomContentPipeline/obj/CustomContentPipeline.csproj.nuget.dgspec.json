@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj": {}
+    "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj": {
+    "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
+        "projectUniqueName": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
         "projectName": "CustomContentPipeline",
-        "projectPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
+        "projectPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
         "packagesPath": "C:\\Users\\Nick\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\obj\\",
+        "outputPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\CustomContentPipeline\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",

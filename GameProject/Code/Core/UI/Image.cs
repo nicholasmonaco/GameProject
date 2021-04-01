@@ -8,7 +8,7 @@ using System.Text;
 
 namespace GameProject.Code.Core.UI {
     [AnimatableComponent]
-    public class Image : UIComponent {
+    public class Image : UIComponent, IGameDrawable {
         
         [AnimatableValue] public Texture2D Texture;
         [AnimatableValue] public Color Color = Color.White;
@@ -36,10 +36,15 @@ namespace GameProject.Code.Core.UI {
 
 
 
-        public Image(GameObject attached) : base(attached) { }
+        public Image(GameObject attached) : base(attached) {
+            Material = new Material();
+            Material.BatchID = BatchID.HUD;
+        }
 
         public Image(GameObject attached, Texture2D image) : base(attached) {
+            Material = new Material();
             Texture = image;
+            Material.BatchID = BatchID.HUD;
         }
 
 
@@ -60,5 +65,6 @@ namespace GameProject.Code.Core.UI {
         public Point ImageSize => Texture.Bounds.Size;
         public Vector2 AppliedScale => new Vector2(rectTransform.Width / ImageSize.X, rectTransform.Height / ImageSize.Y) * rectTransform.Scale.ToVector2();
 
+        public Material Material { get; set; }
     }
 }

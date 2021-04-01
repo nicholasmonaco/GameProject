@@ -8,13 +8,109 @@ using GameProject.Code.Scenes;
 namespace GameProject.Code.Core {
     public static class Physics2D {
 
+        public static bool Raycast(Ray2D ray, float distance, int layerMask, out RaycastHit2D hitData) {
+            RaycastHit2D[] hits;
+            if(RaycastAll(ray, distance, layerMask, out hits)) {
+                float minFrac = float.MaxValue;
+                int id = 0;
+                for(int i = 0; i < hits.Length; i++) {
+                    if(hits[i].Fraction < minFrac) {
+                        id = i;
+                        minFrac = hits[i].Fraction;
+                    }
+                }
 
-        public static Collider2D[] Raycast(Ray2D ray, float distance, int layerMask) {
-            List<Collider2D> hits = new List<Collider2D>();
+                hitData = hits[id];
+                return true;
+            } else {
+                hitData = new RaycastHit2D();
+                return false;
+            }
+        }
+
+        public static bool Raycast_List(Ray2D ray, float distance, int layerMask, ICollection<Collider2D> hitlist, out RaycastHit2D hitData) {
+            RaycastHit2D[] hits;
+            if (RaycastAll_List(ray, distance, layerMask, hitlist, out hits)) {
+                float minFrac = float.MaxValue;
+                int id = 0;
+                for (int i = 0; i < hits.Length; i++) {
+                    if (hits[i].Fraction < minFrac) {
+                        id = i;
+                        minFrac = hits[i].Fraction;
+                    }
+                }
+
+                hitData = hits[id];
+                return true;
+            } else {
+                hitData = new RaycastHit2D();
+                return false;
+            }
+        }
+
+
+
+        public static bool LayerInMask(LayerID layer, int mask) {
+            //if (layer == LayerID.None) return true; // This can be either way, I don't think it'll ever be used.
+
+            return (mask & ((int)layer)) != 0;
+        }
+
+        public static int GetMask(params LayerID[] parameters) {
+            int mask = 0;
+            foreach(LayerID layer in parameters) {
+                mask |= (int)layer;
+            }
+            return mask;
+        }
+
+
+        public static bool RaycastAll(Ray2D ray, float distance, int layerMask, out RaycastHit2D[] hits) {
+            //List<RaycastHit2D> rayhits = new List<RaycastHit2D>();
 
             GameScene game = GameManager.CurrentScene as GameScene;
-            foreach(Collider2D collider in game.Collider2Ds) {
-                if (collider.Enabled == false) continue;
+            return RaycastAll_List(ray, distance, layerMask, game.Collider2Ds, out hits);
+
+            //foreach(Collider2D collider in game.Collider2Ds) {
+            //    if (collider.Enabled == false || !LayerInMask(collider.Layer, layerMask)) continue;
+
+            //    bool hitRay = false;
+            //    Vector2 collisionPoint = Vector2.Zero;
+            //    switch (collider) {
+            //        case RectCollider2D _:
+            //        case PolygonCollider2D _:
+            //            hitRay = RayCollidesPoly(ray, distance, collider, out collisionPoint);
+            //            break;
+
+            //        case CircleCollider2D circleCollider:
+            //            hitRay = RayCollidesCircle(ray, distance, circleCollider, out collisionPoint);
+            //            break;
+            //    }
+
+            //    if (hitRay) {
+            //        RaycastHit2D hit;
+            //        hit.Origin = ray.Origin;
+            //        hit.Point = collisionPoint;
+            //        hit.RaycastDirection = ray.Direction;
+            //        hit.NormalDirection = Vector2.Zero; //todo
+            //        hit.Distance = Vector2.Distance(collisionPoint, ray.Origin);
+            //        hit.Fraction = hit.Distance / distance;
+            //        hit.HitCollider = collider;
+
+            //        rayhits.Add(hit);
+            //    }
+            //}
+
+            //hits = rayhits.ToArray();
+
+            //return rayhits.Count > 0;
+        }
+
+        public static bool RaycastAll_List(Ray2D ray, float distance, int layerMask, ICollection<Collider2D> hitlist, out RaycastHit2D[] hits) {
+            List<RaycastHit2D> rayhits = new List<RaycastHit2D>();
+
+            foreach (Collider2D collider in hitlist) {
+                if (collider.Enabled == false || !LayerInMask(collider.Layer, layerMask)) continue;
 
                 bool hitRay = false;
                 Vector2 collisionPoint = Vector2.Zero;
@@ -30,15 +126,27 @@ namespace GameProject.Code.Core {
                 }
 
                 if (hitRay) {
-                    hits.Add(collider);
+                    RaycastHit2D hit;
+                    hit.Origin = ray.Origin;
+                    hit.Point = collisionPoint;
+                    hit.RaycastDirection = ray.Direction;
+                    hit.NormalDirection = Vector2.Zero; //todo
+                    hit.Distance = Vector2.Distance(collisionPoint, ray.Origin);
+                    hit.Fraction = hit.Distance / distance;
+                    hit.HitCollider = collider;
+
+                    rayhits.Add(hit);
                 }
             }
 
-            return hits.ToArray();
+            hits = rayhits.ToArray();
+
+            return rayhits.Count > 0;
         }
 
 
         private static bool RayCollidesPoly(Ray2D ray, float maxDistance, Collider2D collider, out Vector2 intersection) {
+            //somethings wrong with this method - it isnt hitting right. also the circle one hits through spikes becasue theyre small circles
             Vector2 rayEnd = ray.GetPoint(maxDistance);
             Vector2 rayLine = rayEnd - ray.Origin;
 
@@ -51,21 +159,24 @@ namespace GameProject.Code.Core {
 
                 // If the lines are parallel:
                 if (dot == 0) {
-                    return false;
+                    //return false;
+                    continue;
                 }
 
-                Vector2 startComp = ray.Origin - points[i];
+                Vector2 startComp = points[i] - ray.Origin; //order switched
                 float dirComp = (startComp.X * edge.Y - startComp.Y * edge.X) / dot;
                 if (dirComp < 0 || dirComp > 1) {
-                    return false;
+                    //return false;
+                    continue;
                 }
 
-                dirComp = (startComp.X * rayLine.Y - startComp.Y * rayLine.X) / dot;
-                if (dirComp < 0 || dirComp > 1) {
-                    return false;
+                float dirComp2 = (startComp.X * rayLine.Y - startComp.Y * rayLine.X) / dot;
+                if (dirComp2 < 0 || dirComp2 > 1) {
+                    //return false;
+                    continue;
                 }
 
-                intersection = ray.Origin + startComp * rayLine;
+                intersection = ray.Origin + dirComp * rayLine;
 
                 return true;
             }

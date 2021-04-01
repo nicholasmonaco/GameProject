@@ -21,6 +21,7 @@ namespace GameProject.Code.Prefabs {
             sr.DrawLayer = DrawLayer.ID[DrawLayers.AboveAll];
             sr.OrderInLayer = 10;
             sr.Color = new Color(1, 1, 1, 0.75f);
+            sr.Material.BatchID = BatchID.HUD;
 
             transform.Position = Vector3.Zero;
             transform.Scale *= 0.3f;

@@ -23,6 +23,7 @@ namespace GameProject.Code.Prefabs {
             sr.DrawLayer = DrawLayer.ID[DrawLayers.Projectiles];
             sr.OrderInLayer = 100;
             sr.SpriteScale = new Vector2(0.65f, 0.65f);
+            sr.Material.BatchID = BatchID.AbovePlayer;
 
             //Collider2D collider = AddComponent<CircleCollider2D>(this, sr.Sprite.Width * sr.SpriteScale.X);
             Collider2D collider = AddComponent<CircleCollider2D>(sr);

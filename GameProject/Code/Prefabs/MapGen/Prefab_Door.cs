@@ -20,17 +20,20 @@ namespace GameProject.Code.Prefabs.MapGen {
             frameRend.Sprite = Resources.Sprites_DoorFrames[DoorType.Normal];
             frameRend.DrawLayer = DrawLayer.ID[DrawLayers.WorldStructs];
             frameRend.OrderInLayer = 25;
+            frameRend.Material.BatchID = BatchID.Room;
 
 
             SpriteRenderer insideRend = AddComponent<SpriteRenderer>();
             insideRend.Sprite = Resources.Sprite_Door_Inside;
             insideRend.DrawLayer = DrawLayer.ID[DrawLayers.WorldStructs];
             insideRend.OrderInLayer = 20;
+            insideRend.Material.BatchID = BatchID.Room;
 
             SpriteRenderer doorRend = AddComponent<SpriteRenderer>();
             doorRend.Sprite = Resources.Sprite_Invisible;
             doorRend.DrawLayer = DrawLayer.ID[DrawLayers.WorldStructs];
             doorRend.OrderInLayer = 21;
+            doorRend.Material.BatchID = BatchID.Room;
 
             Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(10, -22), new Vector2(-10, -22) };
             PolygonCollider2D doorCollider = _components.AddReturn(new PolygonCollider2D(this, doorBounds, false)) as PolygonCollider2D;

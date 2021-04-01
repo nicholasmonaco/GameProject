@@ -18,6 +18,7 @@ namespace GameProject.Code.Prefabs {
             sr.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             sr.OrderInLayer = 75;
             sr.SpriteScale = new Vector2(0.8f, 0.8f);
+            sr.Material.BatchID = BatchID.HUD;
 
             AddComponent<Reticle>();
         }

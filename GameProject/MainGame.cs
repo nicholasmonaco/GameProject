@@ -20,6 +20,8 @@ namespace GameProject {
 
         public Scene[] SceneList;
 
+        public static SpriteEffect DefaultEffect;
+
 
 
         public MainGame() {
@@ -33,6 +35,8 @@ namespace GameProject {
             _graphics.PreferredBackBufferHeight = (int)Camera.ConstantResolution.Y * 2;
             _graphics.ApplyChanges();
 
+            DefaultEffect = new SpriteEffect(GraphicsDevice);
+            Scene.InitShaders();
 
             Debug.Start();
         }
@@ -116,16 +120,27 @@ namespace GameProject {
         protected override void Draw(GameTime gameTime) {            
             GraphicsDevice.Clear(Color.Black);
 
-            // I think these transformations could somehow be implemented to when the variable viewmatrix is set, but as of now it doesn't work.
-            Matrix viewMatrix = GameManager.MainCamera.ViewMatrix * 
-                                Matrix.CreateScale(1, -1, 1) *
-                                Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0);
+            // Testing shader - move to scene later
+            //Effect shader = Resources.Effect_Grayscale;
 
-            _spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp, rasterizerState: RasterizerState.CullNone, transformMatrix: viewMatrix);
+
+            // I think these transformations could somehow be implemented to when the variable viewmatrix is set, but as of now it doesn't work.
+            //Matrix viewMatrix = GameManager.MainCamera.ViewMatrix * 
+            //                    Matrix.CreateScale(1, -1, 1) *
+            //                    Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0);
+
+            //_spriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, 
+            //                   blendState: BlendState.AlphaBlend, 
+            //                   samplerState: SamplerState.PointClamp, 
+            //                   rasterizerState: RasterizerState.CullNone, 
+            //                   transformMatrix: viewMatrix,
+            //                   effect: shader);
+
             // TODO: Add your drawing code here
             GameManager.CurrentScene.Draw(_spriteBatch);
             // End user drawing
-            _spriteBatch.End();
+
+            //_spriteBatch.End();
 
             base.Draw(gameTime);
         }

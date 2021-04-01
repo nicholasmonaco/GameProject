@@ -8,7 +8,7 @@ using System.Text;
 
 namespace GameProject.Code.Core.Components {
     [AnimatableComponent]
-    public class TextRenderer : Component {
+    public class TextRenderer : Renderer {
         private string _text = "";
 
         [AnimatableValue]

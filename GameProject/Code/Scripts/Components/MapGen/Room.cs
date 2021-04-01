@@ -34,8 +34,10 @@ namespace GameProject.Code.Scripts.Components {
         //  RevealedOnMinimap
         //  MinimapIcon
 
-        public Point ObstacleTilemapSize = new Point(13, 7);
-        public static Vector2 ObstacleTileSize = new Vector2(26, 26);
+        public static Point ObstacleTilemapSize = new Point(13, 7);
+        public static Vector2 ObstacleTilemapSize_F = new Vector2(13, 7);
+        public static Vector2 ObstacleTileSize = new Vector2(26, 28);
+        public static Vector2 ObstacleTileOffset = new Vector2(1, 1);
 
 
         public Point GridPos;
@@ -46,6 +48,7 @@ namespace GameProject.Code.Scripts.Components {
         private Dictionary<Direction, GameObject> _doorFillers;
 
         public TileMap<ObstacleID> ObstacleTilemap;
+        public List<Collider2D> ObstacleColliders { get; private set; }
 
         public List<AbstractEnemy> Enemies;
         public List<AbstractEntity> Entities; //this includes pickups that are prespawned
@@ -83,6 +86,7 @@ namespace GameProject.Code.Scripts.Components {
                     wallCornerRend.DrawLayer = DrawLayer.ID[DrawLayers.Background];
                     wallCornerRend.OrderInLayer = 21;
                     wallCornerRend.SpriteScale = new Vector2(-x, y);
+                    wallCornerRend.Material.BatchID = BatchID.Room;
 
                     //Vector2[] cornerPolygonPoints = new Vector2[] { new Vector2(-110, 70),
                     //                                                new Vector2(97, 70),
@@ -197,6 +201,8 @@ namespace GameProject.Code.Scripts.Components {
                                               Doors.ContainsKey(Direction.Left),
                                               Doors.ContainsKey(Direction.Right));
 
+            ObstacleColliders = null;
+
             if (RoomType == RoomType.Item) GenerateItem();
             else if (RoomType == RoomType.Boss) SpawnBoss();
 
@@ -280,21 +286,22 @@ namespace GameProject.Code.Scripts.Components {
 
 
         public void SetEntities(int[,] rawEntityMap) {
-            for (int y = 0; y < 7; y++) {
-                for (int x = 0; x < 13; x++) {
+            for (int y = 0; y < ObstacleTilemapSize.Y; y++) {
+                for (int x = 0; x < ObstacleTilemapSize.X; x++) {
                     EntityID ent = GetRealEntityID(rawEntityMap[x, y]);
                     int entID = (int)ent;
 
                     if (ent == EntityID.None) continue;
 
-                    Vector2 offset = new Vector2(13f, 7f) * -13;
+                    //Vector2 offset = new Vector2(13f, 7f) * -13;
+                    Vector2 offset = ObstacleTilemapSize_F * -ObstacleTileSize.X / 2f;
 
                     // If it's an enemy
                     if (entID >= 301 && entID < 500) {
                         AbstractEnemy enemy = Instantiate(AbstractEnemy.GetEnemyFromID(ent)).GetComponent<AbstractEnemy>();
                         enemy.transform.Parent = transform;
-                        //enemy.transform.LocalPosition = (new Vector2(x, y) * (ObstacleTileSize + Vector2.One) + offset).ToVector3(); //these will probably need a +2 on each
-                        enemy.transform.LocalPosition = ((new Vector2(x, y) * (new Vector2(26, 28) + new Vector2(2))) + Vector2.One + offset).ToVector3();
+                        //enemy.transform.LocalPosition = ((new Vector2(x, y) * (new Vector2(26, 28) + new Vector2(2))) + Vector2.One + offset).ToVector3();
+                        enemy.transform.LocalPosition = ((new Vector2(x, y) * (ObstacleTileSize + 2 * ObstacleTileOffset)) + ObstacleTileOffset + offset).ToVector3();
 
                         enemy.OnDeathFlag = () => {
                             Enemies.Remove(enemy);
@@ -306,7 +313,7 @@ namespace GameProject.Code.Scripts.Components {
                     } else { // If it isn't an enemy
                         AbstractEntity entity = Instantiate(AbstractEntity.GetEntityFromID(ent)).GetComponent<AbstractEntity>();
                         entity.transform.Parent = transform;
-                        entity.transform.LocalPosition = ((new Vector2(x, y) * (new Vector2(26, 28) + new Vector2(2))) + Vector2.One + offset).ToVector3();
+                        entity.transform.LocalPosition = ((new Vector2(x, y) * (ObstacleTileSize + 2 * ObstacleTileOffset)) + ObstacleTileOffset + offset).ToVector3();
 
                         Entities.Add(entity);
                     }
@@ -348,13 +355,16 @@ namespace GameProject.Code.Scripts.Components {
             gameObject.Layer = LayerID.Obstacle; //this is probably a bad way to do this
             GameObject obstacleMapHolder = Instantiate<GameObject>(transform.Position, transform);
             obstacleMapHolder.transform.Position = transform.Position;
-            Debug.Log($"holderpos: {obstacleMapHolder.transform.Position}");
+            //Debug.Log($"holderpos: {obstacleMapHolder.transform.Position}");
             obstacleMapHolder.Layer = LayerID.Obstacle;
+
+            ObstacleColliders = new List<Collider2D>();
 
             ObstacleTilemap = obstacleMapHolder.AddComponent<TileMap<ObstacleID>>();
             
             ObstacleTilemap.TileChangeAction = (tile, parentMap) => {
                 tile.TileRenderer.Sprite = GetCorrectObstacleSprite(tile.Data);
+                tile.TileRenderer.Material.BatchID = BatchID.Room;
 
                 if (parentMap.ColliderMap[tile.TilemapPos.X, tile.TilemapPos.Y] != null) {
                     parentMap.ColliderMap[tile.TilemapPos.X, tile.TilemapPos.Y].Destroy();
@@ -375,6 +385,8 @@ namespace GameProject.Code.Scripts.Components {
 
                     newTileCollider.Bounds.ResolveCorners();
 
+                    ObstacleColliders.Add(newTileCollider);
+
                     //maybe add a method here to see what we need to add to it
                     parentMap.ColliderMap[tile.TilemapPos.X, tile.TilemapPos.Y] = newTileCollider;
 
@@ -388,21 +400,27 @@ namespace GameProject.Code.Scripts.Components {
 
                     newTileCollider.OnTriggerStay2D_Direct += PlayerController.DamagePlayer;
 
+                    ObstacleColliders.Add(newTileCollider);
+
                     parentMap.ColliderMap[tile.TilemapPos.X, tile.TilemapPos.Y] = newTileCollider;
                 }
             };
 
             ObstacleID[,] realMap = new ObstacleID[13, 7];
-            for(int y = 0; y < 7; y++) {
-                for(int x = 0; x < 13; x++) {
+            for(int y = 0; y < ObstacleTilemapSize.Y; y++) {
+                for(int x = 0; x < ObstacleTilemapSize.X; x++) {
                     realMap[x, y] = GetRealObstacleID(rawObstacleMap[x, 6-y]);
                 }
             }
 
-            Vector2 mapOffset = new Vector2(13, 7) * -13;
+            // Dimensions of the tilemap (in tiles) times half of the width of a tile
+            //Vector2 mapOffset = new Vector2(13, 7) * -13;
+            Vector2 mapOffset = ObstacleTilemapSize_F * -ObstacleTileSize.X / 2f;
 
             SetMapAction += () => {
-                ObstacleTilemap.SetMap(realMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y, new Vector2(26, 28), Vector2.One, mapOffset);
+                //ObstacleTilemap.SetMap(realMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y, new Vector2(26, 28), Vector2.One, mapOffset);
+                ObstacleTilemap.SetMap(realMap, ObstacleTilemapSize.X, ObstacleTilemapSize.Y, ObstacleTileSize, Vector2.One, mapOffset);
+
                 //Debug.Log($"Transform: {ObstacleTilemap.transform.Position} ");
                 SetMapAction = () => { };
             };
@@ -410,7 +428,7 @@ namespace GameProject.Code.Scripts.Components {
 
         public Action SetMapAction = () => { };
 
-        private static bool ObstacleCollidable(ObstacleID id) {
+        public static bool ObstacleCollidable(ObstacleID id) {
             return (int)id >= 1 && (int)id <= 31;
         }
 
@@ -423,10 +441,30 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         public ObstacleID GetObstacleAtPos(Vector2 position) {
-            Vector2 mapOffset = new Vector2(13, 7) * -13;
-            Vector2 tilepoint = (position - transform.Position.ToVector2() - mapOffset) / new Vector2(28, 30);
+            //Vector2 mapOffset = new Vector2(13, 7) * -13;
+            //Vector2 tilepoint = (position - transform.Position.ToVector2() - mapOffset) / new Vector2(28, 30);
+
+            Vector2 mapOffset = ObstacleTilemapSize_F * -ObstacleTileSize.X / 2f;
+            Vector2 tilepoint = (position - transform.Position.ToVector2() - mapOffset) / (ObstacleTileSize + ObstacleTileOffset * 2);
             Point p = tilepoint.ToPoint();
             return ObstacleTilemap.GetTile(p);
+        }
+
+        
+        public Point GetGridPos(Vector3 position) {
+            return GetGridPos(position.ToVector2());
+        }
+        
+        public Point GetGridPos(Vector2 position) {
+            Vector2 mapOffset = ObstacleTilemapSize_F * -ObstacleTileSize.X / 2f;
+            Vector2 tilepoint = (position - transform.Position.ToVector2() - mapOffset) / (ObstacleTileSize + ObstacleTileOffset * 2);
+            return tilepoint.ToPoint();
+        }
+
+        public Point GetCeilGridPos(Vector2 position) {
+            Vector2 mapOffset = ObstacleTilemapSize_F * -ObstacleTileSize.X / 2f;
+            Vector2 tilepoint = (position - transform.Position.ToVector2() - mapOffset) / (ObstacleTileSize + ObstacleTileOffset * 2);
+            return new Point((int)MathF.Ceiling(tilepoint.X), (int)MathF.Ceiling(tilepoint.Y));
         }
 
 
@@ -542,6 +580,8 @@ namespace GameProject.Code.Scripts.Components {
 
         public override void OnDestroy() {
             ClearDoors();
+
+            ObstacleColliders = null;
         }
 
 

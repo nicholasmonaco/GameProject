@@ -35,11 +35,13 @@ namespace GameProject.Code.Scenes {
         private SpriteRenderer _winMsgRenderer; //debug
         private SpriteRenderer _respawnPrompt;
 
-        public bool Paused { get; private set; } = false;
+        public static bool Paused { get; private set; } = false;
 
 
         public override void Init() {
             base.Init();
+
+            Paused = false;
 
             // This is essentially where there should be a list of default GameObjects in the scene.
             GameObjects.Add(new Prefab_MainCamera());
@@ -58,6 +60,7 @@ namespace GameProject.Code.Scenes {
             _deathMsgRenderer.Color = Color.Transparent;
             _deathMsgRenderer.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
             _deathMsgRenderer.OrderInLayer = 40;
+            _deathMsgRenderer.Material.BatchID = BatchID.HUD;
 
             _winMsgRenderer = Instantiate(new GameObject()).AddComponent<SpriteRenderer>();
             _winMsgRenderer.transform.Parent = GameManager.MainCanvas.transform;
@@ -65,6 +68,7 @@ namespace GameProject.Code.Scenes {
             _winMsgRenderer.Color = Color.Transparent;
             _winMsgRenderer.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
             _winMsgRenderer.OrderInLayer = 40;
+            _winMsgRenderer.Material.BatchID = BatchID.HUD;
 
             _respawnPrompt = Instantiate(new GameObject()).AddComponent<SpriteRenderer>();
             _respawnPrompt.transform.Parent = GameManager.MainCanvas.transform;
@@ -72,6 +76,7 @@ namespace GameProject.Code.Scenes {
             _respawnPrompt.Color = Color.Transparent;
             _respawnPrompt.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
             _respawnPrompt.OrderInLayer = 39;
+            _respawnPrompt.Material.BatchID = BatchID.HUD;
 
             GameObject controlGuide = Instantiate(new GameObject());
             controlGuide.transform.Position = Vector3.Zero;
@@ -79,6 +84,7 @@ namespace GameProject.Code.Scenes {
             guideRend.Sprite = Resources.Sprite_ControlGuide;
             guideRend.DrawLayer = DrawLayer.ID[DrawLayers.WorldStructs];
             guideRend.OrderInLayer = 500;
+            guideRend.Material.BatchID = BatchID.Room;
 
             GameManager.BulletHolder = Instantiate(new GameObject()).transform;
 
@@ -96,8 +102,8 @@ namespace GameProject.Code.Scenes {
             GameManager.UILayoutMembers.Clear();
 
             List<(string, Action)> buttons = new List<(string, Action)>() {
-                ("Restart", () => { ResetScene(); TogglePause(); }),
                 ("Resume", TogglePause),
+                ("Restart", () => { ResetScene(); TogglePause(); }),
                 ("Exit", () => { TogglePause(); StartCoroutine(BackToMainMenu()); }),
             };
 
@@ -144,6 +150,7 @@ namespace GameProject.Code.Scenes {
                                                               0);
 
                 counter.Justification = Justify.Left;
+                counter.Material.BatchID = BatchID.HUD;
 
                 int dist = i;
                 GameManager.MainCanvas.ExtentsUpdate += () => {
@@ -156,6 +163,7 @@ namespace GameProject.Code.Scenes {
                 iconRend.SpriteOffset = new Vector2(-7, 0.5f);
                 iconRend.SpriteScale = new Vector2(4 / 3f);
                 iconRend.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
+                iconRend.Material.BatchID = BatchID.HUD;
 
                 switch (i) {
                     case 0:

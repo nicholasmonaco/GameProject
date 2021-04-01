@@ -19,11 +19,13 @@ namespace GameProject.Code.Prefabs.UI {
             handleRenderer.Sprite = Resources.Sprite_Pixel;
             handleRenderer.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             handleRenderer.OrderInLayer = 41;
+            handleRenderer.Material.BatchID = BatchID.HUD;
 
             SpriteRenderer backgroundRenderer = AddComponent<SpriteRenderer>();
             backgroundRenderer.Sprite = Resources.Sprite_Pixel;
             backgroundRenderer.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             backgroundRenderer.OrderInLayer = 40;
+            backgroundRenderer.Material.BatchID = BatchID.HUD;
 
             //debug
             handleRenderer.SpriteScale = new Vector2(18, 18);

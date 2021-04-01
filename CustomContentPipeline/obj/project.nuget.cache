@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fkD0R8nlQnTHE8bvYfvPy8ME+5RTlMnvv7MSe5DSKh0ieocbeDW3d9ng58Kh6Gf+p9FSPQ5+kR0UrHCLllUx6Q==",
+  "dgSpecHash": "M+0dlhKzsb8+XvnJ2lTybwA8QPkk3mQV2grwOgsqYd2gUZA+ysho3yZ+uKnm25ElN1K+jxRVJijm8B0RpKN13Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
+  "projectFilePath": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nick\\.nuget\\packages\\monogame.framework.content.pipeline.portable\\3.7.1.189\\monogame.framework.content.pipeline.portable.3.7.1.189.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\monogame.framework.portable\\3.7.1.189\\monogame.framework.portable.3.7.1.189.nupkg.sha512"

@@ -19,6 +19,7 @@ namespace GameProject.Code.Prefabs.UI {
             textRend.Color = deselectColor;
             textRend.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             textRend.OrderInLayer = 42;
+            textRend.Material.BatchID = BatchID.HUD;
 
             AddComponent<SelectableText>(selectColor, textRend);
         }

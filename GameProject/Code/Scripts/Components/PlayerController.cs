@@ -25,6 +25,7 @@ namespace GameProject.Code.Scripts.Components {
         public AnimationController PlayerAnimator { get; private set; }
 
         private Rigidbody2D _playerRB;
+        public Collider2D PlayerCollider { get; private set; }
         private SpriteRenderer _playerSprite;
 
         public List<ArmController> Arms;
@@ -63,6 +64,7 @@ namespace GameProject.Code.Scripts.Components {
                 GameManager.Die();
                 PlayerStats.DeathAction = () => { };
             };
+
         }
 
 
@@ -71,6 +73,8 @@ namespace GameProject.Code.Scripts.Components {
 
             _playerRB = GetComponent<Rigidbody2D>();
             _playerRB.Drag = 5f;
+
+            PlayerCollider = _playerRB.MainCollider;
 
             _playerSprite = GetComponent<SpriteRenderer>();
 
@@ -255,6 +259,19 @@ namespace GameProject.Code.Scripts.Components {
             }
         }
 
+        //debug testing
+        bool gray = false;
+        private void ToggleGray() {
+            gray = !gray;
+            Effect shader = gray ? Resources.Effect_Grayscale : Resources.Effect_Base;
+            Scene.ChangeShader(BatchID.Room, shader);
+            Scene.ChangeShader(BatchID.Entities, shader);
+            Scene.ChangeShader(BatchID.BehindEntities, shader);
+            Scene.ChangeShader(BatchID.AbovePlayer, shader);
+            Scene.ChangeShader(BatchID.Player, shader);
+        }
+
+
         private void ShootLogic() {
             Vector2 aimDir = Vector2.Normalize(Input.MouseWorldPosition - transform.Position.ToVector2());
             
@@ -264,6 +281,9 @@ namespace GameProject.Code.Scripts.Components {
             bullet.InitBullet(true, aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
             bullet.SetScale(PlayerStats.ShotSize);
             bullet.SetColor(PlayerStats.ShotColor);
+
+            //DEBUG
+            ToggleGray();
         }
 
 
@@ -331,7 +351,7 @@ namespace GameProject.Code.Scripts.Components {
         private void OnShootDown() {
             _shooting = true;
 
-            if(ArmsOut) SetArmState(ArmState.Rushing);
+            if(ArmsOut && !GameManager.Paused) SetArmState(ArmState.Rushing);
         }
 
         private void OnShootUp() {

@@ -37,6 +37,7 @@ namespace GameProject.Code.Prefabs.UI {
             nameRenderer.Justification = Justify.Center;
             nameRenderer.SpriteScale *= 0.25f;
             nameRenderer.SpriteOffset += new Vector2(0, 12);
+            nameRenderer.Material.BatchID = BatchID.HUD;
             itemUI.NameRenderer = nameRenderer;
 
             TextRenderer descriptionRenderer = AddComponent<TextRenderer>();
@@ -48,6 +49,7 @@ namespace GameProject.Code.Prefabs.UI {
             descriptionRenderer.Justification = Justify.Center;
             descriptionRenderer.SpriteScale *= 0.18f;
             descriptionRenderer.SpriteOffset += new Vector2(0, -17);
+            descriptionRenderer.Material.BatchID = BatchID.HUD;
             itemUI.FlavorTextRenderer = descriptionRenderer;
 
             Image panelImg = GetComponent<Image>();

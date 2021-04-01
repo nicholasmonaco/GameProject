@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using GameProject.Code.Core.Components;
 
 namespace GameProject.Code.Core {
-    public class RaycastHit2D {
+    public struct RaycastHit2D {
 
-        public Vector2 Origin { get; private set; }
-        public Vector2 Direction { get; private set; }
-        public float Distance { get; private set; }
-        public int LayerMask { get; private set; }
+        public Vector2 Origin;
+        public Vector2 Point;
 
+        public Vector2 RaycastDirection;
+        public Vector2 NormalDirection;
 
-        public RaycastHit2D(Vector2 origin, Vector2 direction, float distance = float.PositiveInfinity, int layerMask = (int)LayerID.Max) {
+        public float Distance;
+        public float Fraction;
 
-        }
+        public Collider2D HitCollider;
+        public Rigidbody2D HitRigidbody => HitCollider.AttachedRigidbody;
+        public Transform HitTransform => HitCollider.transform;
+        
+
     }
 }

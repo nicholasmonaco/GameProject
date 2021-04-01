@@ -34,6 +34,21 @@ namespace GameProject.Code.Core {
             DataChangeAction(this, _parentMap);
         }
 
+
+        public bool InBounds(Vector3 position) {
+            return InBounds(position.ToVector2());
+        }
+
+        public bool InBounds(Vector2 position) {
+            Vector2 halfTileSize = _parentMap.TileSize / 2f + _parentMap.TileSpacing;
+            Vector2 minBounds = TileRenderer.SpriteOffset - halfTileSize;
+            Vector2 maxBounds = TileRenderer.SpriteOffset + halfTileSize;
+
+            return position.X >= minBounds.X && position.X <= maxBounds.X &&
+                   position.Y >= minBounds.Y && position.Y <= maxBounds.Y;
+        }
+
+
         public Action<Tile<T>, TileMap<T>> DataChangeAction = (tile, parentMap) => { };
 
 

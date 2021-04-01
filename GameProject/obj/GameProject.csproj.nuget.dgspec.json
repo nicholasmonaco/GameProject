@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\GameProject\\GameProject.csproj": {}
+    "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\GameProject\\GameProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\GameProject\\GameProject.csproj": {
+    "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\GameProject\\GameProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\GameProject\\GameProject.csproj",
+        "projectUniqueName": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\GameProject\\GameProject.csproj",
         "projectName": "GameProject",
-        "projectPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\GameProject\\GameProject.csproj",
+        "projectPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\GameProject\\GameProject.csproj",
         "packagesPath": "C:\\Users\\Nick\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS 580\\Game Project\\GameProject\\GameProject\\obj\\",
+        "outputPath": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\GameProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",

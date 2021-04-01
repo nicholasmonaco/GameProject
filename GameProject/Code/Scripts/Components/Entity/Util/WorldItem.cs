@@ -76,6 +76,8 @@ namespace GameProject.Code.Scripts.Components {
         }
 
         private IEnumerator ItemGetCoroutine() {
+            if (ID == ItemID.None) yield break;
+
             float holdTime = 2f;
 
 

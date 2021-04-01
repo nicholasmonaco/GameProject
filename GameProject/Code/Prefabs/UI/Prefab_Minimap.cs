@@ -33,6 +33,7 @@ namespace GameProject.Code.Prefabs {
             s.Sprite = Resources.Sprite_MinimapIcons[MinimapIcon.Current];
             s.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             s.OrderInLayer = 56;
+            s.Material.BatchID = BatchID.HUD;
 
             //GameObject background = Instantiate<GameObject>(transform.Position, transform);
             //background.transform.LocalPosition = Vector3.Zero;

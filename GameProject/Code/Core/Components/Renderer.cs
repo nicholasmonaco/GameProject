@@ -12,18 +12,12 @@ namespace GameProject.Code.Core.Components {
     /// Governs all renderable components.
     /// No other type of component should be drawing anything if it isn't a subclass of Renderer.
     /// </summary>
-    public class Renderer : Component {
+    public class Renderer : Component, IGameDrawable {
         public Renderer(GameObject attached) : base(attached) {
-            
+            Material = new Material();
         }
 
-
-        //public override void Draw(SpriteBatch sb) { //look into how to override this correctly
-        //    //draw it with the MIDPOINT of the sprite being drawn at the transform's position
-
-        //}
-
-
+        public Material Material { get; set; }
 
         public bool IsInCamera(Camera camera) {
             return false;

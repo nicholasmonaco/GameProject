@@ -14,10 +14,12 @@ namespace GameProject.Code.Prefabs {
             SpriteRenderer baseIcon = AddComponent<SpriteRenderer>();
             baseIcon.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             baseIcon.OrderInLayer = 55;
+            baseIcon.Material.BatchID = BatchID.HUD;
 
             SpriteRenderer overlayIcon = AddComponent<SpriteRenderer>();
             overlayIcon.DrawLayer = DrawLayer.ID[DrawLayers.HUD];
             overlayIcon.OrderInLayer = 57;
+            overlayIcon.Material.BatchID = BatchID.HUD;
 
             MinimapTile tile = AddComponent<MinimapTile>();
             tile.SetSpriteRenderers(baseIcon, overlayIcon);

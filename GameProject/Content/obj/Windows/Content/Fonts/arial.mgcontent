@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/Fonts/arial.spritefont</SourceFile>
+  <SourceFile>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Fonts/arial.spritefont</SourceFile>
   <SourceTime>2021-02-05T22:33:57.3237089-06:00</SourceTime>
-  <DestFile>C:/Users/Nick/Desktop/School/_CIS 580/Game Project/GameProject/GameProject/Content/bin/Windows/Content/Fonts/arial.xnb</DestFile>
-  <DestTime>2021-02-18T16:04:56.1709556-06:00</DestTime>
+  <DestFile>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/bin/Windows/Content/Fonts/arial.xnb</DestFile>
+  <DestTime>2021-03-31T23:49:22.3768989-05:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2020-08-10T16:17:54-05:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

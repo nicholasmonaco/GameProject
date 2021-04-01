@@ -24,7 +24,7 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
         public ArmState CurState {
             get => _curState;
             set {
-                if (_curState == ArmState.Locked && value != ArmState.Idle) return; //might not need this
+                //if (_curState == ArmState.Locked && value != ArmState.Idle) return; //i dont think need this
                 _curState = value;
 
                 transform.LocalPosition = LastOrigLocalPos;
@@ -207,8 +207,7 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
             if (CurState == ArmState.Rushing || CurState == ArmState.ChargedPunch) {
                 bool met = false;
 
-                if (met) return; // Check to see if already hit a wall
-                else if (_hit) return; // Check to see if already hit an entity
+                if (met || _hit || GameManager.Paused) return; // Check to see if already hit a wall or already hit an entity
 
                 if (other.gameObject.Layer == LayerID.Enemy || other.gameObject.Layer == LayerID.Enemy_Flying) {
                     AbstractEnemy enemy = other.AttachedRigidbody.GetComponent<AbstractEnemy>();
@@ -220,7 +219,7 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
                     _hit = true;
 
                     //if (_curPiercingRemain == 0) {
-                    met = true;
+                    //met = true;
                     //}
 
                 }

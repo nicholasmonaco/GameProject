@@ -61,6 +61,7 @@ namespace GameProject.Code.Scripts.Components {
                     _secondaryRenderer = eyes.AddComponent<SpriteRenderer>();
                     _secondaryRenderer.DrawLayer = FrameRenderer.DrawLayer;
                     _secondaryRenderer.OrderInLayer = 27;
+                    _secondaryRenderer.Material.BatchID = BatchID.Room;
                     eyes.transform.Rotation = transform.Rotation;
                     eyes.transform.LocalPosition += (DoorDirection.GetDirectionPoint().ToVector2() * new Vector2(12, 12)).ToVector3();
 

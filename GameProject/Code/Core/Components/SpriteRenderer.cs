@@ -15,8 +15,16 @@ namespace GameProject.Code.Core.Components {
     [AnimatableComponent]
     public class SpriteRenderer : Renderer {
 
-        [AnimatableValue] public Texture2D Sprite;
-        [AnimatableValue] public Color Color = Color.White;
+        [AnimatableValue] public Texture2D Sprite {
+            get => Material.Texture as Texture2D;
+            set { if(Material != null) Material.Texture = value; }
+        }
+
+        [AnimatableValue] public Color Color {
+            get => Material.Color;
+            set { Material.Color = value; }
+        }
+
         [AnimatableValue] public Vector2 SpriteScale = Vector2.One;
         [AnimatableValue] public Vector2 SpriteOffset = Vector2.Zero;
 

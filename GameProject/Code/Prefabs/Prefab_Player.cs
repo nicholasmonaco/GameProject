@@ -25,6 +25,8 @@ namespace GameProject.Code.Prefabs {
             SpriteRenderer bodyRenderer = AddComponent<SpriteRenderer>(Resources.Sprite_Pixel);
             bodyRenderer.DrawLayer = DrawLayer.ID[DrawLayers.Player];
             bodyRenderer.OrderInLayer = 20;
+            bodyRenderer.Material.BatchID = BatchID.Player;
+
 
             AnimationController animController = AddComponent<AnimationController>(7);
 
@@ -106,11 +108,13 @@ namespace GameProject.Code.Prefabs {
             leftArm.transform.Scale *= new Vector3(-1, 1, 1);
             leftArm.LastOrigLocalPos = leftArm.transform.LocalPosition;
             leftArm.RushDelay = 0.05f;
+            leftArm.ArmRenderer.Material.BatchID = BatchID.Player;
 
             ArmController rightArm = Instantiate<Prefab_Arm>(Vector3.Zero, transform).GetComponent<ArmController>();
             rightArm.gameObject.Name = "Right Player Arm";
             rightArm.transform.LocalPosition = new Vector3(armDist, 0, 0);
             rightArm.LastOrigLocalPos = rightArm.transform.LocalPosition;
+            rightArm.ArmRenderer.Material.BatchID = BatchID.Player;
 
             player.Arms = new List<ArmController>(2);
             player.Arms.Add(leftArm);

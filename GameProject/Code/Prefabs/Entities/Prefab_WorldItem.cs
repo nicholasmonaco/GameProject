@@ -22,6 +22,7 @@ namespace GameProject.Code.Prefabs {
             SpriteRenderer itemRend = AddComponent<SpriteRenderer>(sprite);
             itemRend.DrawLayer = DrawLayer.ID[DrawLayers.Entities];
             itemRend.OrderInLayer = 101;
+            itemRend.Material.BatchID = BatchID.AbovePlayer;
 
             WorldItem item = AddComponent<WorldItem>();
             item.Init(id, itemRend, pedastalRend);

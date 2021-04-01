@@ -28,9 +28,15 @@ namespace GameProject.Code.Core {
 
         protected bool _updating = true;
 
+        public static Dictionary<BatchID, Effect> ShaderDictionary;
 
 
-        public Scene() { }
+
+        public Scene() {
+            
+        }
+
+
 
         public virtual void LoadContent(ContentManager content) { }
 
@@ -140,9 +146,71 @@ namespace GameProject.Code.Core {
 
         public virtual void Draw(SpriteBatch sb) {
             // Handle GameObjects
-            foreach (GameObject g in GameObjects) {
-                if (g.Enabled) g.Draw(sb);
+            //foreach (GameObject g in GameObjects) {
+            //    if (g.Enabled) g.Draw(sb);
+            //}
+
+
+            Matrix viewMatrix = GameManager.MainCamera.ViewMatrix *
+                                Matrix.CreateScale(1, -1, 1) *
+                                Matrix.CreateTranslation(GameManager.Resolution.X / 2, GameManager.Resolution.Y / 2, 0);
+
+
+            Dictionary<BatchID, List<IGameDrawable>> renderers = new Dictionary<BatchID, List<IGameDrawable>>();
+            for(int i = 0; i < Material.ShaderCount; i++) { renderers.Add((BatchID)i, new List<IGameDrawable>()); }
+
+            foreach(GameObject g in GameObjects) {
+                if (!g.Enabled) continue;
+                foreach(Component c in g._components) {
+                    if(c is IGameDrawable drawable) {
+                        renderers[drawable.Material.BatchID].Add(drawable);
+                    }
+                }
             }
+
+            foreach(KeyValuePair<BatchID, List<IGameDrawable>> kvp in renderers) {
+                if (kvp.Value.Count == 0) continue;
+
+                sb.Begin(sortMode: SpriteSortMode.FrontToBack,
+                         blendState: BlendState.AlphaBlend,
+                         samplerState: SamplerState.PointClamp,
+                         rasterizerState: RasterizerState.CullNone,
+                         transformMatrix: viewMatrix,
+                         effect: ShaderDictionary[kvp.Key]);
+
+                foreach (IGameDrawable drawable in kvp.Value) {
+                    drawable.Draw(sb);
+                }
+
+                sb.End();
+            }
+        }
+
+
+        public static void InitShaders() {
+            ShaderDictionary = new Dictionary<BatchID, Effect>(Material.ShaderCount);
+
+            for (int i = 0; i < Material.ShaderCount; i++) {
+                // This uses the default generated shader file, not sure why a new instance of a SpriteEffect doesn't work
+                ShaderDictionary.Add((BatchID)i, Resources.Effect_Base);
+            }
+        }
+
+        public static void ResetShaders() {
+            ShaderDictionary.Clear();
+
+            for (int i = 0; i < Material.ShaderCount; i++) {
+                ShaderDictionary.Add((BatchID)i, Resources.Effect_Base);
+            }
+        }
+
+        public static void ChangeShader(BatchID id, Effect newShader) {
+            ShaderDictionary[id] = newShader;
+        }
+
+        public static void ChangeShader(BatchID id, Effect newShader, out Effect oldShader) {
+            oldShader = ShaderDictionary[id];
+            ShaderDictionary[id] = newShader;
         }
 
 
@@ -453,6 +521,8 @@ namespace GameProject.Code.Core {
 
 
         public static void LoadScene(Scene scene, ContentManager content) {
+            ResetShaders();
+
             scene.Init();
             scene.LoadContent(content);
             scene.Awake();
