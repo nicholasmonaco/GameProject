@@ -277,6 +277,13 @@ namespace GameProject.Code.Core {
             }
         }
 
+        public void DebugDraw(SpriteBatch sb) {
+            foreach (Component c in _components) {
+                if (!c.Enabled) continue;
+                c.DebugDraw(sb);
+            }
+        }
+
 
         // End standard scene methods
 

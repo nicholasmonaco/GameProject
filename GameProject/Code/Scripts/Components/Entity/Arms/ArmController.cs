@@ -50,6 +50,7 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
         private Coroutine CurrentAction;
 
         public SpriteRenderer ArmRenderer;
+        public ParticleSystem ArmParticles;
         public Vector3 LastOrigLocalPos;
 
 
@@ -91,6 +92,8 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
             base.PreAwake();
 
             transform.Position -= new Vector3(0, MaxDriftDistance, 0);
+
+            ArmParticles.Main.StartSize = new ValueCurve_Vector3(transform.Scale);
         }
 
         public override void FixedUpdate() {
@@ -107,7 +110,10 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
             float driftTimer = DriftDuration;
             bool driftUp = true;
 
-            while(CurState == ArmState.Idle) {
+            ArmParticles.IsEmitting = false;
+            ArmParticles.Stop();
+
+            while (CurState == ArmState.Idle) {
                 float currentDrift;
                 if (driftUp) {
                     currentDrift = MathHelper.SmoothStep(-MaxDriftDistance, MaxDriftDistance, driftTimer / DriftDuration);
@@ -143,10 +149,15 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
 
             if (RushDelay > 0) yield return new WaitForSeconds(RushSpeed / 2);
 
+            ArmParticles.IsEmitting = true;
+            ArmParticles.Play();
+
 
             while (CurState == ArmState.Rushing) {
                 timer = toTime;
                 _hit = false;
+
+                ArmParticles.Main.StartRotation = new ValueCurve_Vector3(new Vector3(0, 0, transform.Rotation_Rads));
 
                 //punch towards
                 while (timer > 0) {

@@ -56,6 +56,12 @@ namespace GameProject.Code.Scripts.Components {
         private bool _dead = false;
         // End private values
 
+        //DEBUG
+        public ParticleSystem RunParticles;
+        //DEBUG
+
+
+
         public PlayerController(GameObject attached) : base(attached) {
             _dead = false;
 
@@ -228,6 +234,14 @@ namespace GameProject.Code.Scripts.Components {
 
 
         public override void FixedUpdate() {
+            bool doParticles = _playerRB.Velocity != Vector2.Zero;
+            if (!RunParticles.IsPlaying && doParticles) {
+                RunParticles.Play();
+            }else if (RunParticles.IsPlaying && !doParticles) {
+                RunParticles.Stop();
+            }
+
+            // Standard logic
             if (FreezeMovement) {
                 _playerRB.Velocity = Vector2.Zero;
             } else {
@@ -283,7 +297,7 @@ namespace GameProject.Code.Scripts.Components {
             bullet.SetColor(PlayerStats.ShotColor);
 
             //DEBUG
-            ToggleGray();
+            //ToggleGray();
         }
 
 

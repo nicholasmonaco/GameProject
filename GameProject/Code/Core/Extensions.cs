@@ -115,7 +115,7 @@ namespace GameProject.Code.Core {
         }
 
         
-        public static float NextValue(this Random random, float minValue, float maxValue) {
+        public static float NextValue(this Random random, float minValue = 0, float maxValue = 1) {
             return (float)random.NextDouble() * (maxValue - minValue) + minValue;
         }
 
@@ -170,6 +170,14 @@ namespace GameProject.Code.Core {
                                sin * vector.X + cos * vector.Y).Norm();
         }
 
+        public static Vector2 RotateDirectionNonUnit(this Vector2 vector, float angle) {
+            float mag = vector.Length();
+
+            float cos = MathF.Cos(angle);
+            float sin = MathF.Sin(angle);
+            return new Vector2(cos * vector.X - sin * vector.Y,
+                               sin * vector.X + cos * vector.Y).Norm() * mag;
+        }
 
 
         public static void Play(this SoundEffect sound, float volume) {

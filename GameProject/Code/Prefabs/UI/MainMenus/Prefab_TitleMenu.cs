@@ -25,7 +25,7 @@ namespace GameProject.Code.Prefabs.UI.MainMenus {
             groundRend.transform.Scale = scl;
             groundRend.transform.LocalPosition += new Vector3(0, 60, 0);
             groundRend.DrawLayer = DrawLayer.ID[DrawLayers.Background];
-            groundRend.OrderInLayer = 11;
+            groundRend.OrderInLayer = 12;
             //groundRend.Color = Color.Transparent; //DEBUG
 
 

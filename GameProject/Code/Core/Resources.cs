@@ -29,6 +29,11 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_Invisible;
         public static Texture2D Sprite_ControlGuide;
 
+        public static Texture2D Sprite_ParticleDefault;
+        public static Texture2D Sprite_ParticleDense;
+        public static Texture2D Sprite_ParticleSharp;
+        public static Texture2D Sprite_ParticleEx;
+
         public static Dictionary<RoomStyle, List<Texture2D>> Sprites_RoomCorners;
 
         public static Texture2D Sprite_Door_Inside;
@@ -314,6 +319,11 @@ namespace GameProject.Code.Core {
             Sprite_TestSquare = content.Load<Texture2D>("Textures/Misc/Square_01");
             Sprite_Pixel = content.Load<Texture2D>("Textures/Misc/Pixel");
             Sprite_Invisible = content.Load<Texture2D>("Textures/Misc/Invisible");
+
+            Sprite_ParticleDefault = content.Load<Texture2D>("Textures/Misc/Particle_Default");
+            Sprite_ParticleDense = content.Load<Texture2D>("Textures/Misc/Particle_Dense");
+            Sprite_ParticleSharp = content.Load<Texture2D>("Textures/Misc/Particle_Sharp");
+            Sprite_ParticleEx = content.Load<Texture2D>("Textures/Misc/Particle_Ex");
 
             Sprite_ControlGuide = content.Load<Texture2D>("Textures/Misc/ControlGuide");
 

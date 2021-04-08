@@ -10,16 +10,16 @@ namespace GameProject.Code.Core.UI {
     [AnimatableComponent]
     public class Panel : UIComponent {
 
-        private Image _panelRenderer;
+        public Image PanelRenderer { get; private set; }
         [AnimatableValue] public Color PanelColor {
-            get => _panelRenderer.Color;
+            get => PanelRenderer.Color;
             set {
                 SetColor(value);
             }
         }
 
         [AnimatableValue] public float Alpha {
-            get => _panelRenderer.Color.ToVector4().W;
+            get => PanelRenderer.Color.ToVector4().W;
             set {
                 SetOpacity(value);
             }
@@ -29,28 +29,28 @@ namespace GameProject.Code.Core.UI {
 
 
         public Panel(GameObject attached) : base(attached) {
-            _panelRenderer = gameObject.AddComponent<Image>();
-            _panelRenderer.Texture = Resources.Sprite_Pixel;
-            _panelRenderer.rectTransform.Size = GameManager.Resolution.ToVector2();
-            _panelRenderer.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
-            _panelRenderer.OrderInLayer = 20;
+            PanelRenderer = gameObject.AddComponent<Image>();
+            PanelRenderer.Texture = Resources.Sprite_Pixel;
+            PanelRenderer.rectTransform.Size = GameManager.Resolution.ToVector2();
+            PanelRenderer.DrawLayer = DrawLayer.ID[DrawLayers.TotalOverlay];
+            PanelRenderer.OrderInLayer = 20;
         }
 
 
         public void SetColor(Color newColor) {
-            _panelRenderer.Color = newColor;
-            _origA = (float)_panelRenderer.Color.A / 255;
+            PanelRenderer.Color = newColor;
+            _origA = (float)PanelRenderer.Color.A / 255;
         }
 
         public void SetOpacity(float alpha) {
-            _panelRenderer.Color = new Color(_panelRenderer.Color, alpha); //use the byte implementation later if you can, it's faster but idk how it works
+            PanelRenderer.Color = new Color(PanelRenderer.Color, alpha); //use the byte implementation later if you can, it's faster but idk how it works
         }
 
         public void AddToOrder(int addition) {
-            _panelRenderer.OrderInLayer += addition;
+            PanelRenderer.OrderInLayer += addition;
         }
 
-        public bool IsVisible => _panelRenderer.Color.A > 0;
+        public bool IsVisible => PanelRenderer.Color.A > 0;
 
 
 

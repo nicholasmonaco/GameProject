@@ -17,7 +17,8 @@ namespace GameProject.Code.Core.Particles {
         public float StartLifetime;
         public float RemainingLifetime;
         public float TimeSinceStart => StartLifetime - RemainingLifetime;
-        public float LifetimeRatio => RemainingLifetime / StartLifetime;
+        public float InverseLifetimeRatio => RemainingLifetime / StartLifetime;
+        public float LifetimeRatio => TimeSinceStart / StartLifetime;
         public bool Alive => RemainingLifetime > 0;
         
 
@@ -27,10 +28,10 @@ namespace GameProject.Code.Core.Particles {
             set { Rotation3D = new Vector3(0, 0, value); }
         }
 
-        public Vector3 StartSize3D;
-        public Vector2 StartSize {
-            get => StartSize3D.ToVector2();
-            set { StartSize3D = value.ToVector3(); }
+        public Vector3 Scale3D;
+        public Vector2 Scale {
+            get => Scale3D.ToVector2();
+            set { Scale3D = value.ToVector3(); }
         }
 
         public Vector3 Velocity3D;
@@ -46,6 +47,7 @@ namespace GameProject.Code.Core.Particles {
         }
 
 
+        #region Initializers
 
         public void Initialize() {
             Seed = GameManager.DeltaRandom.Next(int.MinValue, int.MaxValue);
@@ -59,7 +61,7 @@ namespace GameProject.Code.Core.Particles {
             RemainingLifetime = StartLifetime;
 
             Rotation3D = Vector3.Zero;
-            StartSize3D = Vector3.One;
+            Scale3D = Vector3.One;
             Velocity3D = Vector3.Zero;
             AngularVelocity3D = Vector3.Zero;
         }
@@ -79,7 +81,7 @@ namespace GameProject.Code.Core.Particles {
             RemainingLifetime = startLifetime;
 
             Rotation3D = startRotation3D;
-            StartSize3D = startSize3D;
+            Scale3D = startSize3D;
             Velocity3D = velocity3D;
             AngularVelocity3D = angularVelocity3D;
 
@@ -101,7 +103,7 @@ namespace GameProject.Code.Core.Particles {
             RemainingLifetime = startLifetime;
 
             Rotation = startRotation;
-            StartSize = startSize;
+            Scale = startSize;
             Velocity = velocity;
             AngularVelocity = angularVelocity;
 
@@ -123,7 +125,7 @@ namespace GameProject.Code.Core.Particles {
             RemainingLifetime = startLifetime;
 
             Rotation = startRotation;
-            StartSize = startSize;
+            Scale = startSize;
             Velocity = velocity;
             AngularVelocity = angularVelocity;
 
@@ -145,13 +147,23 @@ namespace GameProject.Code.Core.Particles {
             RemainingLifetime = startLifetime;
 
             Rotation = 0;
-            StartSize = startSize;
+            Scale = startSize;
             Velocity = velocity;
             AngularVelocity = 0;
 
             ParticleType = ParticleType.Sprite;
         }
 
+        #endregion
+
+
+        #region Methods
+
+        //public void Revive() {
+        //    RemainingLifetime = StartLifetime;
+        //}
+
+        #endregion
     }
 
     public enum ParticleType {

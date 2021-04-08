@@ -223,9 +223,11 @@ namespace GameProject.Code.Scripts.Components {
 
 
             // Versus screen check
+            bool versusScreenActive = false;
             if (nextRoom.RoomType == RoomType.Boss) {
                 //do boss cutscene
                 /*yield return */
+                versusScreenActive = true;
                 StartCoroutine(VersusScreen());
             }
 
@@ -258,11 +260,13 @@ namespace GameProject.Code.Scripts.Components {
                 // update minimap
                 GameManager.Minimap.ShiftDirection(GameManager.Map.CurrentGridPos);
             }
-            
+
 
             // resume player movement
-            GameManager.Player.FreezeMovement = false;
-
+            if (!versusScreenActive) {
+                GameManager.Player.FreezeMovement = false;
+            }
+            
             // reset checker flag
             GameManager.Map.ChangingRooms = false;
         }
@@ -284,6 +288,17 @@ namespace GameProject.Code.Scripts.Components {
             backroundPanel.transform.LocalPosition = Vector3.Zero;
             backroundPanel.SetColor(new Color(49, 15, 77));
             backroundPanel.SetOpacity(1);
+
+            GameObject vsText = Instantiate<GameObject>(Vector3.Zero, backroundPanel.transform);
+            vsText.transform.LocalPosition = Vector3.Zero;
+            //vsText.transform.UIParentFlag = true;
+            TextRenderer tr = vsText.AddComponent<TextRenderer>();
+            tr.SetFont(GameFont.Debug);
+            tr.SpriteScale *= 0.23f;
+            tr.Text = "ENEMY APPROACHES";
+            tr.Material.BatchID = backroundPanel.PanelRenderer.Material.BatchID;
+            tr.DrawLayer = backroundPanel.PanelRenderer.DrawLayer;
+            tr.OrderInLayer = backroundPanel.PanelRenderer.OrderInLayer + 1;
 
 
             //prepare while loop variables

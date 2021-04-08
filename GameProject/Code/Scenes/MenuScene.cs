@@ -87,6 +87,39 @@ namespace GameProject.Code.Scenes {
             backRend.DrawLayer = DrawLayer.ID[DrawLayers.Background];
             backRend.OrderInLayer = 10;
 
+            GameObject stars = Instantiate(new GameObject());
+
+            ParticleSystem starSystem = stars.AddComponent<ParticleSystem>();
+            starSystem.Material.BatchID = backRend.Material.BatchID;
+            starSystem.DrawLayer = backRend.DrawLayer;
+            starSystem.OrderInLayer = backRend.OrderInLayer + 1;
+            starSystem.Sprite = Resources.Sprite_ParticleDense;
+
+            starSystem.Main.StartRotation = new ValueCurve_Vector3(Vector3.Zero, new Vector3(0, 0, MathHelper.TwoPi), InterpolationBehaviour.Lerp);
+            starSystem.Main.StartSpeed = new ValueCurve_Vector3(Vector3.Zero);
+            starSystem.Main.StartLifetime = new ValueCurve_Float(11, 16);
+            starSystem.Shape.ShapeType = Core.Particles.ShapeType.Rectangle;
+            starSystem.Shape.Width = 465;
+            starSystem.Shape.Height = 350;
+            starSystem.Main.StartSize = new ValueCurve_Vector3(new Vector3(0.005f), new Vector3(0.01f));
+            starSystem.Main.MaxParticles = 10000;
+            starSystem.EmissionModule.RateOverTime = 275;
+
+            starSystem.ColorOverLifetimeModule.Enabled = true;
+
+            Color halfWhite = new Color(1f, 1f, 1f, 0f);
+            starSystem.ColorOverLifetimeModule.Gradient = new List<(float, Color)>() {
+                (0, Color.Transparent),
+                (0.15f, halfWhite),
+                (0.5f, Color.Transparent),
+                (0.85f, halfWhite),
+                (1, Color.Transparent)
+            };
+
+            starSystem.Main.Prewarm = true;
+
+
+
             GameObject backgroundGradient = Instantiate(new GameObject());
             backgroundGradient.Name = "Background Gradient";
             SpriteRenderer gradientRend = backgroundGradient.AddComponent<SpriteRenderer>();

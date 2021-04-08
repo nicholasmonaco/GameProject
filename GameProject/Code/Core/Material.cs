@@ -10,7 +10,7 @@ namespace GameProject.Code.Core {
 
 
         public BatchID BatchID = BatchID.BehindEntities;
-        public Effect Shader = null;
+        public Effect Shader = Resources.Effect_Base;
         public Texture Texture = Resources.Sprite_Pixel;
         public Color Color = Color.White;
     }

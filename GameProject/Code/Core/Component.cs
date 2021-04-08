@@ -108,6 +108,7 @@ namespace GameProject.Code.Core {
         public virtual void LateUpdate() { }
 
         public virtual void Draw(SpriteBatch sb) { }
+        public virtual void DebugDraw(SpriteBatch sb) { }
 
         public virtual void OnDestroy() { }
 

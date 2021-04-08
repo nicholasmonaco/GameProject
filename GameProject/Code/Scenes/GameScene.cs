@@ -264,6 +264,8 @@ namespace GameProject.Code.Scenes {
 
             GameManager.LevelResetting = true;
 
+            ResetShaders();
+
             _updating = true; // This could probably be moved further down
 
             _pausePanel.gameObject.Enabled = false;

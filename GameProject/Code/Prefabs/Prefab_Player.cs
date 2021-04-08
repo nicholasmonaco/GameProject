@@ -109,16 +109,56 @@ namespace GameProject.Code.Prefabs {
             leftArm.LastOrigLocalPos = leftArm.transform.LocalPosition;
             leftArm.RushDelay = 0.05f;
             leftArm.ArmRenderer.Material.BatchID = BatchID.Player;
+            leftArm.ArmParticles.Material.BatchID = BatchID.Player;
 
             ArmController rightArm = Instantiate<Prefab_Arm>(Vector3.Zero, transform).GetComponent<ArmController>();
             rightArm.gameObject.Name = "Right Player Arm";
             rightArm.transform.LocalPosition = new Vector3(armDist, 0, 0);
             rightArm.LastOrigLocalPos = rightArm.transform.LocalPosition;
             rightArm.ArmRenderer.Material.BatchID = BatchID.Player;
+            rightArm.ArmParticles.Material.BatchID = BatchID.Player;
 
             player.Arms = new List<ArmController>(2);
             player.Arms.Add(leftArm);
             player.Arms.Add(rightArm);
+
+
+            //DEBUG
+            ParticleSystem testParticles = AddComponent<ParticleSystem>();
+            testParticles.Sprite = Resources.Sprite_Pixel;
+            testParticles.Material.BatchID = BatchID.BehindPlayer;
+            testParticles.DrawLayer = DrawLayer.ID[DrawLayers.Projectiles];
+            testParticles.OrderInLayer = 1;
+
+            testParticles.Shape.Offset = new Vector3(0, -5, 0);
+
+            testParticles.EmissionModule.RateOverTime = 70;
+            testParticles.Main.SimulationSpace = Core.Particles.ParticleSimulationSpace.World;
+            testParticles.Main.StartLifetime = new ValueCurve_Float(0.25f * 2, 0.45f * 2, InterpolationBehaviour.Lerp);
+            testParticles.Main.StartSize = new ValueCurve_Vector3(new Vector3(3f, 3f, 1));
+            float speed = 0.4f;
+            testParticles.Main.StartSpeed = new ValueCurve_Vector3(new Vector3(-speed, -speed, 0), new Vector3(speed, speed, 0), InterpolationBehaviour.ComponentIndependent);
+
+            //testParticles.Main.StartColor = new ValueCurve_Color(new Color(0, 0, 0, 255), new Color(255, 255, 255, 255), InterpolationBehaviour.ComponentIndependent);
+
+            testParticles.Main.StartColor = new ValueCurve_Color(Color.Gray);
+
+            //testParticles.ColorOverLifetimeModule.Enabled = true;
+            //testParticles.ColorOverLifetimeModule.Gradient = new List<(float, Color)>() {
+            //    (0, Color.White),
+            //    (0.9f, Color.White),
+            //    (1, Color.Transparent)
+            //};
+
+            testParticles.SizeOverLifetimeModule.Enabled = true;
+            testParticles.SizeOverLifetimeModule.Gradient = new List<(float, Vector3)>() {
+                (0, new Vector3(3, 3, 1)),
+                (1, new Vector3(0, 0, 0)),
+            };
+
+            player.RunParticles = testParticles;
+
+            //DEBUG
 
             // End adding components
         }

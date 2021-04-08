@@ -4,6 +4,7 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Effects/BaseSpriteEffect.fx</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Effects/Grayscale.fx</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Fonts/arial.spritefont</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Fonts/Base_Inner.spritefont</File>
@@ -189,6 +190,10 @@
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/Ball.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/ControlGuide.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/Invisible.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/Particle_Default.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/Particle_Dense.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/Particle_Ex.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/Particle_Sharp.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/Pixel.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Misc/Square_01.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Pickup/BonusHeart_Whole.png</File>
@@ -225,6 +230,11 @@
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/UI/Reticle_0.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

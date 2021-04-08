@@ -150,6 +150,12 @@ namespace GameProject.Code.Core {
             //    if (g.Enabled) g.Draw(sb);
             //}
 
+            if (Debug.DebugDraw) {
+                foreach (GameObject g in GameObjects) {
+                    if (g.Enabled) g.DebugDraw(sb);
+                }
+            }
+
 
             Matrix viewMatrix = GameManager.MainCamera.ViewMatrix *
                                 Matrix.CreateScale(1, -1, 1) *
@@ -158,6 +164,7 @@ namespace GameProject.Code.Core {
 
             Dictionary<BatchID, List<IGameDrawable>> renderers = new Dictionary<BatchID, List<IGameDrawable>>();
             for(int i = 0; i < Material.ShaderCount; i++) { renderers.Add((BatchID)i, new List<IGameDrawable>()); }
+            renderers.Add(BatchID.NonAuto, new List<IGameDrawable>());
 
             foreach(GameObject g in GameObjects) {
                 if (!g.Enabled) continue;
@@ -171,18 +178,41 @@ namespace GameProject.Code.Core {
             foreach(KeyValuePair<BatchID, List<IGameDrawable>> kvp in renderers) {
                 if (kvp.Value.Count == 0) continue;
 
-                sb.Begin(sortMode: SpriteSortMode.FrontToBack,
+                if(kvp.Key == BatchID.NonAuto) {
+                    // individual spritebatch per thing
+
+                    foreach (IGameDrawable drawable in kvp.Value) {
+                        sb.Begin(sortMode: SpriteSortMode.FrontToBack,
+                                 blendState: BlendState.AlphaBlend,
+                                 samplerState: SamplerState.PointClamp,
+                                 rasterizerState: RasterizerState.CullNone,
+                                 transformMatrix: viewMatrix,
+                                 effect: drawable.Material.Shader);
+
+                        drawable.Draw(sb);
+
+                        sb.End();
+                    }
+
+                } else {
+                    // one batch per batchid
+
+                    sb.Begin(sortMode: SpriteSortMode.FrontToBack,
                          blendState: BlendState.AlphaBlend,
                          samplerState: SamplerState.PointClamp,
                          rasterizerState: RasterizerState.CullNone,
                          transformMatrix: viewMatrix,
                          effect: ShaderDictionary[kvp.Key]);
 
-                foreach (IGameDrawable drawable in kvp.Value) {
-                    drawable.Draw(sb);
+                    foreach (IGameDrawable drawable in kvp.Value) {
+                        drawable.Draw(sb);
+                    }
+
+                    sb.End();
+
                 }
 
-                sb.End();
+                
             }
         }
 
