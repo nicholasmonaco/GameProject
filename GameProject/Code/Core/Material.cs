@@ -9,10 +9,37 @@ namespace GameProject.Code.Core {
         public static int ShaderCount = 12; // This has to be hardcoded or read in from a file or something.
 
 
-        public BatchID BatchID = BatchID.BehindEntities;
+        public Material() { }
+
+        public Material(IGameDrawable attachedDrawable) {
+            AttachedDrawable = attachedDrawable;
+        }
+
+
+
+        public IGameDrawable AttachedDrawable;
+
+        private BatchID _batchID = BatchID.BehindEntities;
+        public BatchID BatchID {
+            get => _batchID;
+            set {
+                _batchID = value;
+                if (value == BatchID.NonAuto) {
+                    NonAutoIndex = SolveIndex(AttachedDrawable.DrawLayer, AttachedDrawable.OrderInLayer);
+                }
+            }
+        }
+
+
         public Effect Shader = Resources.Effect_Base;
+        public float NonAutoIndex = 0;
         public Texture Texture = Resources.Sprite_Pixel;
         public Color Color = Color.White;
+
+
+        public static float SolveIndex(int drawLayer, int orderInLayer) {
+            return (drawLayer * 10000 + orderInLayer) / 500000f;
+        }
     }
 
 

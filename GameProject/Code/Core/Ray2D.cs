@@ -18,5 +18,6 @@ namespace GameProject.Code.Core {
         public Vector2 GetPoint(float distance) {
             return Origin + (Direction * distance);
         }
+
     }
 }

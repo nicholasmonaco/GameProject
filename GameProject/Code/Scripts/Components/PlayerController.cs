@@ -124,13 +124,17 @@ namespace GameProject.Code.Scripts.Components {
             if (active) {
                 foreach (ArmController arm in Arms) {
                     arm.CurState = ArmState.Idle;
-                    arm.ArmRenderer.Color = Color.White;   
+                    arm.ArmRenderer.Color = Color.White;
+                    arm.ArmParticles.Stop();
+                    arm.ArmParticles.Clear();
                 }
             } else {
                 foreach (ArmController arm in Arms) {
+                    arm.ResetRotation();
+                    arm.ArmParticles.Stop();
+                    arm.ArmParticles.Clear();
                     arm.CurState = ArmState.Locked;
                     arm.ArmRenderer.Color = Color.Transparent;
-                    arm.ResetRotation();
                 }
             }
         }

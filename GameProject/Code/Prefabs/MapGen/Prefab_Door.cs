@@ -45,6 +45,7 @@ namespace GameProject.Code.Prefabs.MapGen {
 
             DoorController dc = AddComponent<DoorController>();
             dc.FrameRenderer = frameRend;
+            dc.InsideRenderer = insideRend;
             dc.DoorRenderer = doorRend;
             dc.DoorCollider = doorCollider;
             dc.FillerCollider = fillerCollider;

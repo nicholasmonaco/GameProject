@@ -70,6 +70,10 @@ namespace GameProject.Code.Core.Components {
             return GetTile(pos.X, pos.Y);
         }
 
+        public Vector2 GetWorldPosFromGridPos(Point gridPos) {
+            return transform.Position.ToVector2() + _map[gridPos.X, gridPos.Y].Offset;
+        }
+
 
         public Point GetGridPosFromWorldPosition(Vector3 position) {
             return GetGridPosFromWorldPosition(position.ToVector2());

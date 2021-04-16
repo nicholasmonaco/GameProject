@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CC/Y3y1FgAfOxmVP85gdsPaFiXcDigHOa1HiZMO3uEwkMu0TGZ+Lhk7SDBmi7mDPUEXVWObqkzOkgm32v7l67w==",
+  "dgSpecHash": "Fax3WtEm4glrnGXk922QjJl1Bb9yUy17pBSi5HV4n1s2EaDG7BnkTzVlWYX3L9w8ebQaLT1IbI4G4+YW0jz0yg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\GameProject\\GameProject.csproj",
   "expectedPackageFiles": [
@@ -91,6 +91,7 @@
     "C:\\Users\\Nick\\.nuget\\packages\\system.resources.reader\\4.0.0\\system.resources.reader.4.0.0.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.resources.resourcemanager\\4.0.1\\system.resources.resourcemanager.4.0.1.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.runtime\\4.1.0\\system.runtime.4.1.0.nupkg.sha512",
+    "C:\\Users\\Nick\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0-preview.3.21201.4\\system.runtime.compilerservices.unsafe.6.0.0-preview.3.21201.4.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.runtime.extensions\\4.1.0\\system.runtime.extensions.4.1.0.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.runtime.handles\\4.0.1\\system.runtime.handles.4.0.1.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.runtime.interopservices\\4.1.0\\system.runtime.interopservices.4.1.0.nupkg.sha512",
@@ -110,6 +111,8 @@
     "C:\\Users\\Nick\\.nuget\\packages\\system.text.encoding\\4.0.11\\system.text.encoding.4.0.11.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.text.encoding.codepages\\4.0.1\\system.text.encoding.codepages.4.0.1.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.text.encoding.extensions\\4.0.11\\system.text.encoding.extensions.4.0.11.nupkg.sha512",
+    "C:\\Users\\Nick\\.nuget\\packages\\system.text.encodings.web\\6.0.0-preview.3.21201.4\\system.text.encodings.web.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Nick\\.nuget\\packages\\system.text.json\\6.0.0-preview.3.21201.4\\system.text.json.6.0.0-preview.3.21201.4.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.text.regularexpressions\\4.1.0\\system.text.regularexpressions.4.1.0.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.threading\\4.0.11\\system.threading.4.0.11.nupkg.sha512",
     "C:\\Users\\Nick\\.nuget\\packages\\system.threading.overlapped\\4.0.1\\system.threading.overlapped.4.0.1.nupkg.sha512",

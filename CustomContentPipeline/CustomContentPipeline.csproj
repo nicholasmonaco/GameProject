@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.Content.Pipeline.Portable" Version="3.7.1.189" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0-preview.3.21201.4" />
   </ItemGroup>
 
 </Project>

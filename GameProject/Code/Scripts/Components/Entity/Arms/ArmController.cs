@@ -16,6 +16,8 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
 
 
         public ArmController(GameObject attached) : base(attached) {
+            _driftTimer = DriftDuration;
+
             CurState = ArmState.Locked;
         }
 
@@ -104,10 +106,11 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
 
 
 
+        private float _driftTimer = 0;
 
         public IEnumerator Idle() {
             LastOrigLocalPos = transform.LocalPosition;
-            float driftTimer = DriftDuration;
+            //_driftTimer = DriftDuration;
             bool driftUp = true;
 
             ArmParticles.IsEmitting = false;
@@ -116,16 +119,16 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
             while (CurState == ArmState.Idle) {
                 float currentDrift;
                 if (driftUp) {
-                    currentDrift = MathHelper.SmoothStep(-MaxDriftDistance, MaxDriftDistance, driftTimer / DriftDuration);
+                    currentDrift = MathHelper.SmoothStep(-MaxDriftDistance, MaxDriftDistance, _driftTimer / DriftDuration);
                 } else {
-                    currentDrift = MathHelper.SmoothStep(MaxDriftDistance, -MaxDriftDistance, driftTimer / DriftDuration);
+                    currentDrift = MathHelper.SmoothStep(MaxDriftDistance, -MaxDriftDistance, _driftTimer / DriftDuration);
                 }
 
                 transform.LocalPosition = LastOrigLocalPos + new Vector3(0, currentDrift, 0);
 
-                driftTimer += Time.entityDeltaTime;
-                if (driftTimer >= DriftDuration) {
-                    driftTimer = 0;
+                _driftTimer += Time.entityDeltaTime;
+                if (_driftTimer >= DriftDuration) {
+                    _driftTimer = 0;
                     driftUp = !driftUp;
                 }
 

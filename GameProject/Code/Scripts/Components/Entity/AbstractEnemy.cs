@@ -256,6 +256,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
             if (GameManager.Map.CurrentRoom.ObstacleColliders == null) return true;
 
             Ray2D ray = new Ray2D(transform.Position.ToVector2(), _playerPos - transform.Position.ToVector2());
+            _rayVisualizer = (ray.Origin, ray.Origin + (ray.Direction * 1000));
 
             Collider2D targetCollider = GameManager.Player.PlayerCollider;
             int maxIndex = GameManager.Map.CurrentRoom.ObstacleColliders.Count - 1;
@@ -284,40 +285,45 @@ namespace GameProject.Code.Scripts.Components.Entity {
         protected void TrackChasePlayer() {
             if (GameManager.Player == null) return;
 
-            // If the player can be seen, just move towards it
-            //if (CanSeePlayer()) {
-            //    _enemyRB.Velocity = Vector2.Normalize(_playerPos - transform.Position.ToVector2()) * _speed;
-
-            //    //DBEUG
-            //    trackerposss = _enemyRB.Velocity.Norm();
-            //    trackercolorrr = Color.Pink;
-
-            //    return;
-            //}
-
-            //THE OFSSET IS OFF BY HALF A TILE!!!!!!!! but maybe only for this - not the tiles themselves
-
-            // Otherwise, use pathfinding
+            // Check if player can be reached with pathfinding
             Vector2 dir;
             if (_enemyPathFinder.FindPath(_playerPos, out dir)) {
                 if (dir == Vector2.Zero) {
                     _enemyRB.Velocity = Vector2.Normalize(_playerPos - transform.Position.ToVector2()) * _speed;
+
+                    //DEBUG
+                    //_trackerColor = Color.Yellow;
+                    //
+                    
+                    return;
+                }else if (CanSeePlayer()) {
+                    // If the player can be seen, move towards it if pathfinding allows it
+                    _enemyRB.Velocity = Vector2.Normalize(_playerPos - transform.Position.ToVector2()) * _speed;
+
+                    //DEBUG
+                    //_trackedDirection = _enemyRB.Velocity.Norm();
+                    //_trackerColor = Color.Pink;
+                    //
+
                     return;
                 }
 
+
+                // If the player can't be "seen", then use the found path to get to it
                 _enemyRB.Velocity = dir * _speed;
 
-                //Debug.Log($"Path found: Direction Vector {dir}");
-                //DBEUG
-                trackerposss = dir;
-                trackercolorrr = Color.LimeGreen;
+                //DEBUG
+                //_trackedDirection = dir;
+                //_trackerColor = Color.LimeGreen;
+                //
 
                 return;
             }
 
             //DEBUG
-            trackerposss = Vector2.Zero;
-            trackercolorrr = Color.Transparent;
+            //_trackedDirection = Vector2.Zero;
+            //_trackerColor = Color.Red;
+            //
 
             _enemyRB.Velocity = Vector2.Zero;
         }
@@ -325,13 +331,19 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         //DEBUG
-        private Vector2 trackerposss = Vector2.Zero;
-        private Color trackercolorrr = Color.LimeGreen;
-        public override void Draw(SpriteBatch sb) {
+        private Vector2 _trackedDirection = Vector2.Zero;
+        private Color _trackerColor = Color.LimeGreen;
+        private (Vector2, Vector2) _rayVisualizer;
+
+        public override void DebugDraw(SpriteBatch sb) {
             base.Draw(sb);
 
-            float angle = MathF.Atan2(trackerposss.Y, trackerposss.X);
-            sb.Draw(Resources.Sprite_Pixel, transform.Position.ToVector2() + trackerposss, null, trackercolorrr, angle, Vector2.Zero, new Vector2(32, 1), SpriteEffects.None, 1);
+            float angle = MathF.Atan2(_trackedDirection.Y, _trackedDirection.X);
+            sb.Draw(Resources.Sprite_Pixel, transform.Position.ToVector2() + _trackedDirection, null, _trackerColor, angle, Vector2.Zero, new Vector2(32, 1), SpriteEffects.None, 1);
+
+            if (_rayVisualizer != (Vector2.Zero, Vector2.Zero)) Renderer.DrawLine2D(sb, _rayVisualizer.Item1, _rayVisualizer.Item2, Color.Coral);
+
+            _rayVisualizer = (Vector2.Zero, Vector2.Zero);
         }
 
 

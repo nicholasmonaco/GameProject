@@ -70,6 +70,7 @@ namespace GameProject.Code.Scripts.Components {
             RoomType = RoomType.Normal;
 
             Enemies = new List<AbstractEnemy>();
+            Entities = new List<AbstractEntity>();
 
             // Make base room stuff
             for (int x = -1; x < 2; x += 2) {
@@ -207,7 +208,10 @@ namespace GameProject.Code.Scripts.Components {
             else if (RoomType == RoomType.Boss) SpawnBoss();
 
             // If no room is found
-            if (data.RoomID == -99999) return;
+            if (data.RoomID == -99999) {
+                CreateEmptyObstacleMap();
+                return; 
+            }
 
             
             SetObstacleTiles(data.ObstacleData);
@@ -268,7 +272,15 @@ namespace GameProject.Code.Scripts.Components {
                 foreach (Pickup p in Loot) {
                     GameObject pickup = Instantiate(new Prefab_PickupGeneric(p));
                     pickup.transform.Parent = transform;
-                    pickup.transform.LocalPosition = Vector3.Zero; //change this later to find the nearest clear spot(s) from the center of the room
+
+                    pickup.transform.Position = GetClosestOpenPoint(transform.Position.ToVector2()).ToVector3();
+
+                    AbstractEntity pickupEntity = pickup.GetComponent<AbstractEntity>();
+                    pickupEntity.ExtraOnDestroy = () => {
+                        Entities.Remove(pickupEntity);
+                    };
+
+                    Entities.Add(pickupEntity);
                 }
             }
 
@@ -315,6 +327,10 @@ namespace GameProject.Code.Scripts.Components {
                         entity.transform.Parent = transform;
                         entity.transform.LocalPosition = ((new Vector2(x, y) * (ObstacleTileSize + 2 * ObstacleTileOffset)) + ObstacleTileOffset + offset).ToVector3();
 
+                        entity.ExtraOnDestroy = () => {
+                            Entities.Remove(entity);
+                        };
+
                         Entities.Add(entity);
                     }
                 }
@@ -348,12 +364,25 @@ namespace GameProject.Code.Scripts.Components {
         }
 
 
+        private void CreateEmptyObstacleMap() {
+            int[,] rawObstacleMap = new int[ObstacleTilemapSize.X, ObstacleTilemapSize.Y];
+
+            for (int y = 0; y < ObstacleTilemapSize.Y; y++) {
+                for (int x = 0; x < ObstacleTilemapSize.X; x++) {
+                    rawObstacleMap[x, y] = 0;
+                }
+            }
+
+            SetObstacleTiles(rawObstacleMap);
+        }
+
 
         public void SetObstacleTiles(int[,] rawObstacleMap) {
             // Note: If for some reason we use tilemaps somewhere else, this is the way to do it.
 
             gameObject.Layer = LayerID.Obstacle; //this is probably a bad way to do this
             GameObject obstacleMapHolder = Instantiate<GameObject>(transform.Position, transform);
+            obstacleMapHolder.Name = "Obstacle Map Holder";
             obstacleMapHolder.transform.Position = transform.Position;
             //Debug.Log($"holderpos: {obstacleMapHolder.transform.Position}");
             obstacleMapHolder.Layer = LayerID.Obstacle;
@@ -450,6 +479,10 @@ namespace GameProject.Code.Scripts.Components {
             return ObstacleTilemap.GetTile(p);
         }
 
+        public ObstacleID GetObstacleAtGridPos(Point point) {
+            return ObstacleTilemap.GetTile(point);
+        }
+
         
         public Point GetGridPos(Vector3 position) {
             return GetGridPos(position.ToVector2());
@@ -466,6 +499,78 @@ namespace GameProject.Code.Scripts.Components {
             Vector2 tilepoint = (position - transform.Position.ToVector2() - mapOffset) / (ObstacleTileSize + ObstacleTileOffset * 2);
             return new Point((int)MathF.Ceiling(tilepoint.X), (int)MathF.Ceiling(tilepoint.Y));
         }
+
+        public Vector2 GetWorldPos(Point gridPos) {
+            return ObstacleTilemap.GetWorldPosFromGridPos(gridPos);
+        }
+
+        public Point GetClosestOpenTilePoint(Point attemptPoint) {
+            bool openFound = false;
+            int counterMax = ObstacleTilemapSize.X * ObstacleTilemapSize.Y;
+            int counter = 0;
+
+            Queue<Point> points = new Queue<Point>();
+            points.Enqueue(attemptPoint);
+
+            List<Point> checkedPoints = new List<Point>();
+            checkedPoints.Add(attemptPoint);
+
+            Point point;
+            Point lastObstacleOpen = attemptPoint;
+
+            do {
+                point = points.Dequeue();
+                counter++;
+
+                if(GetObstacleAtGridPos(point) == ObstacleID.None) {
+                    lastObstacleOpen = point;
+                    // Also check that there is no entity there
+                    foreach (AbstractEntity entity in Entities) {
+                        if (GetGridPos(entity.transform.Position) == point) goto NotOpen;
+                    }
+
+                    openFound = true;
+                    break;
+                }
+
+                NotOpen:
+
+                if (counter >= counterMax) return lastObstacleOpen;
+
+                // Add neighboring positions to queue
+                Point testpoint = point + new Point(1, 0);
+                if (testpoint.X < ObstacleTilemapSize.X && !checkedPoints.Contains(testpoint)) {
+                    points.Enqueue(testpoint);
+                    checkedPoints.Add(testpoint);
+                }
+
+                testpoint = point - new Point(1, 0);
+                if (testpoint.X >= 0 && !checkedPoints.Contains(testpoint)) {
+                    points.Enqueue(testpoint);
+                    checkedPoints.Add(testpoint);
+                }
+
+                testpoint = point + new Point(0, 1);
+                if (testpoint.Y < ObstacleTilemapSize.Y && !checkedPoints.Contains(testpoint)) {
+                    points.Enqueue(testpoint);
+                    checkedPoints.Add(testpoint);
+                }
+
+                testpoint = point - new Point(0, 1);
+                if (testpoint.Y >= 0 && !checkedPoints.Contains(testpoint)) {
+                    points.Enqueue(testpoint);
+                    checkedPoints.Add(testpoint);
+                }
+
+            } while (!openFound);
+
+            return point;
+        }
+
+        public Vector2 GetClosestOpenPoint(Vector2 position) {
+            return GetWorldPos(GetClosestOpenTilePoint(GetGridPos(position)));
+        }
+
 
 
         private static Texture2D GetCorrectObstacleSprite(ObstacleID id) {
@@ -512,10 +617,6 @@ namespace GameProject.Code.Scripts.Components {
             } else {
                 lootCount = 4;
             }
-
-            //debug - for workshop release
-            if(lootCount > 1) lootCount = 1;
-            //debug
 
             Loot = new List<Pickup>(lootCount);
             for(int i = 0; i < lootCount; i++) {

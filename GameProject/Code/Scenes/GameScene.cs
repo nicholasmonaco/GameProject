@@ -36,6 +36,10 @@ namespace GameProject.Code.Scenes {
         private SpriteRenderer _respawnPrompt;
 
         public static bool Paused { get; private set; } = false;
+        public static bool CanPause {
+            get => GameManager.CanPause;
+            set { GameManager.CanPause = value; }
+        }
 
 
         public override void Init() {
@@ -328,6 +332,7 @@ namespace GameProject.Code.Scenes {
         private IEnumerator Die_C() {
             // stop gametime
             _updating = false;
+            CanPause = false;
 
             //play player death animation
 
@@ -403,6 +408,7 @@ namespace GameProject.Code.Scenes {
         private IEnumerator Win_C() {
             // stop gametime
             _updating = false;
+            CanPause = false;
 
             //play player death animation
 
@@ -485,6 +491,8 @@ namespace GameProject.Code.Scenes {
         }
 
         private void TogglePause() {
+            if (!CanPause) return;
+
             Paused = !Paused;
             Time.TimeScale = Paused ? 0 : 1;
 
@@ -510,6 +518,8 @@ namespace GameProject.Code.Scenes {
         }
 
         private void SetPaused(bool paused) {
+            if (!CanPause) return;
+
             Paused = !paused;
             TogglePause();
         }

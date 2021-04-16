@@ -28,25 +28,7 @@ namespace GameProject.Code.Core.Components {
         [AnimatableValue] public Vector2 SpriteScale = Vector2.One;
         [AnimatableValue] public Vector2 SpriteOffset = Vector2.Zero;
 
-        public int DrawLayer { 
-            get { return _drawLayer; }
-            set { 
-                _drawLayer = value;
-                _realDrawOrder = (_drawLayer * 10000 + _orderInLayer) / 500000f;    
-            }
-        }
-
-        public int OrderInLayer {
-            get { return _orderInLayer; }
-            set {
-                _orderInLayer = value;
-                _realDrawOrder = (_drawLayer * 10000 + _orderInLayer) / 500000f;
-            }
-        }
-
-        private int _drawLayer = 0;
-        private int _orderInLayer = 0;
-        private float _realDrawOrder = 0;
+        
 
 
         public SpriteRenderer(GameObject attached) : base(attached) { }

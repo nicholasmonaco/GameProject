@@ -1,5 +1,6 @@
 ﻿using GameProject.Code.Core;
 using GameProject.Code.Core.Components;
+using GameProject.Code.Scripts.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -9,8 +10,8 @@ using System.Text;
 using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject.Code.Scripts.Components.Entity {
-    public abstract class AbstractPickup : Component {
-        public AbstractPickup(GameObject attached) : base(attached) { }
+    public abstract class AbstractPickup : AbstractEntity {
+        public AbstractPickup(GameObject attached) : base(attached, EntityID.Pickup_Coin) { }
 
         private Pickup _pickupType;
         protected SpriteRenderer _pickupRenderer;
@@ -18,6 +19,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
         public virtual void InitPickup(Pickup type, SpriteRenderer pickupRenderer) {
             _pickupType = type;
+            ID = (EntityID)((int)type); // Note: This only works because the id's match. Be sure to continue to do so in the future.
 
             _pickupRenderer = pickupRenderer;
             _pickupRenderer.Sprite = Resources.Sprite_Pickups[_pickupType];
@@ -95,23 +97,23 @@ namespace GameProject.Code.Scripts.Components.Entity {
     }
 
     public enum Pickup {
-        Heart_Half,
-        Heart_Whole,
-        BonusHeart,
-        Key,
-        PowerCell,
-        Coin,
-        Coin_5,
-        Bomb,
+        Heart_Half = 201,
+        Heart_Whole = 202,
+        BonusHeart = 203,
+        Key = 204,
+        PowerCell = 205,
+        Coin = 206,
+        Coin_5 = 207,
+        Bomb = 215,
 
-        Chest_Free,
-        Chest_Free_Opened,
-        Chest_Locked,
-        Chest_Locked_Opened,
+        Chest_Free = 208,
+        Chest_Free_Opened = 209,
+        Chest_Locked = 210,
+        Chest_Locked_Opened = 211,
 
-        Heart_Double,
-        Key_Double,
-        Coin_Double,
-        Bomb_Double
+        Heart_Double = 212,
+        Key_Double = 213,
+        Coin_Double = 214,
+        Bomb_Double = 216
     }
 }

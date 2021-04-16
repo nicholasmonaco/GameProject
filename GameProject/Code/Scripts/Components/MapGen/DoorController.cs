@@ -21,7 +21,9 @@ namespace GameProject.Code.Scripts.Components {
 
         public Direction DoorDirection;
         private DoorType _doorType = DoorType.Normal;
+        
         public SpriteRenderer FrameRenderer;
+        public SpriteRenderer InsideRenderer;
         public SpriteRenderer DoorRenderer;
         private SpriteRenderer _secondaryRenderer;
 
@@ -67,10 +69,22 @@ namespace GameProject.Code.Scripts.Components {
 
                     SpriteAnimator anim = eyes.AddComponent<SpriteAnimator>();
                     anim.InitAnimation(_secondaryRenderer, Resources.Sprites_BossDoorEyeAnim.Count);
-                    for(int i=0;i< Resources.Sprites_BossDoorEyeAnim.Count; i++) {
+                    for(int i = 0; i < Resources.Sprites_BossDoorEyeAnim.Count; i++) {
                         anim.AddFrame(Resources.Sprites_BossDoorEyeAnim[i], 0.4f); //duration of 0.4 seconds per frame
                     }
                     anim.StartAnimating_Ponging();
+
+                    GameObject glow = Instantiate<GameObject>(transform.Position, transform);
+                    SpriteRenderer _glowRend = glow.AddComponent<SpriteRenderer>();
+                    _glowRend.Sprite = Resources.Sprite_BossDoorGlow;
+                    _glowRend.DrawLayer = FrameRenderer.DrawLayer;
+                    _glowRend.OrderInLayer = 27;
+                    _glowRend.Material.BatchID = BatchID.Room;
+                    glow.transform.Rotation = transform.Rotation;
+                    glow.transform.LocalPosition += (DoorDirection.GetDirectionPoint().ToVector2() * new Vector2(-38)).ToVector3();
+
+                    InsideRenderer.Sprite = Resources.Sprite_Door_Inside_Boss;
+
                     break;
             }
         }

@@ -8,6 +8,9 @@ namespace GameProject.Code.Core {
     public interface IGameDrawable {
         public Material Material { get; set; }
 
+        public int DrawLayer { get; set; }
+        public int OrderInLayer { get; set; }
+
         public void Draw(SpriteBatch sb);
     }
 }

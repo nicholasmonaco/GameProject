@@ -1352,3 +1352,8 @@ C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Deb
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Particle_Dense.xnb
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Particle_Sharp.xnb
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Misc\Particle_Ex.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Boss_Glow.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\System.Text.Encodings.Web.dll
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\System.Text.Json.dll
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Door_Inside_Boss.xnb

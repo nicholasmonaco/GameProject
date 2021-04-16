@@ -37,10 +37,12 @@ namespace GameProject.Code.Core {
         public static Dictionary<RoomStyle, List<Texture2D>> Sprites_RoomCorners;
 
         public static Texture2D Sprite_Door_Inside;
+        public static Texture2D Sprite_Door_Inside_Boss;
         public static Dictionary<DoorType, Texture2D> Sprites_DoorFrames;
         public static List<Texture2D> Sprites_DoorCloseFrames;
 
         public static List<Texture2D> Sprites_BossDoorEyeAnim;
+        public static Texture2D Sprite_BossDoorGlow;
 
 
         public static Texture2D Sprite_Bullet_Standard;
@@ -345,6 +347,7 @@ namespace GameProject.Code.Core {
 
 
             Sprite_Door_Inside = content.Load<Texture2D>("Textures/Level/Door/Door_Inside");
+            Sprite_Door_Inside_Boss = content.Load<Texture2D>("Textures/Level/Door/Door_Inside_Boss");
 
             Sprites_DoorFrames = new Dictionary<DoorType, Texture2D>(3);
             Sprites_DoorFrames.Add(DoorType.Item, content.Load<Texture2D>("Textures/Level/Door/Door_Item"));
@@ -366,6 +369,8 @@ namespace GameProject.Code.Core {
             Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_3"));
             Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_4"));
             Sprites_BossDoorEyeAnim.Add(content.Load<Texture2D>("Textures/Level/Door/Boss_Eyes/BossEyes_5"));
+
+            Sprite_BossDoorGlow = content.Load<Texture2D>("Textures/Level/Door/Boss_Glow");
 
 
             Sprite_Bullet_Standard = content.Load<Texture2D>("Textures/Bullet/PhotonShot");

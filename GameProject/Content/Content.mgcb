@@ -1179,6 +1179,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Level/Door/Boss_Eyes/BossEyes_5.png
 
+#begin Textures/Level/Door/Boss_Glow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Level/Door/Boss_Glow.png
+
 #begin Textures/Level/Door/Close/Close_00.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1274,6 +1286,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Level/Door/Door_Inside.png
+
+#begin Textures/Level/Door/Door_Inside_Boss.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Level/Door/Door_Inside_Boss.png
 
 #begin Textures/Level/Door/Door_Item.png
 /importer:TextureImporter

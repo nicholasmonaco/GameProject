@@ -164,6 +164,7 @@
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_3.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_4.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Boss_Eyes/BossEyes_5.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Boss_Glow.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_00.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_01.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_02.png</File>
@@ -172,6 +173,7 @@
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Close/Close_05.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Door_Boss.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Door_Inside.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Door_Inside_Boss.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Door_Item.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Door_QuarantineZone_Base.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Level/Door/Door_Regular_Base.png</File>
@@ -230,6 +232,8 @@
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/UI/Reticle_0.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "Z5ogdQg5zOboPvEp7rn5mwtn5d5yYpPODdGmbXQ6W8Ofjbcl+4OdS/uwJCO/svikID/q5DqqCUIKPKO7hUv01A==",
+  "dgSpecHash": "wORp07ffS2WFVZQyxtAwP8oCpESnpcqhksDdV/wLYuzjP7jrvod7/ALqoVaFR9klOw8urDLxrQkD27huQtesIg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Nick\\Desktop\\School\\_CIS580\\GameProject\\GameProject\\CustomContentPipeline\\CustomContentPipeline.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nick\\.nuget\\packages\\monogame.framework.content.pipeline.portable\\3.7.1.189\\monogame.framework.content.pipeline.portable.3.7.1.189.nupkg.sha512",
-    "C:\\Users\\Nick\\.nuget\\packages\\monogame.framework.portable\\3.7.1.189\\monogame.framework.portable.3.7.1.189.nupkg.sha512"
+    "C:\\Users\\Nick\\.nuget\\packages\\monogame.framework.portable\\3.7.1.189\\monogame.framework.portable.3.7.1.189.nupkg.sha512",
+    "C:\\Users\\Nick\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0-preview.3.21201.4\\system.runtime.compilerservices.unsafe.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Nick\\.nuget\\packages\\system.text.encodings.web\\6.0.0-preview.3.21201.4\\system.text.encodings.web.6.0.0-preview.3.21201.4.nupkg.sha512",
+    "C:\\Users\\Nick\\.nuget\\packages\\system.text.json\\6.0.0-preview.3.21201.4\\system.text.json.6.0.0-preview.3.21201.4.nupkg.sha512"
   ],
   "logs": [
     {

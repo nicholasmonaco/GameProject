@@ -44,7 +44,7 @@ namespace GameProject.Code.Core.Components {
 
 
 
-        public override void Draw(SpriteBatch sb) {
+        public override void DebugDraw(SpriteBatch sb) {
             if (!Debug.ShowColliders) return;
 
             if (WorldMatrixChanged) {
@@ -59,7 +59,6 @@ namespace GameProject.Code.Core.Components {
                     float divI = div * i;
                     _debugPoints[i] = new Vector2(MathF.Cos(divI), MathF.Sin(divI)) * radius + pos;
                 }
-                _debugPoints[pointCount - 1] = _debugPoints[0];
                 WorldMatrixChanged = false;
             }
 
@@ -67,7 +66,7 @@ namespace GameProject.Code.Core.Components {
             for (int i = 0; i < _debugPoints.Length - 1; i++) {
                 DrawLine(sb, _debugPoints[i], _debugPoints[i + 1]);
             }
-            //DrawLine(sb, _debugPoints[^1], _debugPoints[0]);
+            DrawLine(sb, _debugPoints[_debugPoints.Length - 1], _debugPoints[0]);
         }
     }
 }

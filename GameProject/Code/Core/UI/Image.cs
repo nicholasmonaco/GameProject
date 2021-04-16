@@ -37,7 +37,7 @@ namespace GameProject.Code.Core.UI {
 
 
         public Image(GameObject attached) : base(attached) {
-            Material = new Material();
+            Material = new Material(this);
             Material.BatchID = BatchID.HUD;
         }
 

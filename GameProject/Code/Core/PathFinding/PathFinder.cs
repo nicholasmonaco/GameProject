@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using GameProject.Code.Scripts.Util;
 using GameProject.Code.Scripts.Components;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameProject.Code.Core.PathFinding {
     public class PathFinder : Component {
@@ -26,6 +27,8 @@ namespace GameProject.Code.Core.PathFinding {
             return FindPath(position.ToVector2(), out moveDirection);
         }
 
+
+
         public bool FindPath(Vector2 targetPosition, out Vector2 moveDirection) {
             if(CurrentTilemap == null) {
                 moveDirection = Vector2.Zero;
@@ -33,11 +36,13 @@ namespace GameProject.Code.Core.PathFinding {
             }
 
             #region Setup Map
+            Vector2 offset = Room.ObstacleTileSize / 2f;
+
             PathNode start = new PathNode();
-            start.Position = CurrentRoom.GetGridPos(transform.Position.ToVector2());//- (Room.ObstacleTileSize / 2).ToPoint();
+            start.Position = CurrentRoom.GetGridPos(transform.Position.ToVector2() + offset);
 
             PathNode finish = new PathNode();
-            finish.Position = CurrentRoom.GetGridPos(targetPosition);//- (Room.ObstacleTileSize / 2).ToPoint();
+            finish.Position = CurrentRoom.GetGridPos(targetPosition + offset);
 
             start.SetDistance(finish.X, finish.Y);
 
@@ -45,6 +50,15 @@ namespace GameProject.Code.Core.PathFinding {
             activeTiles.Add(start);
 
             List<PathNode> visitedTiles = new List<PathNode>();
+
+
+            // Debug Drawing
+            if (Debug.ShowPathfinding) {
+                _debugTileDrawPoints = new List<(Point, Color)>();
+                _debugTileDrawPoints.Add((start.Position, Color.SkyBlue));
+                _debugTileDrawPoints.Add((finish.Position, Color.Pink));
+            }
+            //
             #endregion
 
 
@@ -61,9 +75,16 @@ namespace GameProject.Code.Core.PathFinding {
                     PathNode recursiveNode = checkNode;
 
                     if(recursiveNode.Parent != null) {
-                        while (recursiveNode.Parent.Parent != null) recursiveNode = recursiveNode.Parent;
+                        while (recursiveNode.Parent.Parent != null) { 
+                            recursiveNode = recursiveNode.Parent;
+                            if(Debug.ShowPathfinding) _debugTileDrawPoints.Add((recursiveNode.Position, Color.ForestGreen));
+                        }
 
+                        Vector2 dirToStartTileCenter = (GameManager.Map.CurrentRoom.ObstacleTilemap.GetWorldPosFromGridPos(start.Position) - transform.Position.ToVector2()).Norm();
                         moveDirection = (recursiveNode.Position - start.Position).ToVector2(); // This should always be a unit vector
+
+                        moveDirection = (dirToStartTileCenter + moveDirection * 9f) / 10f;
+                        moveDirection = moveDirection.Norm();
                     }
 
                     return true;
@@ -139,6 +160,50 @@ namespace GameProject.Code.Core.PathFinding {
                                  .Where(node => node.Y >= 0 && node.Y <= maxY)
                                  .Where(node => CurrentTilemap.GetTile(node.X, node.Y) == ObstacleID.None)
                                  .ToList();
+        }
+
+
+
+
+        private List<(Point, Color)> _debugTileDrawPoints = new List<(Point, Color)>();
+
+
+        public override void DebugDraw(SpriteBatch sb) {
+            Vector2 halfTilesize = Room.ObstacleTileSize / 2f;
+
+            foreach((Point, Color) data in _debugTileDrawPoints) {
+                Vector2 center = GameManager.Map.CurrentRoom.ObstacleTilemap.GetWorldPosFromGridPos(data.Item1);
+                Vector2[] points = {
+                    center - halfTilesize,
+                    center + new Vector2(-halfTilesize.X, halfTilesize.Y),
+                    center + halfTilesize,
+                    center + new Vector2(halfTilesize.X, -halfTilesize.Y),
+                    center - halfTilesize
+                };
+
+                for (int i = 0; i < points.Length - 1; i++) {
+                    DrawLine(sb, points[i], points[i + 1], data.Item2);
+                }
+
+                DrawLine(sb, points[points.Length-1], points[0], data.Item2);
+            }
+
+            _debugTileDrawPoints.Clear();
+        }
+
+        private static void DrawLine(SpriteBatch sb, Vector2 start, Vector2 end, Color color) {
+            Vector2 edge = end - start;
+            float angle = (float)MathF.Atan2(edge.Y, edge.X);
+
+            sb.Draw(Resources.Sprite_Pixel,
+                    start,
+                    null,
+                    color,
+                    angle,
+                    Vector2.Zero,
+                    new Vector2(edge.Length(), 0.5f).FlipY(),
+                    SpriteEffects.None,
+                    0.9f);
         }
     }
 }

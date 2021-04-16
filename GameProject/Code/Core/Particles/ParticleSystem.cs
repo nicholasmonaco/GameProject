@@ -12,7 +12,7 @@ namespace GameProject.Code.Core.Components {
         public ParticleSystem(GameObject attached) : base(attached) {
             CurrentTime = 0;
 
-            Material = new Material();
+            Material = new Material(this);
 
             // Initializing modules
             _modules = new IParticleModule[9];
@@ -336,14 +336,18 @@ namespace GameProject.Code.Core.Components {
 
 
         public override void OnDestroy() {
-            _freeParticles.Clear();
+            //_freeParticles.Clear();
 
-            for(int i = 0; i < particles.Length; i++) {
-                particles[i] = null;
+            if(particles != null) {
+                for (int i = 0; i < particles.Length; i++) {
+                    particles[i] = null;
+                }
             }
 
-            for(int i = 0; i < _modules.Length; i++) {
-                _modules[i] = null;
+            if(_modules != null) {
+                for (int i = 0; i < _modules.Length; i++) {
+                    _modules[i] = null;
+                }
             }
 
             base.OnDestroy();

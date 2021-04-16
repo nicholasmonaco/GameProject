@@ -13,7 +13,7 @@ namespace GameProject.Code.Core {
             if(RaycastAll(ray, distance, layerMask, out hits)) {
                 float minFrac = float.MaxValue;
                 int id = 0;
-                for(int i = 0; i < hits.Length; i++) {
+                for(int i = 1; i < hits.Length; i++) {
                     if(hits[i].Fraction < minFrac) {
                         id = i;
                         minFrac = hits[i].Fraction;
@@ -31,16 +31,31 @@ namespace GameProject.Code.Core {
         public static bool Raycast_List(Ray2D ray, float distance, int layerMask, ICollection<Collider2D> hitlist, out RaycastHit2D hitData) {
             RaycastHit2D[] hits;
             if (RaycastAll_List(ray, distance, layerMask, hitlist, out hits)) {
-                float minFrac = float.MaxValue;
-                int id = 0;
-                for (int i = 0; i < hits.Length; i++) {
-                    if (hits[i].Fraction < minFrac) {
-                        id = i;
-                        minFrac = hits[i].Fraction;
+                //float minFrac = float.MaxValue;
+                //int id = 0;
+                //for (int i = 1; i < hits.Length; i++) {
+                //    if (hits[i].Fraction < minFrac) {
+                //        id = i;
+                //        minFrac = hits[i].Fraction;
+                //    }
+                //}
+
+                RaycastHit2D min = hits[0];
+                foreach(RaycastHit2D hit in hits) {
+                    if(hit.Fraction < min.Fraction) {
+                        min = hit;
                     }
                 }
 
-                hitData = hits[id];
+                //hitData = hits[id];
+                hitData = min;
+
+
+                //string d = $"Total Hits: {hits.Length} | MinHit: {hitData.HitCollider.gameObject.Name}\n";
+                //foreach(RaycastHit2D hit in hits) { d += $"Hit {hit.HitCollider.gameObject.Name}, Fraction = {hit.Fraction}\n"; }
+                //Debug.Log(d);
+                //Debug.Log($"Hit {hitData.HitCollider.gameObject.Name}, Fraction = {hitData.Fraction}, Total Hits: {hits.Length}");
+
                 return true;
             } else {
                 hitData = new RaycastHit2D();
@@ -145,7 +160,7 @@ namespace GameProject.Code.Core {
         }
 
 
-        private static bool RayCollidesPoly(Ray2D ray, float maxDistance, Collider2D collider, out Vector2 intersection) {
+        private static bool RayCollidesPoly_Old(Ray2D ray, float maxDistance, Collider2D collider, out Vector2 intersection) {
             //somethings wrong with this method - it isnt hitting right. also the circle one hits through spikes becasue theyre small circles
             Vector2 rayEnd = ray.GetPoint(maxDistance);
             Vector2 rayLine = rayEnd - ray.Origin;
@@ -184,6 +199,50 @@ namespace GameProject.Code.Core {
             return false;
         }
 
+        private static bool Intersects(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2, out Vector2 intersection) {
+            intersection = Vector2.Zero;
+
+            Vector2 b = a2 - a1;
+            Vector2 d = b2 - b1;
+            float bDotDPerp = b.X * d.Y - b.Y * d.X;
+
+            // if b dot d == 0, it means the lines are parallel so have infinite intersection points
+            if (bDotDPerp == 0)
+                return false;
+
+            Vector2 c = b1 - a1;
+            float t = (c.X * d.Y - c.Y * d.X) / bDotDPerp;
+            if (t < 0 || t > 1)
+                return false;
+
+            float u = (c.X * b.Y - c.Y * b.X) / bDotDPerp;
+            if (u < 0 || u > 1)
+                return false;
+
+            intersection = a1 + t * b;
+
+            return true;
+        }
+
+        private static bool RayCollidesPoly(Ray2D ray, float maxDistance, Collider2D collider, out Vector2 intersection) {
+            Vector2 rayEnd = ray.GetPoint(maxDistance);
+            //Vector2 rayLine = rayEnd - ray.Origin;
+
+            Vector2[] points = (collider.Bounds as PolygonBounds)._points;
+
+            for (int i = 0; i < points.Length - 1; i++) {
+                //Vector2 edge = points[i + 1] - points[i];
+
+                if (Intersects(points[i], points[i + 1], ray.Origin, rayEnd, out intersection)) {
+                    return true;
+                }
+            }
+
+            intersection = Vector2.Zero;
+            return false;
+        }
+
+
         private static bool RayCollidesCircle(Ray2D ray, float maxDistance, CircleCollider2D collider, out Vector2 intersection) {
             Vector2 rayOrigin = ray.Origin;
             Vector2 rayEnd = ray.GetPoint(maxDistance);
@@ -195,6 +254,7 @@ namespace GameProject.Code.Core {
 
             // First, check that the ends of the lines aren't in the circle
             if(AbstractBounds.DetectPointCircleCollision(rayOrigin, circCenter, circleRadius)) {
+                intersection = rayOrigin;
                 return true;
             }else if(AbstractBounds.DetectPointCircleCollision(rayEnd, circCenter, circleRadius)) {
                 intersection = rayEnd;
@@ -222,6 +282,7 @@ namespace GameProject.Code.Core {
             float dist = Vector2.Distance(closest, circCenter);
 
             // Return if the circle is on the line
+            intersection = closest;
             return dist <= circleRadius;
         }
 

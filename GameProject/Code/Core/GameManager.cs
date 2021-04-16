@@ -58,6 +58,7 @@ namespace GameProject.Code.Core {
         public static Random DeltaRandom;
 
         public static bool Paused => GameScene.Paused;
+        public static bool CanPause = true;
 
         public static PlayerController Player;
         public static Transform PlayerTransform => Player.transform;

@@ -150,11 +150,7 @@ namespace GameProject.Code.Core {
             //    if (g.Enabled) g.Draw(sb);
             //}
 
-            if (Debug.DebugDraw) {
-                foreach (GameObject g in GameObjects) {
-                    if (g.Enabled) g.DebugDraw(sb);
-                }
-            }
+            
 
 
             Matrix viewMatrix = GameManager.MainCamera.ViewMatrix *
@@ -175,13 +171,17 @@ namespace GameProject.Code.Core {
                 }
             }
 
-            foreach(KeyValuePair<BatchID, List<IGameDrawable>> kvp in renderers) {
-                if (kvp.Value.Count == 0) continue;
+            //foreach(KeyValuePair<BatchID, List<IGameDrawable>> kvp in renderers) {
+            for(int i = -1; i < Material.ShaderCount; i++) {
+                BatchID id = (BatchID)i;
+                List<IGameDrawable> value = renderers[id];
 
-                if(kvp.Key == BatchID.NonAuto) {
+                if (value.Count == 0) continue;
+
+                if(id == BatchID.NonAuto) {
                     // individual spritebatch per thing
 
-                    foreach (IGameDrawable drawable in kvp.Value) {
+                    foreach (IGameDrawable drawable in value) {
                         sb.Begin(sortMode: SpriteSortMode.FrontToBack,
                                  blendState: BlendState.AlphaBlend,
                                  samplerState: SamplerState.PointClamp,
@@ -202,18 +202,33 @@ namespace GameProject.Code.Core {
                          samplerState: SamplerState.PointClamp,
                          rasterizerState: RasterizerState.CullNone,
                          transformMatrix: viewMatrix,
-                         effect: ShaderDictionary[kvp.Key]);
+                         effect: ShaderDictionary[id]);
 
-                    foreach (IGameDrawable drawable in kvp.Value) {
+                    foreach (IGameDrawable drawable in value) {
                         drawable.Draw(sb);
                     }
 
                     sb.End();
 
                 }
-
-                
             }
+
+
+            // Debug Drawing
+            if (Debug.DebugDraw) {
+                sb.Begin(sortMode: SpriteSortMode.FrontToBack,
+                         blendState: BlendState.AlphaBlend,
+                         samplerState: SamplerState.PointClamp,
+                         rasterizerState: RasterizerState.CullNone,
+                         transformMatrix: viewMatrix,
+                         effect: ShaderDictionary[BatchID.AboveAll]);
+
+                foreach (GameObject g in GameObjects) {
+                    if (g.Enabled) g.DebugDraw(sb);
+                }
+                sb.End();
+            }
+            
         }
 
 
@@ -536,7 +551,7 @@ namespace GameProject.Code.Core {
 
         public GameObject Instantiate(GameObject obj) {
             _instantiateList += () => {
-                GameManager.CurrentScene.GameObjects.Add(obj);
+                GameObjects.Add(obj);
                 if (obj.Enabled) {
                     obj.Awake();
                     obj.OnEnable();

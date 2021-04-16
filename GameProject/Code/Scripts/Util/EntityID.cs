@@ -44,6 +44,9 @@ namespace GameProject.Code.Scripts.Util {
         Pickup_Heart_Double = 212,
         Pickup_Key_Double = 213,
         Pickup_Coin_Double = 214,
+
+        Pickup_Bomb = 215,
+        Pickup_Bomb_Double = 216,
         // End pickups
 
         // Enemies

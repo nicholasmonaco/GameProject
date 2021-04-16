@@ -62,7 +62,7 @@ namespace GameProject.Code.Core.Components {
 
 
         // Debug
-        public override void Draw(SpriteBatch sb) {
+        public override void DebugDraw(SpriteBatch sb) {
             if (!Debug.ShowColliders) return;
             for (int i = 0; i < PolyBounds._points.Length - 1; i++) {
                 DrawLine(sb, PolyBounds._points[i], PolyBounds._points[i + 1]);
