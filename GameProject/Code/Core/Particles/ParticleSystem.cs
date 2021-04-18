@@ -15,7 +15,7 @@ namespace GameProject.Code.Core.Components {
             Material = new Material(this);
 
             // Initializing modules
-            _modules = new IParticleModule[9];
+            _modules = new IParticleModule[10];
 
             Main = new MainModule();
             EmissionModule = new EmissionModule();
@@ -23,6 +23,9 @@ namespace GameProject.Code.Core.Components {
             ColorOverLifetimeModule = new ColorOverLifetimeModule();
 
             SizeOverLifetimeModule = new SizeOverLifetimeModule();
+
+            TextureSheetAnimationModule = new TextureSheetAnimationModule();
+
 
             _modules[0] = Main;
             _modules[1] = EmissionModule;
@@ -33,6 +36,7 @@ namespace GameProject.Code.Core.Components {
             _modules[6] = SizeOverLifetimeModule;
             //sizeBySpeed
             //velocityOverLifetime
+            _modules[9] = TextureSheetAnimationModule;
 
             foreach (IParticleModule p in _modules) {
                 if (p != null) {
@@ -103,6 +107,7 @@ namespace GameProject.Code.Core.Components {
         public ColorOverLifetimeModule ColorOverLifetimeModule { get; private set; }
 
         public SizeOverLifetimeModule SizeOverLifetimeModule { get; private set; }
+        public TextureSheetAnimationModule TextureSheetAnimationModule { get; private set; }
         #endregion
 
         #region Private Variables
@@ -163,9 +168,13 @@ namespace GameProject.Code.Core.Components {
                 //spawn more particles
                 _spawnTimer -= Time.deltaTime;
 
+                int burstCount;
+                EmissionModule.BurstCheck(CurrentTime, out burstCount);
+
                 if(_spawnTimer <= 0) {
                     int count = (int) ((-_spawnTimer) % (1f / EmissionModule.RateOverTime)); //i think this math is wrong
                     count++;
+                    count += burstCount;
                     ForceEmit(count);
 
                     _spawnTimer += 1f / EmissionModule.RateOverTime;
@@ -203,7 +212,12 @@ namespace GameProject.Code.Core.Components {
 
 
         public override void Draw(SpriteBatch sb) {
-            Vector2 spriteOrigin = new Vector2(Sprite.Width / 2f, Sprite.Height / 2f);
+            Vector2 spriteOrigin;
+            if (TextureSheetAnimationModule.Enabled) {
+                spriteOrigin = TextureSheetAnimationModule.TileSize.ToVector2() / 2f;
+            } else {
+                spriteOrigin = new Vector2(Sprite.Width / 2f, Sprite.Height / 2f);
+            }
 
             Vector2 localSpace;
             float rotation;
@@ -229,7 +243,7 @@ namespace GameProject.Code.Core.Components {
                     //sprite draw
                     sb.Draw(Sprite,
                             localSpace + p.Position.ToVector2(),
-                            null,
+                            TextureSheetAnimationModule.Enabled ? TextureSheetAnimationModule?.GetCurrentSpriteRect(p.LifetimeRatio) : null,
                             p.Color,
                             rotation + p.Rotation,
                             spriteOrigin,
@@ -374,6 +388,7 @@ namespace GameProject.Code.Core.Components {
         RotationOverLifetime = 5,
         SizeOverLifetime = 6,
         SizeBySpeed = 7,
-        VelocityOverLifetime = 8
+        VelocityOverLifetime = 8,
+        TextureSheetAnimation = 9
     }
 }

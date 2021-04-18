@@ -19,7 +19,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
         public virtual void InitPickup(Pickup type, SpriteRenderer pickupRenderer) {
             _pickupType = type;
-            ID = (EntityID)((int)type); // Note: This only works because the id's match. Be sure to continue to do so in the future.
+            ID = (EntityID)((int)type); // Note: This only works because the ids match. Be sure to continue to do so in the future.
 
             _pickupRenderer = pickupRenderer;
             _pickupRenderer.Sprite = Resources.Sprite_Pickups[_pickupType];

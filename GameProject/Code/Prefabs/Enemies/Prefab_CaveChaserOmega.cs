@@ -12,7 +12,8 @@ namespace GameProject.Code.Prefabs.Enemies {
 
         protected override void SetSpecificData() {
             Name = "Omega Cave Chaser";
-            GetComponent<SpriteRenderer>().Color = Color.LightGray;
+            //GetComponent<SpriteRenderer>().Color = Color.LightGray;
+            GetComponent<SpriteRenderer>().Sprite = Resources.Sprites_EnemyAnimations[EntityID.CaveChaser_Omega][EnemyAnimationAction.Idle][0];
             AddComponent<Enemy_CaveChaserOmega>(EntityID.CaveChaser_Omega);
         }
 

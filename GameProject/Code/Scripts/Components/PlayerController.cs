@@ -8,13 +8,14 @@ using GameProject.Code.Core.Components;
 using GameProject.Code.Core.Animation;
 using GameProject.Code.Prefabs;
 using GameProject.Code.Scripts;
+using GameProject.Code.Scripts.Components.Entity;
 using GameProject.Code.Scripts.Components.Bullet;
 using GameProject.Code.Scripts.Components.Entity.Arms;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Scripts.Util;
 
 namespace GameProject.Code.Scripts.Components {
-    public class PlayerController : Component {
+    public class PlayerController : AbstractEntity {
 
         // Constants
         private const int _vertFrames = 7;
@@ -62,7 +63,7 @@ namespace GameProject.Code.Scripts.Components {
 
 
 
-        public PlayerController(GameObject attached) : base(attached) {
+        public PlayerController(GameObject attached) : base(attached, EntityID.Player) {
             _dead = false;
 
             PlayerStats.DeathAction = () => {
@@ -90,6 +91,7 @@ namespace GameProject.Code.Scripts.Components {
             Input.OnShoot_Down += OnShootDown;
             Input.OnShoot_Released += OnShootUp;
             Input.OnSpace_Down += OnSpaceDown;
+            Input.OnInteract_Down += OnBombDown;
             // End input
 
             GameManager.Player = this;
@@ -277,6 +279,15 @@ namespace GameProject.Code.Scripts.Components {
             }
         }
 
+        private void PlaceBomb() {
+            if(PlayerStats.Bombs > 0) {
+                PlayerStats.Bombs -= 1;
+                Instantiate<Prefab_Bomb>(transform.Position - new Vector3(0, -5, 0), GameManager.BulletHolder);
+            }
+        }
+
+
+
         //debug testing
         bool gray = false;
         private void ToggleGray() {
@@ -299,6 +310,12 @@ namespace GameProject.Code.Scripts.Components {
             bullet.InitBullet(true, aimDir, PlayerStats.ShotSpeed, PlayerStats.Damage, PlayerStats.Range);
             bullet.SetScale(PlayerStats.ShotSize);
             bullet.SetColor(PlayerStats.ShotColor);
+
+            bullet.BulletRB.Velocity += _playerRB.Velocity * 0.25f;
+
+            PlayerStats.OnBulletSpawn(bullet);
+            bullet._extraUpdateAction += PlayerStats.OnBulletFixedUpdate;
+            bullet._extraDeathAction += PlayerStats.OnBulletDeath;
 
             //DEBUG
             //ToggleGray();
@@ -352,6 +369,10 @@ namespace GameProject.Code.Scripts.Components {
         }
 
 
+        public override void OnExploded(Vector2 explosionCenter, float explosionForce) {
+            GameManager.Player.HurtPlayer();
+        }
+
 
         public static void DamagePlayer(Collider2D other) {
             if(other.gameObject.Layer == LayerID.Player) {
@@ -382,6 +403,11 @@ namespace GameProject.Code.Scripts.Components {
             if(!_togglingArms) StartCoroutine(FadeToggleArms(!ArmsOut));
         }
 
+        private void OnBombDown() {
+            PlaceBomb();
+        }
+
+
 
 
 
@@ -389,6 +415,7 @@ namespace GameProject.Code.Scripts.Components {
             Input.OnShoot_Down -= OnShootDown;
             Input.OnShoot_Released -= OnShootUp;
             Input.OnSpace_Down -= OnSpaceDown;
+            Input.OnInteract_Down -= OnBombDown;
 
             base.OnDestroy();
         }

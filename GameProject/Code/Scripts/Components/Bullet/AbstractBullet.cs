@@ -18,14 +18,15 @@ namespace GameProject.Code.Scripts.Components.Bullet {
         protected Collider2D BulletCollider;
         protected SpriteRenderer BulletRenderer;
 
+        public float CurLifeRemaining => _lifeTimer_Max - _lifeTimer;
         private float _lifeTimer_Max;
         protected float _lifeTimer;
-        protected float _damage = 0;
+        public float Damage = 0;
         protected float _speed = 0;
         protected int _curPiercingRemain = 0;
 
-        public Action<float> _extraUpdateAction = (curLifeDuration) => { };
-        public Action _extraDeathAction = () => { };
+        public Action<AbstractBullet> _extraUpdateAction = (bullet) => { };
+        public Action<AbstractBullet> _extraDeathAction = (bullet) => { };
 
 
         public AbstractBullet(GameObject attached) : base(attached) { }
@@ -41,7 +42,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
             BulletRB.Velocity = dir * speed;
             _lifeTimer_Max = lifetime;
             _lifeTimer = _lifeTimer_Max;
-            _damage = damage;
+            Damage = damage;
             _speed = speed;
 
             ColliderAction = DefaultCollisionLogic;
@@ -92,7 +93,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
 
         public override void FixedUpdate() {
             if (_lifeTimer > 0) {
-                _extraUpdateAction(_lifeTimer_Max - _lifeTimer);
+                _extraUpdateAction(this);
 
                 _lifeTimer -= Time.fixedDeltaTime;
 
@@ -122,7 +123,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
             yield return new WaitForEndOfFrame();
             transform.Scale = Vector3.Zero;
 
-            _extraDeathAction();
+            _extraDeathAction(this);
 
             Destroy(this.gameObject);
         }
@@ -156,7 +157,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
 
             if (other.gameObject.Layer == LayerID.Enemy || other.gameObject.Layer == LayerID.Enemy_Flying) {
                 AbstractEnemy enemy = other.AttachedRigidbody.GetComponent<AbstractEnemy>();
-                enemy.Health -= _damage;
+                enemy.Health -= Damage;
                 //enemy.ApplyKnockback(BulletRB.velocity.normalized * _knockbackForce / Game.Manager.PlayerStats.ShotCount);
 
                 if (_curPiercingRemain == 0) {

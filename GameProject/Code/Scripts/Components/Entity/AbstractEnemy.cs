@@ -167,6 +167,10 @@ namespace GameProject.Code.Scripts.Components.Entity {
         }
 
 
+        public override void OnExploded(Vector2 explosionCenter, float explosionForce) {
+            Health -= 40;
+        }
+
 
         public override void OnDisable() {
             _fixedUpdateAction = () => { };
@@ -237,6 +241,22 @@ namespace GameProject.Code.Scripts.Components.Entity {
 
 
         #region Enemy AI Methods
+
+        protected void Vibrate(float intensity) {
+            StartCoroutine(Vibrate_C(intensity));
+        }
+
+        private IEnumerator Vibrate_C(float intensity) {
+            Vector2 origOffset = _enemyRenderer.SpriteOffset;
+
+            while (!_dead) {
+                Vector2 offset = new Vector2(GameManager.DeltaRandom.NextValue(-intensity, intensity), 
+                                             GameManager.DeltaRandom.NextValue(-intensity, intensity));
+
+                _enemyRenderer.SpriteOffset = origOffset + offset;
+                yield return null;
+            }
+        }
 
         protected void SetIdleVelocity() {
             _enemyRB.Velocity = new Vector2(GameManager.DeltaRandom.NextValue(-5, 5),

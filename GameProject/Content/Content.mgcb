@@ -26,6 +26,12 @@
 /processorParam:DebugMode=Auto
 /build:Effects/Grayscale.fx
 
+#begin Effects/Outline.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/Outline.fx
+
 #begin Fonts/arial.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -603,6 +609,54 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Bullet/PhotonShot.png
 
+#begin Textures/Entities/Enemies/CaveChaser/Idle/CaveChaser.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Entities/Enemies/CaveChaser/Idle/CaveChaser.png
+
+#begin Textures/Entities/Enemies/CaveChaser_Armed/Idle/CaveChaser_Armed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Entities/Enemies/CaveChaser_Armed/Idle/CaveChaser_Armed.png
+
+#begin Textures/Entities/Enemies/CaveChaser_Buckshot/Idle/CaveChaser_Buckshot.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Entities/Enemies/CaveChaser_Buckshot/Idle/CaveChaser_Buckshot.png
+
+#begin Textures/Entities/Enemies/CaveChaser_Omega/Idle/CaveChaser_Omega.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Entities/Enemies/CaveChaser_Omega/Idle/CaveChaser_Omega.png
+
 #begin Textures/Entities/Enemies/Drone_Attack/Idle/Drone_Attack-0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -903,18 +957,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Entities/Player/Walk/Right_Up_1.png
 
-#begin Textures/Items/4LeafClover.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/Items/4LeafClover.png
-
 #begin Textures/Items/Adreneline.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1011,7 +1053,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Items/FocusLens.png
 
-#begin Textures/Items/HabeneroHotSauce.png
+#begin Textures/Items/FourLeafClover.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -1021,7 +1063,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Items/HabeneroHotSauce.png
+/build:Textures/Items/FourLeafClover.png
+
+#begin Textures/Items/HabaneroHotSauce.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Items/HabaneroHotSauce.png
 
 #begin Textures/Items/MagnetVector.png
 /importer:TextureImporter
@@ -1586,6 +1640,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Misc/Square_01.png
+
+#begin Textures/Particles/Explosion_Frames.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Particles/Explosion_Frames.png
+
+#begin Textures/Pickup/Bomb.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Pickup/Bomb.png
 
 #begin Textures/Pickup/BonusHeart_Whole.png
 /importer:TextureImporter

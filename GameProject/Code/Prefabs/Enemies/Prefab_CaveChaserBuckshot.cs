@@ -12,7 +12,8 @@ namespace GameProject.Code.Prefabs.Enemies {
 
         protected override void SetSpecificData() {
             Name = "Buckshot Cave Chaser";
-            GetComponent<SpriteRenderer>().Color = Color.DarkSeaGreen;
+            //GetComponent<SpriteRenderer>().Color = Color.DarkSeaGreen;
+            GetComponent<SpriteRenderer>().Sprite = Resources.Sprites_EnemyAnimations[EntityID.CaveChaser_Buckshot][EnemyAnimationAction.Idle][0];
             AddComponent<Enemy_CaveChaserBuckshot>(EntityID.CaveChaser_Buckshot);
         }
 

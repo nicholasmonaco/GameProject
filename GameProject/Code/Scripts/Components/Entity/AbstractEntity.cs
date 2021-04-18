@@ -8,7 +8,7 @@ using System.Text;
 
 namespace GameProject.Code.Scripts.Components.Entity {
     public abstract class AbstractEntity : Component {
-        private static Action EmptyAction = () => { };
+        protected static Action EmptyAction = () => { };
         
         public AbstractEntity(GameObject attached, EntityID id) : base(attached) {
             ID = id;
@@ -19,6 +19,9 @@ namespace GameProject.Code.Scripts.Components.Entity {
         protected bool _dead = false;
         public Action OnDeathFlag = EmptyAction;
         public Action ExtraOnDestroy = EmptyAction;
+
+
+        public virtual void OnExploded(Vector2 explosionCenter, float explosionForce) { }
 
 
         public override void OnDestroy() {

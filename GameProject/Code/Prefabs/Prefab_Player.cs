@@ -27,6 +27,12 @@ namespace GameProject.Code.Prefabs {
             bodyRenderer.OrderInLayer = 20;
             bodyRenderer.Material.BatchID = BatchID.Player;
 
+            //debug testing
+            //bodyRenderer.Material.BatchID = BatchID.NonAuto;
+            //bodyRenderer.Material.Shader = Resources.Effect_Outline;
+            //Scene.ChangeShader(BatchID.Player, Resources.Effect_Outline);
+            //
+
 
             AnimationController animController = AddComponent<AnimationController>(7);
 

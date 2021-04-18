@@ -32,8 +32,8 @@ namespace GameProject.Code.Core {
         ShopItem = 1 << 20,          //20    // Items that can be obtained by trading
         Special = 1 << 21,           //21    // Misc stuff, like entrances to the next floor, secret area entrances, special event handles
         Enemy_Flying = 1 << 22,      //22    // Enemies that are flying
+        Damage = 1 << 23,            //23    // Damage all living things
 
-        Unnamed_23 = 1 << 23,        //23
         Unnamed_24 = 1 << 24,        //24
         Unnamed_25 = 1 << 25,        //25
         Unnamed_26 = 1 << 26,        //26

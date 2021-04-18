@@ -14,11 +14,11 @@ namespace GameProject.Code.Scripts.Items.Passive {
 
 
         protected override void OnLose() {
-            PlayerStats.ChangeMaxRedHealth(1, true);
+            PlayerStats.ChangeMaxRedHealth(-1, true);
         }
 
         protected override void OnPickup() {
-            PlayerStats.ChangeMaxRedHealth(-1, true);
+            PlayerStats.ChangeMaxRedHealth(1, true);
         }
     }
 }

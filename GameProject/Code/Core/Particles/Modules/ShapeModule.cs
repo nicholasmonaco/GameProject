@@ -66,8 +66,10 @@ namespace GameProject.Code.Core.Particles {
         }
 
         private Vector3 GetCirclePosition() {
-            Vector2 offset = new Vector2(GameManager.DeltaRandom.NextValue(-Radius.X, Radius.X),
-                                         GameManager.DeltaRandom.NextValue(-Radius.Y, Radius.Y));
+            Vector2 offset = new Vector2(GameManager.DeltaRandom.NextValue(-1, 1),
+                                         GameManager.DeltaRandom.NextValue(-1, 1)).Norm();
+
+            offset *= Radius.ToVector2() * GameManager.DeltaRandom.NextValue(0, 1);
 
             return Position + Offset + offset.RotateDirectionNonUnit(Rotation.Z).ToVector3(); 
         }

@@ -30,6 +30,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
         public override void Start() {
             base.Start();
 
+            Vibrate(1);
             PlaySoundUntilDeath(Resources.Sound_CaveChaser, 3f, 5f);
         }
 

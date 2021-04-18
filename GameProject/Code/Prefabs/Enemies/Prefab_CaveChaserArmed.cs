@@ -13,7 +13,8 @@ namespace GameProject.Code.Prefabs.Enemies {
 
         protected override void SetSpecificData() {
             Name = "Armed Cave Chaser";
-            GetComponent<SpriteRenderer>().Color = Color.Purple;
+            //GetComponent<SpriteRenderer>().Color = Color.Purple;
+            GetComponent<SpriteRenderer>().Sprite = Resources.Sprites_EnemyAnimations[EntityID.CaveChaser_Armed][EnemyAnimationAction.Idle][0];
             AddComponent<Enemy_CaveChaserArmed>(EntityID.CaveChaser_Armed);
         }
 

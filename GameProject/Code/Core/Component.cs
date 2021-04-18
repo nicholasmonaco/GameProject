@@ -139,6 +139,17 @@ namespace GameProject.Code.Core {
             return GameObject.Instantiate<T>();
         }
 
+        public T AddComponent<T>() where T : Component {
+            return gameObject.AddComponent<T>();
+        }
+
+        public T AddComponent<T>(params object[] parameters) where T : Component {
+            return gameObject.AddComponent<T>(parameters);
+        }
+
+        public bool RemoveComponent<T>() {
+            return gameObject.RemoveComponent<T>();
+        }
 
 
         public void Destroy() {

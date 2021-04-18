@@ -68,11 +68,11 @@ namespace GameProject.Code.Scripts.Items {
         public static Type GetItem(ItemID id) {
             switch (id) {
                 case ItemID.VitaminH: return typeof(Item_VitaminH);
-                //case ItemID.VitaminH: return typeof(Item_VitaminH);
-                //case ItemID.VitaminH: return typeof(Item_VitaminH);
-                //case ItemID.VitaminH: return typeof(Item_VitaminH);
-                //case ItemID.VitaminH: return typeof(Item_VitaminH);
-                //case ItemID.VitaminH: return typeof(Item_VitaminH);
+                case ItemID.RationBar: return typeof(Item_RationBar);
+                case ItemID.Cake: return typeof(Item_Cake);
+                case ItemID.FocusLens: return typeof(Item_FocusLens);
+                case ItemID.HabaneroHotSauce: return typeof(Item_HabaneroHotSauce);
+                case ItemID.FourLeafClover: return typeof(Item_FourLeafClover);
                 //case ItemID.VitaminH: return typeof(Item_VitaminH);
                 //case ItemID.VitaminH: return typeof(Item_VitaminH);
                 //case ItemID.VitaminH: return typeof(Item_VitaminH);

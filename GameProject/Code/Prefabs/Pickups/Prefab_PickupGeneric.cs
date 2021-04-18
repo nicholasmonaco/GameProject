@@ -42,18 +42,23 @@ namespace GameProject.Code.Prefabs {
                 case Pickup.Key_Double:
                     pickupComp = AddComponent<Pickup_Key>();
                     break;
+                case Pickup.Bomb:
+                case Pickup.Bomb_Double:
+                    rend.SpriteScale *= 0.7f;
+                    pickupComp = AddComponent<Pickup_Bomb>();
+                    break;
+                case Pickup.BonusHeart:
+                    pickupComp = AddComponent<Pickup_BonusHeart>();
+                    break;
 
-                // Implementations to add
-                //case Pickup.BonusHeart:
-                //    //pickupComp = AddComponent<Pickup_BonusHeart>();
-                //    break;
-                //case Pickup.PowerCell:
-                //    //pickupComp = AddComponent<Pickup_PowerCell>();
-                //    break;
-                //case Pickup.Chest_Free:
-                //case Pickup.Chest_Locked:
-                //    //pickupComp = AddComponent<Pickup_Chest>();
-                //    break;
+                    // Implementations to add
+                    //case Pickup.PowerCell:
+                    //    //pickupComp = AddComponent<Pickup_PowerCell>();
+                    //    break;
+                    //case Pickup.Chest_Free:
+                    //case Pickup.Chest_Locked:
+                    //    //pickupComp = AddComponent<Pickup_Chest>();
+                    //    break;
             }
 
             pickupComp.InitPickup(pickupType, rend);

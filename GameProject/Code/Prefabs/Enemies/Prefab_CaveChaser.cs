@@ -20,9 +20,9 @@ namespace GameProject.Code.Prefabs.Enemies {
 
             rigidbody2D = AddComponent<Rigidbody2D>();
 
-            SpriteRenderer sr = AddComponent<SpriteRenderer>(Resources.Sprite_Pixel);
-            sr.SpriteScale = collider.Size;
-            sr.Color = Color.Orange;
+            SpriteRenderer sr = AddComponent<SpriteRenderer>(Resources.Sprites_EnemyAnimations[EntityID.CaveChaser][EnemyAnimationAction.Idle][0]);
+            //sr.SpriteScale = collider.Size;
+            //sr.Color = Color.Orange;
             sr.DrawLayer = DrawLayer.ID[DrawLayers.Enemies];
             sr.OrderInLayer = 15;
 

@@ -53,6 +53,10 @@ namespace GameProject.Code.Core.Particles {
 
         // Update Logic
         public bool BurstCheck(float time, out int count) {
+            if(BurstData.Count == 1) {
+                AddBurst((BurstData[0].Item1 + 1, 0));
+            }
+
             for(int i = 0; i < BurstCount - 1; i++) {
                 if(time >= BurstData[i].Item1 && time < BurstData[i + 1].Item1) {
                     count = BurstData[i].Item2;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Items/4LeafClover.png</SourceFile>
-  <SourceTime>2021-02-28T04:45:48.2027506-06:00</SourceTime>
-  <DestFile>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/bin/Windows/Textures/Items/4LeafClover.xnb</DestFile>
-  <DestTime>2021-03-31T23:59:43.0397021-05:00</DestTime>
+  <SourceFile>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Particles/Explosion_Frames.png</SourceFile>
+  <SourceTime>2021-04-16T00:37:37.8902616-05:00</SourceTime>
+  <DestFile>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/bin/Windows/Content/Textures/Particles/Explosion_Frames.xnb</DestFile>
+  <DestTime>2021-04-16T02:01:46.5275613-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T16:17:54-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

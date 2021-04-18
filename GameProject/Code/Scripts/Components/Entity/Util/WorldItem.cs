@@ -61,7 +61,16 @@ namespace GameProject.Code.Scripts.Components {
 
         public static ItemID GetRandomItem(ItemPool pool) {
             //todo
-            return ItemID.VitaminH;
+            List<ItemID> possible = new List<ItemID>() {
+                ItemID.VitaminH,
+                ItemID.RationBar,
+                ItemID.Cake,
+                ItemID.FocusLens,
+                ItemID.HabaneroHotSauce,
+                ItemID.FourLeafClover
+            };
+
+            return possible[GameManager.WorldRandom.Next(0, possible.Count)];
         }
 
 

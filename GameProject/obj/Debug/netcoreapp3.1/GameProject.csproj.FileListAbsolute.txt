@@ -1357,3 +1357,15 @@ C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Deb
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\System.Text.Encodings.Web.dll
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\System.Text.Json.dll
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Level\Door\Door_Inside_Boss.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Pickup\Bomb.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Particles\Explosion_Frames.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Effects\Outline.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Items\FourLeafClover.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Items\HabaneroHotSauce.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser\Idle\CaveChaser.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Armed\CaveChaser_Armed.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Armed\Idle\CaveChaser_Armed.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Buckshot\CaveChaser_Buckshot.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Buckshot\Idle\CaveChaser_Buckshot.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Omega\CaveChaser_Omega.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Omega\Idle\CaveChaser_Omega.xnb

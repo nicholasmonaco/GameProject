@@ -33,6 +33,11 @@ namespace GameProject.Code.Core {
             Radius = newRadius;
         }
 
+        public void ResetRadius(float newRadius) {
+            _origRadius = newRadius;
+            Radius = newRadius;
+        }
+
         public override void ApplyWorldMatrix(Transform worldTransform) {
             if (!_applyWorldMatrix) return;
 

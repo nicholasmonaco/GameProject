@@ -18,6 +18,9 @@ namespace GameProject.Code.Scripts.Util {
         Trade_Planet = 15,
         Trade_PlanetSpecific = 16,
 
+        Bomb_Normal = 21,
+
+        Player = 99,
 
 
         // Pickups

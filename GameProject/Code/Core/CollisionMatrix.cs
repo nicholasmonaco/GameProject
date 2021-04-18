@@ -51,7 +51,7 @@ namespace GameProject.Code.Core {
             { LayerID.ShopItem, 20 },
             { LayerID.Special, 21 },
             { LayerID.Enemy_Flying, 22 },
-            { LayerID.Unnamed_23, 23 },
+            { LayerID.Damage, 23 },
             { LayerID.Unnamed_24, 24 },
             { LayerID.Unnamed_25, 25 },
             { LayerID.Unnamed_26, 26 },

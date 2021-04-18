@@ -230,6 +230,12 @@ namespace GameProject.Code.Core {
 
             Vector2[] points = (collider.Bounds as PolygonBounds)._points;
 
+            // This exists in case the collider is destroyed during the raycasting process
+            if(points == null) {
+                intersection = Vector2.Zero;
+                return false;
+            }
+
             for (int i = 0; i < points.Length - 1; i++) {
                 //Vector2 edge = points[i + 1] - points[i];
 

@@ -55,6 +55,8 @@ namespace GameProject.Code.Core {
 
         public static Dictionary<Pickup, Texture2D> Sprite_Pickups;
 
+        public static Texture2D Sprite_BombExplosion;
+
         public static Texture2D Sprite_MinimapBackground;
         public static Dictionary<MinimapIcon, Texture2D> Sprite_MinimapIcons;
 
@@ -174,6 +176,7 @@ namespace GameProject.Code.Core {
         public static Effect Effect_Base;
 
         public static Effect Effect_Grayscale;
+        public static Effect Effect_Outline;
         #endregion
 
 
@@ -272,6 +275,7 @@ namespace GameProject.Code.Core {
             Effect_Base = content.Load<Effect>("Effects/BaseSpriteEffect");
 
             Effect_Grayscale = content.Load<Effect>("Effects/Grayscale");
+            Effect_Outline = content.Load<Effect>("Effects/Outline");
         }
 
 
@@ -399,6 +403,9 @@ namespace GameProject.Code.Core {
             Sprite_Pickups.Add(Pickup.Coin_5, content.Load<Texture2D>("Textures/Pickup/Coin_5"));
             Sprite_Pickups.Add(Pickup.PowerCell, content.Load<Texture2D>("Textures/Pickup/EnergyCell"));
             Sprite_Pickups.Add(Pickup.Key, content.Load<Texture2D>("Textures/Pickup/Key"));
+            Sprite_Pickups.Add(Pickup.Bomb, content.Load<Texture2D>("Textures/Pickup/Bomb"));
+
+            Sprite_BombExplosion = content.Load<Texture2D>("Textures/Particles/Explosion_Frames");
 
             Sprite_MinimapBackground = content.Load<Texture2D>("Textures/UI/Minimap/Background");
 
@@ -565,6 +572,11 @@ namespace GameProject.Code.Core {
 
             Sprites_Items.Add(ItemID.None, Sprite_Invisible);
             Sprites_Items.Add(ItemID.VitaminH, content.Load<Texture2D>($"Textures/Items/{ItemID.VitaminH.ToString()}"));
+            Sprites_Items.Add(ItemID.RationBar, content.Load<Texture2D>($"Textures/Items/{ItemID.RationBar.ToString()}"));
+            Sprites_Items.Add(ItemID.Cake, content.Load<Texture2D>($"Textures/Items/{ItemID.Cake.ToString()}"));
+            Sprites_Items.Add(ItemID.FocusLens, content.Load<Texture2D>($"Textures/Items/{ItemID.FocusLens.ToString()}"));
+            Sprites_Items.Add(ItemID.HabaneroHotSauce, content.Load<Texture2D>($"Textures/Items/{ItemID.HabaneroHotSauce.ToString()}"));
+            Sprites_Items.Add(ItemID.FourLeafClover, content.Load<Texture2D>($"Textures/Items/{ItemID.FourLeafClover.ToString()}"));
         }
 
 

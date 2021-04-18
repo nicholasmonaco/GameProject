@@ -13,7 +13,7 @@ using GameProject.Code.Scripts.Items.ItemTypes;
 namespace GameProject.Code.Scripts {
     public static class PlayerStats {
 
-        public static readonly int _MaxHearts = 16;
+        public static readonly int _MaxHearts = 16; //measured in whole hearts
         public static readonly int _MaxHalfHearts = 32;
         public static Action DeathAction = () => { };
 
@@ -66,6 +66,10 @@ namespace GameProject.Code.Scripts {
                 HeartUpdateAction(index/2, HeartContainer.Invisible);
                 index += 2;
             }
+
+
+            // While this isn't nessecary here, it is worth doing to make sure stuff isn't messed up.
+            UpdateHealth();
         }
 
         /// <summary>
@@ -149,7 +153,8 @@ namespace GameProject.Code.Scripts {
 
 
         public static void ChangeMaxRedHealth(int containersToChange, bool fillNew = false) {
-            MaxRedHearts += Math.Clamp(MaxRedHearts + containersToChange*2, 0, _MaxHearts);
+            // Add
+            MaxRedHearts = Math.Clamp(MaxRedHearts + containersToChange * 2, 0, _MaxHearts);
             
             if (fillNew) {
                 RedHearts.Add(HeartType.Red);
@@ -160,7 +165,7 @@ namespace GameProject.Code.Scripts {
         }
 
         public static void ChangeRedHealth(int halfHeartChange) {
-            int realChange = Math.Clamp(halfHeartChange, -RedHearts.Count, MaxRedHearts);
+            int realChange = Math.Clamp(halfHeartChange, -RedHearts.Count, MaxRedHearts - RedHearts.Count);
             realChange = Math.Abs(realChange);
 
             if(halfHeartChange > 0) {
@@ -181,7 +186,7 @@ namespace GameProject.Code.Scripts {
         public static void ChangeBonusHealth(int halfHeartChange, HeartType addType = HeartType.Bonus) {
             if (halfHeartChange == 0) return;
 
-            int realChange = Math.Clamp(halfHeartChange, -BonusHearts.Count, MaxRedHearts - RedHearts.Count);
+            int realChange = Math.Clamp(halfHeartChange, -BonusHearts.Count, _MaxHalfHearts - RedHearts.Count);
             realChange = Math.Abs(realChange);
 
             if (halfHeartChange > 0) {
@@ -242,13 +247,14 @@ namespace GameProject.Code.Scripts {
 
 
         public static bool FullRedHealth => RedHearts.Count == MaxRedHearts;
+        public static bool FullHealth => RedHearts.Count + BonusHearts.Count == _MaxHalfHearts;
 
 
 
         // Regular stats
         public static float Speed = 1;
         public static float Range = 1.2f;
-        public static float ShotRate = 3.5f; //2;
+        public static float ShotRate = 2;
         public static float ShotSpeed = 90;
         public static float ShotSize = 1;
         public static float Damage = 3;
@@ -293,6 +299,29 @@ namespace GameProject.Code.Scripts {
                 _bombs = Math.Clamp(value, 0, 999);
                 GameManager.Inventory?.UpdateBombText();
             }
+        }
+
+        public static void ResetStats() {
+            Money = 0;
+            Keys = 0;
+            Bombs = 0;
+
+            Speed = 1;
+            Range = 1.2f;
+            ShotRate = 2;
+            ShotSpeed = 90;
+            ShotSize = 1;
+            Damage = 3;
+            Knockback = 0.5f;
+            Luck = 0;
+
+            Ex_Benefit = 0;
+            Ex_Curse = 0;
+
+            ShotColor = new Color(255, 252, 230); // Super light yellow
+
+            HomingStr = 0;
+            PiercingCount = 0;
         }
 
 

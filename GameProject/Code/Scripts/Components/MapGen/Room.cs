@@ -504,6 +504,16 @@ namespace GameProject.Code.Scripts.Components {
             return ObstacleTilemap.GetWorldPosFromGridPos(gridPos);
         }
 
+        public void RefreshTile(Point gridPos) {
+            ObstacleTilemap.RefreshTile(gridPos);
+        }
+
+        public void ChangeTile(Point gridPos, ObstacleID newID) {
+            ObstacleTilemap.ChangeTile(newID, gridPos.X, gridPos.Y);
+            RefreshTile(gridPos);
+        }
+
+
         public Point GetClosestOpenTilePoint(Point attemptPoint) {
             bool openFound = false;
             int counterMax = ObstacleTilemapSize.X * ObstacleTilemapSize.Y;
@@ -608,9 +618,9 @@ namespace GameProject.Code.Scripts.Components {
 
             float lootRNG = GameManager.WorldRandom.NextValue(0, 100);
             int lootCount;
-            if (lootRNG <= 70 && lootRNG > 30) {
+            if (lootRNG <= 100 && lootRNG > 25) {
                 lootCount = 1;
-            } else if (lootRNG > 10) {
+            } else if (lootRNG > 7) {
                 lootCount = 2;
             } else if (lootRNG > 1) {
                 lootCount = 3;
@@ -627,12 +637,13 @@ namespace GameProject.Code.Scripts.Components {
         private Pickup GetRandomLootPickup() {
             //todo - improve
             float rng = GameManager.WorldRandom.NextValue(0, 100);
+
             if (rng > 95) return Pickup.Coin_5;
             else if (rng > 75) return Pickup.Coin;
             else if (rng > 55) return Pickup.Heart_Whole;
             else if (rng > 40) return Pickup.Heart_Half;
-            //else if (rng > 25) return Pickup.BonusHeart;
-            else if (rng > 10) return Pickup.Heart_Whole;
+            else if (rng > 25) return Pickup.Bomb;
+            else if (rng > 10) return Pickup.BonusHeart;
             else return Pickup.Key;
         }
 

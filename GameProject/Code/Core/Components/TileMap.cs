@@ -44,10 +44,25 @@ namespace GameProject.Code.Core.Components {
             SetMap(dataMap, xSize, ySize, tileSize, new Vector2(26, 28), Vector2.Zero);
         }
 
+        public void RefreshMap() {
+            for (int y = 0; y < MapSize.Y; y++) {
+                for (int x = 0; x < MapSize.X; x++) {
+                    _map[x, y].RefreshData();
+                }
+            }
+        }
+
+        public void RefreshTile(Point gridPos) {
+            _map[gridPos.X, gridPos.Y].RefreshData();
+        }
+
+        public void RefreshTile(int x, int y) {
+            _map[x, y].RefreshData();
+        }
 
 
         public void ChangeTile(T newData, int x, int y) {
-            _map[y, x].ChangeData(newData);
+            _map[x, y].ChangeData(newData);
         }
 
         public T GetTile(int x, int y) {
