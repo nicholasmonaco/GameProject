@@ -13,6 +13,7 @@ using GameProject.Code.Scripts.Components.Bullet;
 using GameProject.Code.Scripts.Components.Entity.Arms;
 using Microsoft.Xna.Framework.Graphics;
 using GameProject.Code.Scripts.Util;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject.Code.Scripts.Components {
     public class PlayerController : AbstractEntity {
@@ -55,6 +56,11 @@ namespace GameProject.Code.Scripts.Components {
         private float _animTimer = 0;
 
         private bool _dead = false;
+
+        private List<SoundEffect> _punchSFX;
+        private float _punchTimer = 0;
+        private const float _punchTimerMax = 0.35f;
+        private int _punchIndex = 0;
         // End private values
 
         //DEBUG
@@ -65,6 +71,8 @@ namespace GameProject.Code.Scripts.Components {
 
         public PlayerController(GameObject attached) : base(attached, EntityID.Player) {
             _dead = false;
+
+            _punchSFX = Resources.Sounds_PunchRush;
 
             PlayerStats.DeathAction = () => {
                 _dead = true;
@@ -109,6 +117,15 @@ namespace GameProject.Code.Scripts.Components {
             
             if (!ArmsOut) {
                 Shoot();
+            } else if(GetArmState() == ArmState.Rushing) {
+                if(_punchTimer <= 0) {
+                    _punchTimer += _punchTimerMax;
+                    _punchIndex++;
+                    if (_punchIndex > _punchSFX.Count - 1) _punchIndex = 0;
+                    _punchSFX[_punchIndex].Play(0.3f);
+                }
+
+                _punchTimer -= Time.entityDeltaTime;
             }
         }
 
@@ -117,6 +134,10 @@ namespace GameProject.Code.Scripts.Components {
             foreach(ArmController arm in Arms) {
                 arm.CurState = state;
             }
+        }
+
+        private ArmState GetArmState() {
+            return Arms[0].CurState; 
         }
 
 
@@ -167,22 +188,50 @@ namespace GameProject.Code.Scripts.Components {
 
 
         private void FixDirAnim() {
-            if(_moveVec.Y > 0 && _curDir != Direction.Up) {
-                _curDir = Direction.Up;
-                ChangePlayerAnimationState(PlayerAnimationState.Idle_Up);
-            } else if(_moveVec.Y < 0 && _curDir != Direction.Down) {
-                _curDir = Direction.Down;
-                ChangePlayerAnimationState(PlayerAnimationState.Idle_Down);
-            } 
+            if(MathF.Abs(_moveVec.X) > MathF.Abs(_moveVec.Y)) {
+                // Horizontal Movement
+                if (_moveVec.X > 0 && _curDir != Direction.Right) {
+                    _curDir = Direction.Right;
+                    ChangePlayerAnimationState(PlayerAnimationState.Idle_Right);
+                } else if (_moveVec.X <= 0 && _curDir != Direction.Left) {
+                    _curDir = Direction.Left;
+                    ChangePlayerAnimationState(PlayerAnimationState.Idle_Left);
+                }
+
+            } else {
+                // Vertical Movement
+                if (_moveVec.Y > 0 && _curDir != Direction.Up) {
+                    _curDir = Direction.Up;
+                    ChangePlayerAnimationState(PlayerAnimationState.Idle_Up);
+                } else if (_moveVec.Y <= 0 && _curDir != Direction.Down) {
+                    _curDir = Direction.Down;
+                    ChangePlayerAnimationState(PlayerAnimationState.Idle_Down);
+                }
+            }
+
+            
         }
 
         private void HardFixDirAim() {
-            if (_moveVec.Y > 0) {
-                _curDir = Direction.Up;
-                ForceChangePlayerAnimationState(PlayerAnimationState.Idle_Up);
-            } else if (_moveVec.Y <= 0) {
-                _curDir = Direction.Down;
-                ForceChangePlayerAnimationState(PlayerAnimationState.Idle_Down);
+            if(MathF.Abs(_moveVec.X) > MathF.Abs(_moveVec.Y)) {
+                // Horizontal Movement
+                if (_moveVec.X > 0) {
+                    _curDir = Direction.Right;
+                    ForceChangePlayerAnimationState(PlayerAnimationState.Idle_Right);
+                } else if (_moveVec.Y <= 0) {
+                    _curDir = Direction.Left;
+                    ForceChangePlayerAnimationState(PlayerAnimationState.Idle_Left);
+                }
+
+            } else {
+                // Vertical Movement
+                if (_moveVec.Y > 0) {
+                    _curDir = Direction.Up;
+                    ForceChangePlayerAnimationState(PlayerAnimationState.Idle_Up);
+                } else if (_moveVec.Y <= 0) {
+                    _curDir = Direction.Down;
+                    ForceChangePlayerAnimationState(PlayerAnimationState.Idle_Down);
+                }
             }
         }
 
@@ -195,12 +244,23 @@ namespace GameProject.Code.Scripts.Components {
             switch (state) {
                 case PlayerAnimationState.Idle_Up:
                 case PlayerAnimationState.Idle_Down:
+                case PlayerAnimationState.Idle_Left:
+                case PlayerAnimationState.Idle_Right:
+
                 case PlayerAnimationState.Walk_Up:
                 case PlayerAnimationState.Walk_Down:
+                case PlayerAnimationState.Walk_Left:
+                case PlayerAnimationState.Walk_Right:
                     if (CurrentAnimationState == PlayerAnimationState.Idle_Down ||
                         CurrentAnimationState == PlayerAnimationState.Idle_Up ||
+                        CurrentAnimationState == PlayerAnimationState.Idle_Left ||
+                        CurrentAnimationState == PlayerAnimationState.Idle_Right ||
+
                         CurrentAnimationState == PlayerAnimationState.Walk_Down ||
-                        CurrentAnimationState == PlayerAnimationState.Walk_Up)
+                        CurrentAnimationState == PlayerAnimationState.Walk_Up ||
+                        CurrentAnimationState == PlayerAnimationState.Walk_Left ||
+                        CurrentAnimationState == PlayerAnimationState.Walk_Right)
+
                         success = true;
                     break;
                 
@@ -282,7 +342,7 @@ namespace GameProject.Code.Scripts.Components {
         private void PlaceBomb() {
             if(PlayerStats.Bombs > 0) {
                 PlayerStats.Bombs -= 1;
-                Instantiate<Prefab_Bomb>(transform.Position - new Vector3(0, -5, 0), GameManager.BulletHolder);
+                Instantiate<Prefab_Bomb>(transform.Position + new Vector3(0, -5, 0), GameManager.BulletHolder);
             }
         }
 
@@ -302,6 +362,8 @@ namespace GameProject.Code.Scripts.Components {
 
 
         private void ShootLogic() {
+            Resources.Sound_Player_Shoot.Play(0.3f);
+
             Vector2 aimDir = Vector2.Normalize(Input.MouseWorldPosition - transform.Position.ToVector2());
             
             Bullet_Standard bullet = Instantiate<Prefab_Bullet>().GetComponent<Bullet_Standard>();
@@ -425,10 +487,14 @@ namespace GameProject.Code.Scripts.Components {
     public enum PlayerAnimationState {
         Idle_Down = 0,
         Idle_Up = 1,
-        Walk_Down = 2,
-        Walk_Up = 3,
-        Damage = 4,
-        ItemPickup = 5,
-        Die = 6
+        Idle_Left = 2,
+        Idle_Right = 3,
+        Walk_Down = 4,
+        Walk_Up = 5,
+        Walk_Left = 6,
+        Walk_Right = 7,
+        Damage = 8,
+        ItemPickup = 9,
+        Die = 10
     }
 }

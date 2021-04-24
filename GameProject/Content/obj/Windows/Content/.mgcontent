@@ -111,7 +111,12 @@
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/Combat/Punch_Impact.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/Death.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/DoorClose.wav</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/Explosion_01.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/PlayerHurt.wav</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/PlayerShoot.wav</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/Rush/Ora_01.wav</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/Rush/Ora_02.wav</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/Rush/Ora_03.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/soda2.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/UI/MenuBack.wav</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Sounds/UI/MenuChange.wav</File>
@@ -135,6 +140,10 @@
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Hurt.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Idle/Down_0.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Idle/Down_1.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Idle/Left_0.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Idle/Left_1.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Idle/Right_0.png</File>
+    <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Idle/Right_1.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Idle/Up_0.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Idle/Up_1.png</File>
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/Entities/Player/Pickup.png</File>
@@ -239,6 +248,15 @@
     <File>C:/Users/Nick/Desktop/School/_CIS580/GameProject/GameProject/GameProject/Content/Textures/UI/Reticle_0.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

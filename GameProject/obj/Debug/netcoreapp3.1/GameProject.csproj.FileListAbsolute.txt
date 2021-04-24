@@ -1369,3 +1369,12 @@ C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Deb
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Buckshot\Idle\CaveChaser_Buckshot.xnb
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Omega\CaveChaser_Omega.xnb
 C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Enemies\CaveChaser_Omega\Idle\CaveChaser_Omega.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\Explosion_01.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Player\Idle\Left_0.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Player\Idle\Left_1.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Player\Idle\Right_0.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Textures\Entities\Player\Idle\Right_1.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\Rush\Ora_01.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\Rush\Ora_02.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\Rush\Ora_03.xnb
+C:\Users\Nick\Desktop\School\_CIS580\GameProject\GameProject\GameProject\bin\Debug\netcoreapp3.1\Content\Sounds\PlayerShoot.xnb

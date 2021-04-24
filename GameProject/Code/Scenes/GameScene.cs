@@ -46,6 +46,7 @@ namespace GameProject.Code.Scenes {
             base.Init();
 
             Paused = false;
+            CanPause = true;
 
             // This is essentially where there should be a list of default GameObjects in the scene.
             GameObjects.Add(new Prefab_MainCamera());
@@ -214,6 +215,8 @@ namespace GameProject.Code.Scenes {
 
             _pausePanel.gameObject.Enabled = false;
 
+            CanPause = true;
+
             _updating = true;
 
             // Reset inventory
@@ -272,6 +275,8 @@ namespace GameProject.Code.Scenes {
             ResetShaders();
 
             _updating = true; // This could probably be moved further down
+
+            CanPause = true;
 
             _pausePanel.gameObject.Enabled = false;
 

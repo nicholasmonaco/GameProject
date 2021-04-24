@@ -69,6 +69,9 @@ namespace GameProject.Code.Scripts.Components.Entity {
         }
 
 
+        //when player leaves bomb collider, allow real physics interaction between them
+
+
 
         protected IEnumerator Explode() {
             //play exploding animation
@@ -100,7 +103,7 @@ namespace GameProject.Code.Scripts.Components.Entity {
             _explosionParticles.Play();
 
             //play sfx
-            //
+            Resources.Sound_Explosion.Play(0.25f);
 
             //enable circlecollider
             //ExplosionCollider.Enabled = true;

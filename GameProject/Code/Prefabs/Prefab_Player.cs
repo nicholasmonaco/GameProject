@@ -39,6 +39,8 @@ namespace GameProject.Code.Prefabs {
 
             #region Create Animation States
 
+            // Idle Animations
+
             List<AnimationData> animData = new List<AnimationData>() {
                 new AnimationData(bodyRenderer, new List<(int, Texture2D)>(){ 
                     (0,  Resources.Sprite_Player_IdleDown_0),
@@ -59,6 +61,26 @@ namespace GameProject.Code.Prefabs {
 
             animData = new List<AnimationData>() {
                 new AnimationData(bodyRenderer, new List<(int, Texture2D)>(){
+                    (0,  Resources.Sprite_Player_IdleLeft_0),
+                    (30, Resources.Sprite_Player_IdleLeft_1)
+                }),
+            };
+            animController.StateMachine.AddState((int)PlayerAnimationState.Idle_Left, new Animation(animController, true, animData));
+
+
+            animData = new List<AnimationData>() {
+                new AnimationData(bodyRenderer, new List<(int, Texture2D)>(){
+                    (0,  Resources.Sprite_Player_IdleRight_0),
+                    (30, Resources.Sprite_Player_IdleRight_1)
+                }),
+            };
+            animController.StateMachine.AddState((int)PlayerAnimationState.Idle_Right, new Animation(animController, true, animData));
+
+
+            // Walking Animations
+
+            animData = new List<AnimationData>() {
+                new AnimationData(bodyRenderer, new List<(int, Texture2D)>(){
                     (0,  Resources.Sprite_Player_WalkDown_0),
                     (20, Resources.Sprite_Player_WalkDown_1),
                     (40, Resources.Sprite_Player_WalkDown_2)
@@ -76,6 +98,28 @@ namespace GameProject.Code.Prefabs {
             };
             animController.StateMachine.AddState((int)PlayerAnimationState.Walk_Up, new Animation(animController, true, animData));
 
+
+            animData = new List<AnimationData>() {
+                new AnimationData(bodyRenderer, new List<(int, Texture2D)>(){
+                    (0,  Resources.Sprite_Player_WalkLeft_0),
+                    (20, Resources.Sprite_Player_WalkLeft_1),
+                    (40, Resources.Sprite_Player_WalkLeft_2)
+                }),
+            };
+            animController.StateMachine.AddState((int)PlayerAnimationState.Walk_Left, new Animation(animController, true, animData));
+
+
+            animData = new List<AnimationData>() {
+                new AnimationData(bodyRenderer, new List<(int, Texture2D)>(){
+                    (0,  Resources.Sprite_Player_WalkRight_0),
+                    (20, Resources.Sprite_Player_WalkRight_1),
+                    (40, Resources.Sprite_Player_WalkRight_2)
+                }),
+            };
+            animController.StateMachine.AddState((int)PlayerAnimationState.Walk_Right, new Animation(animController, true, animData));
+
+
+            // Other Animations
 
             animData = new List<AnimationData>() {
                 new AnimationData(bodyRenderer, new List<(int, Texture2D)>(){

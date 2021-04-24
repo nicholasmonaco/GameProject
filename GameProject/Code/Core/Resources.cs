@@ -82,12 +82,20 @@ namespace GameProject.Code.Core {
         public static Dictionary<EntityID, Dictionary<EnemyAnimationAction, List<Texture2D>>> Sprites_EnemyAnimations;
 
         #region Player Sprites
+        // Idle Sprites
         public static Texture2D Sprite_Player_IdleDown_0;
         public static Texture2D Sprite_Player_IdleDown_1;
 
         public static Texture2D Sprite_Player_IdleUp_0;
         public static Texture2D Sprite_Player_IdleUp_1;
 
+        public static Texture2D Sprite_Player_IdleLeft_0;
+        public static Texture2D Sprite_Player_IdleLeft_1;
+
+        public static Texture2D Sprite_Player_IdleRight_0;
+        public static Texture2D Sprite_Player_IdleRight_1;
+
+        // Walking Sprites
         public static Texture2D Sprite_Player_WalkDown_0;
         public static Texture2D Sprite_Player_WalkDown_1;
         public static Texture2D Sprite_Player_WalkDown_2;
@@ -96,6 +104,15 @@ namespace GameProject.Code.Core {
         public static Texture2D Sprite_Player_WalkUp_1;
         public static Texture2D Sprite_Player_WalkUp_2;
 
+        public static Texture2D Sprite_Player_WalkLeft_0;
+        public static Texture2D Sprite_Player_WalkLeft_1;
+        public static Texture2D Sprite_Player_WalkLeft_2;
+
+        public static Texture2D Sprite_Player_WalkRight_0;
+        public static Texture2D Sprite_Player_WalkRight_1;
+        public static Texture2D Sprite_Player_WalkRight_2;
+
+        // Other Sprites
         public static Texture2D Sprite_Player_ItemPickup;
 
         public static Texture2D Sprite_Player_Damage;
@@ -128,11 +145,16 @@ namespace GameProject.Code.Core {
         public static Dictionary<Pickup, SoundEffect> Sounds_PickupSpawn;
         public static Dictionary<Pickup, SoundEffect> Sounds_PickupCollect;
 
+        public static SoundEffect Sound_Explosion;
+
         public static SoundEffect Sound_Menu_Move;
         public static SoundEffect Sound_Menu_Next;
         public static SoundEffect Sound_Menu_Back;
 
+        public static SoundEffect Sound_Player_Shoot;
+
         public static SoundEffect Sound_Punch_Impact;
+        public static List<SoundEffect> Sounds_PunchRush;
         #endregion
 
         #region Music Resources
@@ -284,6 +306,8 @@ namespace GameProject.Code.Core {
             Sound_PlayerHurt = content.Load<SoundEffect>("Sounds/PlayerHurt");
             Sound_Death = content.Load<SoundEffect>("Sounds/Death");
 
+            Sound_Explosion = content.Load<SoundEffect>("Sounds/Explosion_01");
+
 
             Sound_CaveChaser = content.Load<SoundEffect>("Sounds/CaveChaser");
 
@@ -308,7 +332,14 @@ namespace GameProject.Code.Core {
             Sound_Menu_Next = content.Load<SoundEffect>("Sounds/UI/MenuChange");
             Sound_Menu_Back = content.Load<SoundEffect>("Sounds/UI/MenuBack");
 
+            Sound_Player_Shoot = content.Load<SoundEffect>("Sounds/PlayerShoot");
+
             Sound_Punch_Impact = content.Load<SoundEffect>("Sounds/Combat/Punch_Impact");
+
+            Sounds_PunchRush = new List<SoundEffect>(3); //3 for now
+            Sounds_PunchRush.Add(content.Load<SoundEffect>("Sounds/Rush/Ora_01"));
+            Sounds_PunchRush.Add(content.Load<SoundEffect>("Sounds/Rush/Ora_01"));
+            //Sounds_PunchRush.Add(content.Load<SoundEffect>("Sounds/Rush/Ora_03"));
         }
 
         private static void LoadMusic(ContentManager content) {
@@ -464,21 +495,39 @@ namespace GameProject.Code.Core {
 
 
         private static void LoadPlayerSprites(ContentManager content) {
+            // Idle Sprites
             Sprite_Player_IdleDown_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Down_0");
             Sprite_Player_IdleDown_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Down_1");
 
             Sprite_Player_IdleUp_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_0");
             Sprite_Player_IdleUp_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
 
-            Sprite_Player_WalkDown_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
-            Sprite_Player_WalkDown_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
-            Sprite_Player_WalkDown_2 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
+            Sprite_Player_IdleLeft_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Left_0");
+            Sprite_Player_IdleLeft_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Left_1");
+
+            Sprite_Player_IdleRight_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Right_0");
+            Sprite_Player_IdleRight_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Right_1");
+
+
+            // Walking Sprites
+            Sprite_Player_WalkDown_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Down_1");
+            Sprite_Player_WalkDown_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Down_1");
+            Sprite_Player_WalkDown_2 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Down_1");
 
             Sprite_Player_WalkUp_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
             Sprite_Player_WalkUp_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
             Sprite_Player_WalkUp_2 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Up_1");
 
+            Sprite_Player_WalkLeft_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Left_1");
+            Sprite_Player_WalkLeft_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Left_1");
+            Sprite_Player_WalkLeft_2 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Left_1");
 
+            Sprite_Player_WalkRight_0 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Right_1");
+            Sprite_Player_WalkRight_1 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Right_1");
+            Sprite_Player_WalkRight_2 = content.Load<Texture2D>("Textures/Entities/Player/Idle/Right_1");
+
+
+            // Other Sprites
             Sprite_Player_ItemPickup = content.Load<Texture2D>("Textures/Entities/Player/Pickup");
             
             Sprite_Player_Damage = content.Load<Texture2D>("Textures/Entities/Player/Hurt");
