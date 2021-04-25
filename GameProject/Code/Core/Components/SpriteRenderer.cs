@@ -47,7 +47,7 @@ namespace GameProject.Code.Core.Components {
                     transform.Position.ToVector2() + SpriteOffset, 
                     null, 
                     Color, 
-                    transform.Rotation_Rads, 
+                    transform.Rotation_Rads2D, 
                     new Vector2(Sprite.Width/2f, Sprite.Height/2f), 
                     transform.Scale.ToVector2().FlipY() * SpriteScale, 
                     SpriteEffects.None, 

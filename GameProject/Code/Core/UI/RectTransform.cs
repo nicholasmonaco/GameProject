@@ -144,7 +144,7 @@ namespace GameProject.Code.Core.UI {
 
         protected override void RecalculateWorldMatrix() {
             WorldMatrix = Matrix.CreateScale(_worldScale) *
-                          Matrix.CreateRotationZ(_worldRotationRad) *
+                          Matrix.CreateRotationZ(_worldRotationRad2D) *
                           Matrix.CreateTranslation(_worldPosition);
 
             // Apply RectTransform Logic

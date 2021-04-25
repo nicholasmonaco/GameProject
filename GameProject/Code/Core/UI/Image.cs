@@ -54,7 +54,7 @@ namespace GameProject.Code.Core.UI {
                     transform.Position.ToVector2(),
                     null,
                     Color,
-                    transform.Rotation_Rads,
+                    transform.Rotation_Rads2D,
                     ImageSize.ToVector2() / 2f,
                     AppliedScale.FlipY(),
                     SpriteEffects.None,

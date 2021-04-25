@@ -177,7 +177,7 @@ namespace GameProject.Code.Scripts.Components {
                 doorFiller.Name = "Door Filler";
                 doorFiller.transform.Parent = transform;
                 doorFiller.transform.LocalPosition = pos;
-                doorFiller.transform.Rotation = rotation;
+                doorFiller.transform.Rotation2D = rotation;
 
                 //Vector2[] doorBounds = new Vector2[] { new Vector2(-20, 3.5f), new Vector2(20, 3.5f), new Vector2(11, -22), new Vector2(-11, -22) };
                 //PolygonCollider2D pc = doorFiller._components.AddReturn(new PolygonCollider2D(doorFiller, doorBounds, false)) as PolygonCollider2D;

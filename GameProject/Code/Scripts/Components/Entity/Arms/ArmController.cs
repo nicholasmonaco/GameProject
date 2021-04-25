@@ -99,8 +99,8 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
         }
 
         public override void FixedUpdate() {
-            if(CurState == ArmState.Idle && transform.Rotation != 0) {
-                transform.Rotation = MathHelper.Lerp(transform.Rotation, 0, Time.entityFixedDeltaTime * 5);
+            if(CurState == ArmState.Idle && transform.Rotation2D != 0) {
+                transform.Rotation2D = MathHelper.Lerp(transform.Rotation2D, 0, Time.entityFixedDeltaTime * 5);
             }
         }
 
@@ -160,7 +160,7 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
                 timer = toTime;
                 _hit = false;
 
-                ArmParticles.Main.StartRotation = new ValueCurve_Vector3(new Vector3(0, 0, transform.Rotation_Rads));
+                ArmParticles.Main.StartRotation = new ValueCurve_Vector3(new Vector3(0, 0, transform.Rotation_Rads2D));
 
                 //punch towards
                 while (timer > 0) {
@@ -172,7 +172,7 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
                         transform.LocalPosition = Vector3.Lerp(farthestVec, LastOrigLocalPos, timer / toTime);
 
                         int sign = MathF.Sign(transform.Scale.X);
-                        transform.Rotation = MathF.Atan2(-dir.Y, dir.X * -sign) * MathEx.Rad2Deg * sign + 45 * -sign;
+                        transform.Rotation2D = MathF.Atan2(-dir.Y, dir.X * -sign) * MathEx.Rad2Deg * sign + 45 * -sign;
                     }
 
                     yield return new WaitForFixedUpdate();
@@ -200,7 +200,7 @@ namespace GameProject.Code.Scripts.Components.Entity.Arms {
 
 
         public void ResetRotation() {
-            transform.Rotation = 0;
+            transform.Rotation2D = 0;
         }
 
 

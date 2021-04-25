@@ -78,7 +78,7 @@ namespace GameProject.Code.Scripts.Components.Bullet {
 
         public void SetSprite(Texture2D sprite, float rotation) {
             SetSprite(sprite);
-            BulletRenderer.transform.Rotation = rotation;
+            BulletRenderer.transform.Rotation2D = rotation;
         }
 
         public void SetColor(Color newColor) {

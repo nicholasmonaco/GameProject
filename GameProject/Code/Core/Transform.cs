@@ -15,7 +15,10 @@ namespace GameProject.Code.Core {
     [AnimatableComponent]
     public class Transform : Component {
 
-        public Action ViewChangeAction = () => { };
+        private static Action EmptyAction = () => { };
+
+
+        public Action ViewChangeAction = EmptyAction;
         public void ViewChangeAction_Camera() {
             //ViewMatrix = Matrix.CreateLookAt(_worldMatrix.Translation, _worldMatrix.Forward, _worldMatrix.Up);
             ViewMatrix = Matrix.CreateTranslation(-_worldPosition) *
@@ -26,6 +29,8 @@ namespace GameProject.Code.Core {
         }
 
         public bool UIParentFlag = false;
+
+
 
 
 
@@ -40,8 +45,6 @@ namespace GameProject.Code.Core {
                     _worldPosition = ParentPos + (_localPosition * ParentScale);    
                 }
 
-                //Debug.Log($"{gameObject.Name} | _worldPos: {_worldPosition}");
-
                 ViewChangeAction();
                 RecalculateWorldMatrix();
                 gameObject.rigidbody2D?.ResetPosition();
@@ -50,12 +53,21 @@ namespace GameProject.Code.Core {
             }
         }
 
-        //public Quaternion LocalRotation {
-        //    get { return _worldMatrix.Rotation(); }
-        //    set {
-        //        _worldMatrix = Matrix.CreateFromQuaternion(value * Quaternion.Conjugate(_worldMatrix.Rotation())) * _worldMatrix;
-        //    }
-        //}
+
+        [AnimatableValue]
+        public Vector3 Position {
+            get { return _worldPosition; }
+            set {
+                //_worldPosition = value;
+                LocalPosition = (value * ParentScale) - ParentPos;
+
+                //ViewChangeAction(); //These 3 things are handled in LocalPosition
+                //RecalculateWorldMatrix();
+                //gameObject.rigidbody2D?.ResetPosition();
+            }
+        }
+
+
 
         [AnimatableValue]
         public Vector3 LocalScale {
@@ -76,39 +88,6 @@ namespace GameProject.Code.Core {
             }
         }
 
-        [AnimatableValue]
-        public Vector3 Position {
-            get { return _worldPosition; }
-            set {
-                //_worldPosition = value;
-                LocalPosition = (value * ParentScale) - ParentPos;
-
-                //ViewChangeAction(); //These 3 things are handled in LocalPosition
-                //RecalculateWorldMatrix();
-                //gameObject.rigidbody2D?.ResetPosition();
-            }
-        }
-
-        [AnimatableValue]
-        public float Rotation {
-            get { return _worldRotation; }
-            set {
-                ////first, we need to find the quaternion representing the difference between the current quaternion and the new one
-                //Quaternion diff = value * Quaternion.Conjugate(_worldRotation);
-                ////then, we move the world rotation by that quaternion
-                //Forward = Vector3.Transform(Forward, diff);
-                //Up = Vector3.Transform(Up, diff);
-
-                _worldRotationRad = value * MathEx.Deg2Rad;
-                _worldRotation = value;
-                ViewChangeAction();
-                RecalculateWorldMatrix();
-
-                UpdateChildren();
-            }
-        }
-
-        public float Rotation_Rads => _worldRotationRad;
 
         [AnimatableValue]
         public Vector3 Scale {
@@ -122,64 +101,64 @@ namespace GameProject.Code.Core {
         }
 
 
-        //public Vector3 Right => Vector3.Transform(Vector3.Right, _worldMatrix.Rotation());
-        //public Vector3 Up => Vector3.Transform(Vector3.Up, _worldMatrix.Rotation());
-        //public Vector3 Forward => Vector3.Transform(Vector3.Forward, _worldMatrix.Rotation());
 
-        //public Vector3 Forward { 
-        //    get { return _worldMatrix.Forward; }
-        //    set { 
-        //        _worldMatrix = Matrix.CreateWorld(_worldMatrix.Translation, value, _up);
-        //        RecreateWorldAndView();
-        //    }
-        //}
+        public Quaternion LocalRotation {
+            get { return _localRotation; }
+            set {
+                if (Parent == null) {
+                    _worldRotation = value;
+                } else {
+                    _localRotation = value;
+                    _worldRotation = Quaternion.Concatenate(ParentRotation, _localRotation);
+                }
 
-        //public Vector3 Up {
-        //    get { return _up; }
-        //    set {
-        //        _up = value;
-        //        _worldMatrix = Matrix.CreateWorld(_worldMatrix.Translation, _worldMatrix.Forward, _up);
-        //        RecreateWorldAndView();
-        //    }
-        //}
+                ViewChangeAction();
+                RecalculateWorldMatrix();
+                gameObject.rigidbody2D?.ResetPosition();
 
-        //public Vector3 LookAtDirection {
-        //    get { return _worldMatrix.Forward; }
-        //    set {
-        //        _worldMatrix = Matrix.CreateWorld(_worldMatrix.Translation, value, _up);
-        //        RecreateWorldAndView();
-        //    }
-        //}
+                UpdateChildren();
+            }
+        }
 
-        //public Matrix World {
-        //    get { return _worldMatrix; }
-        //    set {
-        //        _worldMatrix = value;
-        //        ViewChangeAction();
-        //    }
-        //}
 
-        //private void RecreateWorldAndView() {
-        //    _up = _worldMatrix.Up;
+        public Quaternion Rotation {
+            get { return _worldRotation; }
+            set {
+                // It's either this or the other way around.
+                LocalRotation = Quaternion.Concatenate(value, Quaternion.Inverse(ParentRotation));
+            }
+        }
 
-        //    _worldMatrix = Matrix.CreateWorld(_worldMatrix.Translation, _worldMatrix.Forward, _up);
-        //    ViewChangeAction();
-        //}
+
+
+        [AnimatableValue]
+        public float Rotation2D {
+            get { return _worldRotation2D; }
+            set {
+                _worldRotationRad2D = value * MathEx.Deg2Rad;
+                _worldRotation2D = value;
+
+                Rotation = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), _worldRotationRad2D); //maybe the z has to be -1 instead
+            }
+        }
+
+        public float Rotation_Rads2D => _worldRotationRad2D;
+        
+
+
+
 
         protected virtual void RecalculateWorldMatrix() {
-            WorldMatrix = Matrix.CreateScale(_worldScale) * 
-                          Matrix.CreateRotationZ(_worldRotationRad) * 
+            //WorldMatrix = Matrix.CreateScale(_worldScale) * 
+            //              Matrix.CreateRotationZ(_worldRotationRad2D) * 
+            //              Matrix.CreateTranslation(_worldPosition);
+
+
+            WorldMatrix = Matrix.CreateScale(_worldScale) *
+                          Matrix.CreateFromQuaternion(_worldRotation) *
                           Matrix.CreateTranslation(_worldPosition);
 
             WorldMatrixUpdateAction();
-        }
-        
-        public Matrix RecalculateWorldMatrix_Renderer() {
-            return Matrix.CreateTranslation(-RenderOffsets) * 
-                   Matrix.CreateScale(_worldScale) * 
-                   Matrix.CreateRotationZ(_worldRotationRad) * 
-                   Matrix.CreateTranslation(RenderOffsets) * 
-                   Matrix.CreateTranslation(_worldPosition);
         }
 
         public void UpdateChildren() {
@@ -189,8 +168,8 @@ namespace GameProject.Code.Core {
         }
 
 
+
         // Variables
-        //public Transform Parent = null;
         private Transform _parent = null;
         public Transform Parent {
             get { return _parent; }
@@ -206,34 +185,37 @@ namespace GameProject.Code.Core {
 
         protected Vector3 ParentPos => Parent == null ? Vector3.Zero : Parent.Position;
         protected Vector3 ParentScale => Parent == null ? Vector3.One : Parent.Scale;
+        protected Quaternion ParentRotation => Parent == null ? Quaternion.Identity : Parent.Rotation;
+
+
 
         // This is representative of world space for this single transform
         public Matrix WorldMatrix { get; protected set; } = Matrix.Identity;
         public Matrix ViewMatrix { get; private set; } = Matrix.Identity;
 
-        //private Vector3 _up = Vector3.Up;//i think this stuff can be replaced with quaternions. do it
 
 
         // V3
         protected Vector3 _worldPosition = Vector3.Zero; //World position is ParentPos + _localPos
-        protected float _worldRotation = 0;
-        protected float _worldRotationRad = 0;
-        protected Vector3 _worldScale = Vector3.One;
-
         protected Vector3 _localPosition = Vector3.Zero; //_localPos is the distance from ParentPos
+
+        protected float _worldRotation2D = 0;
+        protected float _worldRotationRad2D = 0;
+        protected Quaternion _worldRotation;
+        protected Quaternion _localRotation;
+
+        protected Vector3 _worldScale = Vector3.One;
         protected Vector3 _localScale = Vector3.One;
 
-        public Vector3 RenderOffsets = Vector3.Zero;
 
         public Action WorldMatrixUpdateAction = () => { };
-
 
         // End variables
 
 
 
 
-        // Constructors
+        #region Constructors
 
         public Transform(GameObject attach) : base(attach) {
             // In this case, we can assume that the Transform will have no parents by default.
@@ -246,7 +228,7 @@ namespace GameProject.Code.Core {
             _children = new List<Transform>();
 
             Position = Vector3.Zero;
-            Rotation = 0;
+            Rotation2D = 0;
             Scale = Vector3.One;
 
             //WorldMatrixUpdateAction = RecalculateWorldMatrix;
@@ -261,7 +243,7 @@ namespace GameProject.Code.Core {
             _children = new List<Transform>();
 
             Position = Vector3.Zero;
-            Rotation = 0;
+            Rotation2D = 0;
             Scale = Vector3.One;
 
             //WorldMatrixUpdateAction = RecalculateWorldMatrix;
@@ -272,30 +254,28 @@ namespace GameProject.Code.Core {
 
         public Transform(GameObject attach, Vector3 position, float rotation, Vector3 scale) : this(attach) {
             Position = position;
-            Rotation = rotation;
+            Rotation2D = rotation;
             Scale = scale;
         }
 
         public Transform(GameObject attach, Transform parent, Vector3 position, float rotation, Vector3 scale) : this(attach, parent) {
             Position = position;
-            Rotation = rotation;
+            Rotation2D = rotation;
             Scale = scale;
         }
+
+        #endregion
+
 
 
 
         public override void OnDestroy() {
-            //foreach(Transform t in _children) {
-            //    GameObject.Destroy(t.gameObject);
-            //}
-
             if(Parent != null) {
                 Parent._children.Remove(this);
             }
 
             while(_children.Count > 0) {
                 GameObject.Destroy(_children[0].transform.gameObject);
-                //_children.RemoveAt(0);
             }
         }
 
@@ -317,47 +297,7 @@ namespace GameProject.Code.Core {
         /// <param name="point">The point to transform</param>
         /// <returns>The point's position in local space</returns>
         public Vector3 InverseTransformPoint(Vector3 point) {
-
             return point - Position;
-        }
-
-        // Transforms from local space to world space
-        public Quaternion TransformRotation(Quaternion localRotation) {
-            Transform t = this;
-            Quaternion world = localRotation;
-            while(t.Parent != null) {
-                world = t.WorldMatrix.Rotation() * world;
-            }
-
-            return world;
-        }
-
-        // Transforms from local space to world space
-        public Vector3 TransformScale(Vector3 point) {
-            Transform t = this;
-            Vector3 pos = point;
-            while (t.Parent != null) {
-                Matrix m = Matrix.CreateScale(pos);
-                m = Matrix.CreateScale(t.WorldMatrix.Scale()) * m;
-
-                pos = m.Scale();
-
-                t = t.Parent;
-            }
-
-            return pos;
-        }
-
-        // Transforms from world space to local space
-        public Quaternion InverseTransformRotation(Quaternion worldRotation) {
-            Transform t = this;
-            Quaternion local = worldRotation;
-            while (t.Parent != null) {
-                //local = t._rotation.Conjugate * local;
-                local = Quaternion.Multiply(Quaternion.Conjugate(t.WorldMatrix.Rotation()), local);
-            }
-
-            return local;
         }
 
 

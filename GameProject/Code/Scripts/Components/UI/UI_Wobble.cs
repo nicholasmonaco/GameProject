@@ -17,8 +17,8 @@ namespace GameProject.Code.Scripts.Components.UI {
             _duration = duration;
             _timer = duration;
 
-            _origRot = transform.Rotation - maxAngle;
-            _finalRot = transform.Rotation + maxAngle;
+            _origRot = transform.Rotation2D - maxAngle;
+            _finalRot = transform.Rotation2D + maxAngle;
         }
 
 
@@ -31,9 +31,9 @@ namespace GameProject.Code.Scripts.Components.UI {
             }
 
             if (_clockwise) {
-                transform.Rotation = MathHelper.SmoothStep(_origRot, _finalRot, _timer / _duration);
+                transform.Rotation2D = MathHelper.SmoothStep(_origRot, _finalRot, _timer / _duration);
             } else {
-                transform.Rotation = MathHelper.SmoothStep(_finalRot, _origRot, _timer / _duration);
+                transform.Rotation2D = MathHelper.SmoothStep(_finalRot, _origRot, _timer / _duration);
             }
         }
     }

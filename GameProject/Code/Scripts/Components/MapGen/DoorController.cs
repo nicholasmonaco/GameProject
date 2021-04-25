@@ -38,7 +38,7 @@ namespace GameProject.Code.Scripts.Components {
 
         public void InitDoor(Vector3 localPos, float rotation, Direction doorDirection) {
             transform.LocalPosition = localPos;
-            transform.Rotation = rotation;
+            transform.Rotation2D = rotation;
 
             DoorDirection = doorDirection;
         }
@@ -64,7 +64,7 @@ namespace GameProject.Code.Scripts.Components {
                     _secondaryRenderer.DrawLayer = FrameRenderer.DrawLayer;
                     _secondaryRenderer.OrderInLayer = 27;
                     _secondaryRenderer.Material.BatchID = BatchID.Room;
-                    eyes.transform.Rotation = transform.Rotation;
+                    eyes.transform.Rotation2D = transform.Rotation2D;
                     eyes.transform.LocalPosition += (DoorDirection.GetDirectionPoint().ToVector2() * new Vector2(12, 12)).ToVector3();
 
                     SpriteAnimator anim = eyes.AddComponent<SpriteAnimator>();
@@ -80,7 +80,7 @@ namespace GameProject.Code.Scripts.Components {
                     _glowRend.DrawLayer = FrameRenderer.DrawLayer;
                     _glowRend.OrderInLayer = 27;
                     _glowRend.Material.BatchID = BatchID.Room;
-                    glow.transform.Rotation = transform.Rotation;
+                    glow.transform.Rotation2D = transform.Rotation2D;
                     glow.transform.LocalPosition += (DoorDirection.GetDirectionPoint().ToVector2() * new Vector2(-38)).ToVector3();
 
                     InsideRenderer.Sprite = Resources.Sprite_Door_Inside_Boss;

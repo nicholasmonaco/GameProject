@@ -83,7 +83,7 @@ namespace GameProject.Code.Core {
             rectTransform.Parent = transform.Parent;
             rectTransform.Position = transform.Position;
             rectTransform.Scale = transform.Scale;
-            rectTransform.Rotation = transform.Rotation;
+            rectTransform.Rotation2D = transform.Rotation2D;
 
             Transform[] newChildren = new Transform[transform._children.Count];
             transform._children.CopyTo(newChildren);

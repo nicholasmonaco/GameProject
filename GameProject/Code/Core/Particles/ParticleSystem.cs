@@ -225,7 +225,7 @@ namespace GameProject.Code.Core.Components {
 
             if(Main.SimulationSpace == ParticleSimulationSpace.Local) {
                 localSpace = transform.Position.ToVector2();
-                rotation = transform.Rotation_Rads;
+                rotation = transform.Rotation_Rads2D;
                 scaleFlip = transform.Scale.ToVector2();
             } else {
                 localSpace = Vector2.Zero;
